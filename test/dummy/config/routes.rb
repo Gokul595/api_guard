@@ -1,4 +1,3 @@
 Rails.application.routes.draw do
-
-  mount RabbitApi::Engine => "/rabbit_api"
+  mount RabbitApi::Engine => "/"
 end
