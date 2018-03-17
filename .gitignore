@@ -4,6 +4,6 @@ pkg/
 .idea
 
 # Dummy app
-spec/dummy/log/*
-spec/dummy/tmp/*
-spec/dummy/db/*
+test/dummy/log/*
+test/dummy/tmp/*
+test/dummy/db/*
