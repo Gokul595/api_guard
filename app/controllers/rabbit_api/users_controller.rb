@@ -1,7 +1,7 @@
 require_dependency "rabbit_api/application_controller"
 
 module RabbitApi
-  class RegistrationController < ApplicationController
+  class UsersController < ApplicationController
     def create
       @user = User.new(users_params)
       if @user.save
