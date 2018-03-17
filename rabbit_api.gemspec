@@ -22,4 +22,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'sqlite3', '~> 1.3.13'
   s.add_development_dependency 'bcrypt', '~> 3.1.11'
+  s.add_development_dependency 'rspec-rails', '~> 3.7.2'
+  s.add_development_dependency 'factory_bot_rails', '~> 4.8.2'
 end
