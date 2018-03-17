@@ -32,13 +32,13 @@ module RabbitApi
       # Also, create refresh token and return both JWT and refresh token.
       def create_token_and_set_header
         token = encode(
-          user_id: @user.id,
+          user_id: resource.id,
           exp: token_expire_at,
           iat: token_issued_at
         )
 
         # Update token issued at timestamp
-        @user.update_attributes(token_issued_at: Time.at(token_issued_at).utc) if RabbitApi.invalidate_old_tokens_on_logout
+        resource.update_attributes(token_issued_at: Time.at(token_issued_at).utc) if RabbitApi.invalidate_old_tokens_on_logout
 
         new_refresh_token = create_or_update_refresh_token if RabbitApi.generate_refresh_token
 
@@ -57,12 +57,12 @@ module RabbitApi
       # FIXME: Don't update token instead always create new one
       def create_or_update_refresh_token
         new_refresh_token = uniq_refresh_token
-        refresh_token = @user.refresh_token
+        refresh_token = resource.refresh_token
 
         if refresh_token
           refresh_token.update_attributes(token: new_refresh_token)
         else
-          @user.create_refresh_token(token: new_refresh_token)
+          resource.create_refresh_token(token: new_refresh_token)
         end
 
         new_refresh_token
@@ -70,9 +70,9 @@ module RabbitApi
 
       # Destroy refresh token and blacklist JWT token
       def destroy_and_blacklist_token
-        @user.refresh_token.destroy if RabbitApi.generate_refresh_token
+        resource.refresh_token.destroy if RabbitApi.generate_refresh_token
         # Blacklist the current token from future use.
-        @user.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc) if RabbitApi.blacklist_token_on_sign_out
+        resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc) if RabbitApi.blacklist_token_on_sign_out
       end
 
       # Set token details in response headers on successful authentication

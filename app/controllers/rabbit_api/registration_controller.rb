@@ -3,23 +3,23 @@ require_dependency "rabbit_api/application_controller"
 module RabbitApi
   class RegistrationController < ApplicationController
     def create
-      @user = User.new(users_params)
-      if @user.save
+      init_resource(sign_up_params)
+      if resource.save
         create_token_and_set_header
-        render_success(data: @user, message: 'User created successfully')
+        render_success(data: resource, message: 'User created successfully')
       else
-        render_error(422, object: @user)
+        render_error(422, object: resource)
       end
     end
 
     def destroy
-      @user.destroy
+      resource.destroy
       render_success(message: 'User destroyed successfully')
     end
 
     private
 
-    def users_params
+    def sign_up_params
       params.require(:user).permit(:email, :password, :password_confirmation)
     end
   end
