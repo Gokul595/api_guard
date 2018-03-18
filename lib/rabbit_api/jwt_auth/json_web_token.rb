@@ -28,7 +28,7 @@ module RabbitApi
         )
       end
 
-      # Create a JWT token with user detail in payload.
+      # Create a JWT token with resource detail in payload.
       # Also, create refresh token and return both JWT and refresh token.
       def create_token_and_set_header
         token = encode(
@@ -53,7 +53,7 @@ module RabbitApi
         end
       end
 
-      # Update existing refresh_token if available for user or create a new refresh_token
+      # Update existing refresh_token if available for resource or create a new refresh_token
       # FIXME: Don't update token instead always create new one
       def create_or_update_refresh_token
         new_refresh_token = uniq_refresh_token

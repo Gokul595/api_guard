@@ -44,6 +44,13 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
+  # Load all 'factories' and clear action mailer deliveries
+  config.before(:all) do
+    FactoryBot.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
+    FactoryBot.reload
+    ActionMailer::Base.deliveries.clear
+  end
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
