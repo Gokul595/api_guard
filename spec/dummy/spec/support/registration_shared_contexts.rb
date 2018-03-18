@@ -1,5 +1,5 @@
 shared_context 'sign_up requests' do |resource|
-  context 'with valid params' do
+  context 'with invalid params' do
     it 'should raise exception - missing param' do
       expect {
         post "/#{resource}s/sign_up"

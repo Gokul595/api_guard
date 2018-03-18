@@ -1,5 +1,15 @@
 module RabbitApi
-  module ResourceMapper
+  class ResourceMapper
+    attr_reader :resource_class_name, :resource_class, :resource_mapping
+
+    def initialize(routes_for, class_name)
+      @resource_class_name = class_name
+      @resource_class = @resource_class_name.constantize
+      @resource_mapping = "@rabbit_api_#{routes_for}"
+    end
+  end
+
+  module Resource
     def resource
       instance_variable_get(resource_mapping)
     end
@@ -8,17 +18,20 @@ module RabbitApi
       instance_variable_set(resource_mapping, new_resource)
     end
 
+    def rabbit_mapping
+      request.env["rabbit_api.mapping"]
+    end
+
     def resource_class_name
-      # Return authenticate resource name if 'params[:resource_class]' is nil
-      @resource_class_name ||= params[:resource_class] || 'User'
+      rabbit_mapping.resource_class_name
     end
 
     def resource_class
-      @resource_class ||= resource_class_name.constantize
+      rabbit_mapping.resource_class
     end
 
     def resource_mapping
-      @resource_mapping ||= "@rabbit_api_#{resource_class_name.downcase}"
+      rabbit_mapping.resource_mapping
     end
 
     def init_resource(params)

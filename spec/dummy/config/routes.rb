@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
-  mount RabbitApi::Engine => "/users", resource_class: 'User', as: 'user'
-  mount RabbitApi::Engine => "/admins", resource_class: 'Admin', as: 'admin'
+  rabbit_api_routes for: 'users'
+
+  rabbit_api_routes for: 'admins', module: 'admins', path: 'admins'
 end

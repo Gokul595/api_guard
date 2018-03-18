@@ -1,4 +1,5 @@
 require "rabbit_api/engine"
+require "rabbit_api/route_mapper"
 require "rabbit_api/modules"
 
 module RabbitApi
@@ -10,4 +11,11 @@ module RabbitApi
 
   mattr_accessor :blacklist_token_on_sign_out
   self.blacklist_token_on_sign_out = false
+
+  mattr_reader :mapped_resource
+  @@mapped_resource = {}
+
+  def self.map_resource(routes_for, class_name)
+    @@mapped_resource[routes_for] = RabbitApi::ResourceMapper.new(routes_for, class_name)
+  end
 end
