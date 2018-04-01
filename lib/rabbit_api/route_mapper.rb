@@ -4,38 +4,58 @@
 # Customizable API routes
 module ActionDispatch::Routing
   class Mapper
+    # TODO: Add except, only options
     def rabbit_api_routes(options = {})
-      routes_for = options.delete(:for).tableize || 'users'
-      class_name = (options.delete(:class_name) || routes_for).classify
+      routes_for = options.delete(:for).to_s || 'users'
+      class_name = options.delete(:class_name) || routes_for.classify
 
-      options[:module] = options[:module] || 'rabbit_api'
+      controller_options = options.delete(:controller)
+
       options[:as] = options[:as] || routes_for.singularize
       options[:path] = options[:path] || routes_for
 
       RabbitApi.map_resource(routes_for, class_name)
 
       rabbit_api_scope(routes_for) do
+        # TODO: add logics to handle module in options
         scope options do
-          post 'sign_in' => 'authentication#create'
-          delete 'sign_out' => 'authentication#destroy'
-
-          post 'sign_up' => 'registration#create'
-          delete 'sign_down' => 'registration#destroy' # TODO: Rename this route path
+          generate_routes(controller_options)
         end
       end
     end
 
-    private
-
     def rabbit_api_scope(routes_for)
       constraint = lambda do |request|
-        request.env["rabbit_api.mapping"] = RabbitApi.mapped_resource[routes_for]
+        request.env["rabbit_api.mapping"] = RabbitApi.mapped_resource[routes_for.to_sym]
         true
       end
 
       constraints(constraint) do
         yield
       end
+    end
+
+    private
+
+    def generate_routes(options)
+      options ||= {}
+
+      authentication_routes(options[:authentication])
+      registration_routes(options[:registration])
+    end
+
+    def authentication_routes(controller_name = nil)
+      controller_name = controller_name || 'rabbit_api/authentication'
+
+      post 'sign_in' => "#{controller_name}#create"
+      delete 'sign_out' => "#{controller_name}#destroy"
+    end
+
+    def registration_routes(controller_name = nil)
+      controller_name = controller_name || 'rabbit_api/registration'
+
+      post 'sign_up' => "#{controller_name}#create"
+      delete 'sign_down' => "#{controller_name}#destroy"
     end
   end
 end

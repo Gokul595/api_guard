@@ -16,6 +16,6 @@ module RabbitApi
   @@mapped_resource = {}
 
   def self.map_resource(routes_for, class_name)
-    @@mapped_resource[routes_for] = RabbitApi::ResourceMapper.new(routes_for, class_name)
+    @@mapped_resource[routes_for.to_sym] = RabbitApi::ResourceMapper.new(routes_for, class_name)
   end
 end

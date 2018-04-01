@@ -1,37 +1,37 @@
 module RabbitApi
   class ResourceMapper
-    attr_reader :resource_class_name, :resource_class, :resource_mapping
+    attr_reader :resource_class_name, :resource_class, :resource_instance_name
 
     def initialize(routes_for, class_name)
       @resource_class_name = class_name
       @resource_class = @resource_class_name.constantize
-      @resource_mapping = "@rabbit_api_#{routes_for}"
+      @resource_instance_name = "@rabbit_api_#{routes_for}"
     end
   end
 
   module Resource
     def resource
-      instance_variable_get(resource_mapping)
+      instance_variable_get(mapped_resource_instance)
     end
 
     def resource=(new_resource)
-      instance_variable_set(resource_mapping, new_resource)
+      instance_variable_set(mapped_resource_instance, new_resource)
     end
 
-    def rabbit_mapping
+    def current_resource_mapping
       request.env["rabbit_api.mapping"]
     end
 
     def resource_class_name
-      rabbit_mapping.resource_class_name
+      current_resource_mapping.resource_class_name
     end
 
     def resource_class
-      rabbit_mapping.resource_class
+      current_resource_mapping.resource_class
     end
 
-    def resource_mapping
-      rabbit_mapping.resource_mapping
+    def mapped_resource_instance
+      current_resource_mapping.resource_instance_name
     end
 
     def init_resource(params)
