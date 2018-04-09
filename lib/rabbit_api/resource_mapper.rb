@@ -43,10 +43,5 @@ module RabbitApi
       # TODO: Check whether `self` is ok.
       self.resource = resource_class.new(params)
     end
-
-    def find_resource
-      self.resource = resource_class.find_by(email: params[:email].downcase.strip) if params[:email].present?
-      render_error(422, message: 'Invalid login credentials') unless resource
-    end
   end
 end

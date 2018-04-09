@@ -19,5 +19,12 @@ module RabbitApi
       destroy_and_blacklist_token
       render_success(message: 'Signed out successfully!')
     end
+
+    private
+
+    def find_resource
+      self.resource = resource_class.find_by(email: params[:email].downcase.strip) if params[:email].present?
+      render_error(422, message: 'Invalid login credentials') unless resource
+    end
   end
 end
