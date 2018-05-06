@@ -32,7 +32,7 @@ module RabbitApi
       # Also, create refresh token and return both JWT and refresh token.
       def create_token_and_set_header
         token = encode(
-          user_id: resource.id,
+          "#{resource_name}_id": resource.id,
           exp: token_expire_at,
           iat: token_issued_at
         )
