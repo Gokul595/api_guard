@@ -48,7 +48,6 @@ RSpec.configure do |config|
   config.before(:all) do
     FactoryBot.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
     FactoryBot.reload
-    ActionMailer::Base.deliveries.clear
   end
 
 # The settings below are suggested to provide a good initial experience

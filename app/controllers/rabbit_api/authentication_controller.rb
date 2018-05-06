@@ -4,6 +4,7 @@ module RabbitApi
   # TODO: Write test specs
   class AuthenticationController < ApplicationController
     before_action :find_resource, only: [:create]
+    before_action :authenticate_resource, only: [:destroy]
 
     def create
       if resource.authenticate(params[:password])

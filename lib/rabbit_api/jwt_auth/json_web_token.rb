@@ -70,9 +70,9 @@ module RabbitApi
 
       # Destroy refresh token and blacklist JWT token
       def destroy_and_blacklist_token
-        resource.refresh_token.destroy if RabbitApi.generate_refresh_token
+        current_resource.refresh_token.destroy if RabbitApi.generate_refresh_token
         # Blacklist the current token from future use.
-        resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc) if RabbitApi.blacklist_token_on_sign_out
+        current_resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc) if RabbitApi.blacklist_token_on_sign_out
       end
 
       # Set token details in response headers on successful authentication
@@ -81,6 +81,10 @@ module RabbitApi
         response.headers['Refresh-Token'] = refresh_token if refresh_token
         # FIXME: Uncomment below line
         # response.headers['Expire-At'] = token_expire_at.to_s
+      end
+
+      def current_resource
+        public_send("current_#{resource_name}")
       end
     end
   end

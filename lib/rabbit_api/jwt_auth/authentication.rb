@@ -80,7 +80,7 @@ module RabbitApi
       end
 
       def current_resource
-        public_send("current_#{@resource_name}")
+        defined? public_send("current_#{@resource_name}") ? public_send("current_#{@resource_name}") : nil
       end
     end
   end
