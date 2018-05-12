@@ -25,7 +25,7 @@ module RabbitApi
         end
 
         # Render error response only if no resource found and no previous render happened
-        render_error(401, message: 'Invalid access token') if !current_resource && !performed?
+        render_error(401, message: 'Invalid access token') if !resource && !performed?
       rescue JWT::DecodeError => e
         if e.message == 'Signature has expired'
           render_error(401, message: 'Token expired')
@@ -51,13 +51,13 @@ module RabbitApi
       # Returns true if password hasn't changed by the user
       def valid_issued_at?
         return true unless RabbitApi.invalidate_old_tokens_on_logout
-        !current_resource.token_issued_at || @decoded_token[:iat] >= current_resource.token_issued_at.to_i
+        !resource.token_issued_at || @decoded_token[:iat] >= resource.token_issued_at.to_i
       end
 
       # Returns whether the JWT token is blacklisted or not
       def blacklisted?
         return false unless RabbitApi.blacklist_token_on_sign_out
-        current_resource.blacklisted_tokens.exists?(token: @token)
+        resource.blacklisted_tokens.exists?(token: @token)
       end
 
       # Authenticate the resource with the '{{resource_name}}_id' in the decoded JWT token
@@ -68,19 +68,15 @@ module RabbitApi
       def authenticate_token
         return unless decode_token && @decoded_token[:"#{@resource_name}_id"].present?
 
-        resource = @resource_name.classify.constantize.find_by(id: @decoded_token[:"#{@resource_name}_id"])
+        self.resource = @resource_name.classify.constantize.find_by(id: @decoded_token[:"#{@resource_name}_id"])
 
         self.class.send(:define_method, "current_#{@resource_name}") do
           instance_variable_get("@current_#{@resource_name}") || instance_variable_set("@current_#{@resource_name}", resource)
         end
 
-        return if current_resource && valid_issued_at? && !blacklisted?
+        return if resource && valid_issued_at? && !blacklisted?
 
         render_error(401, message: 'Invalid access token')
-      end
-
-      def current_resource
-        defined? public_send("current_#{@resource_name}") ? public_send("current_#{@resource_name}") : nil
       end
     end
   end

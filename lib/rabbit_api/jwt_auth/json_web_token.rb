@@ -41,8 +41,6 @@ module RabbitApi
         # Update token issued at timestamp
         resource.update_attributes(token_issued_at: Time.at(token_issued_at).utc) if RabbitApi.invalidate_old_tokens_on_logout
 
-        new_refresh_token = create_refresh_token.token if RabbitApi.generate_refresh_token
-
         set_token_headers(token, new_refresh_token)
       end
 
@@ -55,14 +53,15 @@ module RabbitApi
       end
 
       # Create a new refresh_token for the current resource
-      def create_refresh_token
-        resource.refresh_tokens.create(token: uniq_refresh_token)
+      def new_refresh_token
+        return nil unless RabbitApi.generate_refresh_token
+        resource.refresh_tokens.create(token: uniq_refresh_token).token
       end
 
       # Blacklist the current JWT token from future access
       def blacklist_token
         return unless RabbitApi.blacklist_token_on_sign_out
-        current_resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc)
+        resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc)
       end
 
       # Set token details in response headers on successful authentication
@@ -70,10 +69,6 @@ module RabbitApi
         response.headers['Access-Token'] = token
         response.headers['Refresh-Token'] = refresh_token if refresh_token
         response.headers['Expire-At'] = token_expire_at.to_s
-      end
-
-      def current_resource
-        public_send("current_#{resource_name}")
       end
     end
   end

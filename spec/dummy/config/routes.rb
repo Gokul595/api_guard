@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   rabbit_api_routes for: 'users'
 
   rabbit_api_routes for: 'customers', class_name: 'User', controller: {
-    authentication: 'customers/authentication'
+    authentication: 'customers/authentication',
+    tokens: 'customers/tokens'
   }
 
   rabbit_api_routes for: 'admins', controller: {

@@ -1,25 +1,26 @@
-module Api
-  module V1
-    class TokensController < Api::V1::ApiController
-      before_action :find_refresh_token, only: [:create]
+require_dependency 'rabbit_api/application_controller'
 
-      def create
-        create_token_and_set_header # Create JWT token and refresh token
-        render_success(data: @user)
-      end
+module RabbitApi
+  class TokensController < ApplicationController
+    before_action :authenticate_resource, only: [:create]
+    before_action :find_refresh_token, only: [:create]
 
-      private
+    def create
+      @refresh_token.destroy
+      create_token_and_set_header # Create JWT token and refresh token
+      render_success(data: resource)
+    end
 
-      def find_refresh_token
-        refresh_token = request.headers['Refresh-Token']
+    private
 
-        if refresh_token
-          @refresh_token = @user.refresh_token
+    def find_refresh_token
+      refresh_token_from_header = request.headers['Refresh-Token']
 
-          render_controller_error(401, 'Invalid refresh token', :refresh_token_invalid) unless @refresh_token.token == refresh_token
-        else
-          render_controller_error(401, 'Refresh token is missing in the request', :refresh_token_missing)
-        end
+      if refresh_token_from_header
+        @refresh_token = resource.refresh_tokens.find_by_token(refresh_token_from_header)
+        return render_error(401, message: 'Invalid refresh token') unless @refresh_token
+      else
+        render_error(401, message: 'Refresh token is missing in the request')
       end
     end
   end

@@ -45,7 +45,7 @@ describe 'Authentication - Customer', type: :request do
 
       it 'should return 401 - expired access token' do
         @customer = create(:user)
-        expired_access_token = access_token_for_resource(@customer, 'user', true)
+        expired_access_token = access_token_for_resource(@customer, 'user', true)[0]
 
         delete '/customers/sign_out', headers: {'Authorization' => "Bearer #{expired_access_token}"}
 
@@ -57,7 +57,7 @@ describe 'Authentication - Customer', type: :request do
     context 'with valid params' do
       it 'should logout customer - valid access token' do
         @customer = create(:user)
-        access_token = access_token_for_resource(@customer, 'user')
+        access_token = access_token_for_resource(@customer, 'user')[0]
 
         delete '/customers/sign_out', headers: {'Authorization' => "Bearer #{access_token}"}
 

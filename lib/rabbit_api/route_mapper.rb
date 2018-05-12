@@ -42,6 +42,7 @@ module ActionDispatch::Routing
 
       authentication_routes(options[:authentication])
       registration_routes(options[:registration])
+      token_routes(options[:tokens]) if RabbitApi.generate_refresh_token
     end
 
     def authentication_routes(controller_name = nil)
@@ -56,6 +57,12 @@ module ActionDispatch::Routing
 
       post 'sign_up' => "#{controller_name}#create"
       delete 'sign_down' => "#{controller_name}#destroy"
+    end
+
+    def token_routes(controller_name = nil)
+      controller_name = controller_name || 'rabbit_api/tokens'
+
+      post 'tokens' => "#{controller_name}#create"
     end
   end
 end

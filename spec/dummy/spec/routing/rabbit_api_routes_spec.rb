@@ -12,6 +12,8 @@ describe 'RabbitApiRoutesSpec', type: :routing do
 
       expect(post: "/admins/sign_in").to route_to('rabbit_api/authentication#create')
       expect(delete: "/admins/sign_out").to route_to('rabbit_api/authentication#destroy')
+
+      expect(post: "/admins/tokens").to route_to('rabbit_api/tokens#create')
     end
   end
 
@@ -26,6 +28,8 @@ describe 'RabbitApiRoutesSpec', type: :routing do
 
       expect(post: "/customers/sign_in").to route_to('rabbit_api/authentication#create')
       expect(delete: "/customers/sign_out").to route_to('rabbit_api/authentication#destroy')
+
+      expect(post: "/customers/tokens").to route_to('rabbit_api/tokens#create')
     end
   end
 
@@ -40,6 +44,8 @@ describe 'RabbitApiRoutesSpec', type: :routing do
 
       expect(customer_sign_in_path).to eq('/users/sign_in')
       expect(customer_sign_out_path).to eq('/users/sign_out')
+
+      expect(customer_tokens_path).to eq('/users/tokens')
     end
   end
 
@@ -54,6 +60,8 @@ describe 'RabbitApiRoutesSpec', type: :routing do
 
       expect(post: "/customers/sign_in").to route_to('rabbit_api/authentication#create')
       expect(delete: "/customers/sign_out").to route_to('rabbit_api/authentication#destroy')
+
+      expect(post: "/customers/tokens").to route_to('rabbit_api/tokens#create')
     end
 
     it 'should create routes for users with no path prefix' do
@@ -66,6 +74,8 @@ describe 'RabbitApiRoutesSpec', type: :routing do
 
       expect(post: "/sign_in").to route_to('rabbit_api/authentication#create')
       expect(delete: "/sign_out").to route_to('rabbit_api/authentication#destroy')
+
+      expect(post: "/tokens").to route_to('rabbit_api/tokens#create')
     end
   end
 

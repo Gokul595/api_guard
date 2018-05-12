@@ -1,6 +1,14 @@
 require 'dummy/spec/rails_helper'
 
 describe 'Authentication - Admin', type: :request do
+  before(:each) do
+    RabbitApi.generate_refresh_token = false
+  end
+
+  after(:each) do
+    RabbitApi.generate_refresh_token = true
+  end
+
   describe 'POST #create' do
     context 'with invalid params' do
       it 'should return 401 - invalid login credentials' do
@@ -45,7 +53,7 @@ describe 'Authentication - Admin', type: :request do
 
       it 'should return 401 - expired access token' do
         @admin = create(:admin)
-        expired_access_token = access_token_for_resource(@admin, 'admin', true)
+        expired_access_token = access_token_for_resource(@admin, 'admin', true)[0]
 
         delete '/admins/sign_out', headers: {'Authorization' => "Bearer #{expired_access_token}"}
 
@@ -57,7 +65,7 @@ describe 'Authentication - Admin', type: :request do
     context 'with valid params' do
       it 'should logout admin - valid access token' do
         @admin = create(:admin)
-        access_token = access_token_for_resource(@admin, 'admin')
+        access_token = access_token_for_resource(@admin, 'admin')[0]
 
         delete '/admins/sign_out', headers: {'Authorization' => "Bearer #{access_token}"}
 
