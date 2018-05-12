@@ -55,7 +55,7 @@ describe 'Authentication - Admin', type: :request do
     end
 
     context 'with valid params' do
-      it 'should login admin - valid login credentials' do
+      it 'should logout admin - valid access token' do
         @admin = create(:admin)
         access_token = access_token_for_resource(@admin, 'admin')
 

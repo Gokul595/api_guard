@@ -55,7 +55,7 @@ describe 'Authentication - User', type: :request do
     end
 
     context 'with valid params' do
-      it 'should login user - valid login credentials' do
+      it 'should logout user - valid access token' do
         @user = create(:user)
         access_token = access_token_for_resource(@user, 'user')
 

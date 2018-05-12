@@ -13,7 +13,7 @@ describe 'Authentication - Customer', type: :request do
     end
 
     context 'with valid params' do
-      it 'should login user - valid login credentials' do
+      it 'should login customer - valid login credentials' do
         @customer = create(:user)
         post '/customers/sign_in', params: attributes_for(:user)
 
@@ -55,7 +55,7 @@ describe 'Authentication - Customer', type: :request do
     end
 
     context 'with valid params' do
-      it 'should login user - valid login credentials' do
+      it 'should logout customer - valid access token' do
         @customer = create(:user)
         access_token = access_token_for_resource(@customer, 'user')
 
