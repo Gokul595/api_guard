@@ -79,8 +79,7 @@ module RabbitApi
       def set_token_headers(token, refresh_token = nil)
         response.headers['Access-Token'] = token
         response.headers['Refresh-Token'] = refresh_token if refresh_token
-        # FIXME: Uncomment below line
-        # response.headers['Expire-At'] = token_expire_at.to_s
+        response.headers['Expire-At'] = token_expire_at.to_s
       end
 
       def current_resource

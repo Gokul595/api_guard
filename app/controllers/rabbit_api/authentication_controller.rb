@@ -1,7 +1,6 @@
 require_dependency "rabbit_api/application_controller"
 
 module RabbitApi
-  # TODO: Write test specs
   class AuthenticationController < ApplicationController
     before_action :find_resource, only: [:create]
     before_action :authenticate_resource, only: [:destroy]

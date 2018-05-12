@@ -18,8 +18,9 @@ describe 'Authentication - Admin', type: :request do
         post '/admins/sign_in', params: attributes_for(:admin)
 
         expect(response).to have_http_status(200)
-        expect(response.headers['Access-Token']).not_to eq('')
-        expect(response.headers['Refresh-Token']).not_to eq('')
+        expect(response.headers['Access-Token']).to be_present
+        expect(response.headers['Expire-At']).to be_present
+        # expect(response.headers['Refresh-Token']).to be_present
       end
     end
   end
