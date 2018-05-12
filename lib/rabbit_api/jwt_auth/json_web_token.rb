@@ -37,10 +37,11 @@ module RabbitApi
           iat: token_issued_at
         )
 
+        # TODO: Move this to model callback on updating password
         # Update token issued at timestamp
         resource.update_attributes(token_issued_at: Time.at(token_issued_at).utc) if RabbitApi.invalidate_old_tokens_on_logout
 
-        new_refresh_token = create_or_update_refresh_token if RabbitApi.generate_refresh_token
+        new_refresh_token = create_refresh_token.token if RabbitApi.generate_refresh_token
 
         set_token_headers(token, new_refresh_token)
       end
@@ -53,26 +54,15 @@ module RabbitApi
         end
       end
 
-      # Update existing refresh_token if available for resource or create a new refresh_token
-      # FIXME: Don't update token instead always create new one
-      def create_or_update_refresh_token
-        new_refresh_token = uniq_refresh_token
-        refresh_token = resource.refresh_token
-
-        if refresh_token
-          refresh_token.update_attributes(token: new_refresh_token)
-        else
-          resource.create_refresh_token(token: new_refresh_token)
-        end
-
-        new_refresh_token
+      # Create a new refresh_token for the current resource
+      def create_refresh_token
+        resource.refresh_tokens.create(token: uniq_refresh_token)
       end
 
-      # Destroy refresh token and blacklist JWT token
-      def destroy_and_blacklist_token
-        current_resource.refresh_token.destroy if RabbitApi.generate_refresh_token
-        # Blacklist the current token from future use.
-        current_resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc) if RabbitApi.blacklist_token_on_sign_out
+      # Blacklist the current JWT token from future access
+      def blacklist_token
+        return unless RabbitApi.blacklist_token_on_sign_out
+        current_resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc)
       end
 
       # Set token details in response headers on successful authentication

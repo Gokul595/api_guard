@@ -15,6 +15,10 @@ module RabbitApi
   mattr_reader :mapped_resource
   @@mapped_resource = {}
 
+  def self.setup
+    yield self
+  end
+
   def self.map_resource(routes_for, class_name)
     @@mapped_resource[routes_for.to_sym] = RabbitApi::ResourceMapper.new(routes_for, class_name)
   end

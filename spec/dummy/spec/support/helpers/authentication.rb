@@ -1,7 +1,7 @@
 # Returns JWT access token for the resource
 # Also, updates the 'token_issued_at' column if configured to invalidate old tokens
 def access_token_for_resource(resource, resource_name, expired_token = false)
-  token = JWT.encode(
+  JWT.encode(
     {
       "#{resource_name}_id": resource.id,
       exp: expired_token ? token_issued_at : token_expire_at,
@@ -9,8 +9,6 @@ def access_token_for_resource(resource, resource_name, expired_token = false)
     },
     Rails.application.secrets.secret_key_base
   )
-  resource.update_attributes(token_issued_at: Time.at(token_issued_at).utc) if RabbitApi.invalidate_old_tokens_on_logout
-  token
 end
 
 def current_time

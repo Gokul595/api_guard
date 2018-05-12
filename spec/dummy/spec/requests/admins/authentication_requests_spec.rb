@@ -20,7 +20,7 @@ describe 'Authentication - Admin', type: :request do
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present
         expect(response.headers['Expire-At']).to be_present
-        # expect(response.headers['Refresh-Token']).to be_present
+        expect(response.headers['Refresh-Token']).not_to be_present
       end
     end
   end

@@ -16,7 +16,7 @@ module RabbitApi
 
     def destroy
       # Destroy refresh token and blacklist JWT token
-      destroy_and_blacklist_token
+      blacklist_token
       render_success(message: 'Signed out successfully!')
     end
 
