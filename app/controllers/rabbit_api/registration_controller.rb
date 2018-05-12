@@ -1,4 +1,4 @@
-require_dependency "rabbit_api/application_controller"
+require_dependency 'rabbit_api/application_controller'
 
 module RabbitApi
   class RegistrationController < ApplicationController
