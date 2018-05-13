@@ -58,7 +58,7 @@ describe 'Authentication - Admin', type: :request do
         delete '/admins/sign_out', headers: {'Authorization' => "Bearer #{expired_access_token}"}
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Token expired')
+        expect(response_errors).to include('Access token expired')
       end
     end
 

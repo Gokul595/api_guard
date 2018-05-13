@@ -5,7 +5,7 @@ module RabbitApi
     def create
       init_resource(sign_up_params)
       if resource.save
-        create_token_and_set_header
+        create_token_and_set_header(resource, resource_name)
         render_success(data: resource, message: "#{resource_name.capitalize} created successfully")
       else
         render_error(422, object: resource)

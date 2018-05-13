@@ -55,9 +55,9 @@ describe 'Refresh token - User', type: :request do
 
       it 'should login user - expired access token and valid refresh token' do
         @user = create(:user)
-        access_token, refresh_token = access_token_for_resource(@user, 'user', true)
+        expired_access_token, refresh_token = access_token_for_resource(@user, 'user', true)
 
-        post '/users/tokens', headers: {'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token}
+        post '/users/tokens', headers: {'Authorization' => "Bearer #{expired_access_token}", 'Refresh-Token' => refresh_token}
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present

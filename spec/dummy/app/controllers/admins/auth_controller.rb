@@ -6,7 +6,7 @@ module Admins
 
     def create
       if resource.authenticate(params[:password])
-        create_token_and_set_header
+        create_token_and_set_header(resource, resource_name)
         render_success(data: resource)
       else
         render_error(401, message: 'Invalid admin credentials')

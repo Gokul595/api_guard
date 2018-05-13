@@ -30,18 +30,14 @@ module RabbitApi
 
       # Create a JWT token with resource detail in payload.
       # Also, create refresh token and return both JWT and refresh token.
-      def create_token_and_set_header
+      def create_token_and_set_header(resource, resource_name)
         token = encode(
           "#{resource_name}_id": resource.id,
           exp: token_expire_at,
           iat: token_issued_at
         )
 
-        # TODO: Move this to model callback on updating password
-        # Update token issued at timestamp
-        resource.update_attributes(token_issued_at: Time.at(token_issued_at).utc) if RabbitApi.invalidate_old_tokens_on_logout
-
-        set_token_headers(token, new_refresh_token)
+        set_token_headers(token, new_refresh_token(resource))
       end
 
       # Generate and return unique refresh token
@@ -53,15 +49,15 @@ module RabbitApi
       end
 
       # Create a new refresh_token for the current resource
-      def new_refresh_token
+      def new_refresh_token(resource)
         return nil unless RabbitApi.generate_refresh_token
         resource.refresh_tokens.create(token: uniq_refresh_token).token
       end
 
       # Blacklist the current JWT token from future access
       def blacklist_token
-        return unless RabbitApi.blacklist_token_on_sign_out
-        resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc)
+        return unless RabbitApi.blacklist_token
+        current_resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc)
       end
 
       # Set token details in response headers on successful authentication
@@ -69,6 +65,10 @@ module RabbitApi
         response.headers['Access-Token'] = token
         response.headers['Refresh-Token'] = refresh_token if refresh_token
         response.headers['Expire-At'] = token_expire_at.to_s
+      end
+
+      def current_resource
+        public_send("current_#{resource_name}")
       end
     end
   end

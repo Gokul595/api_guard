@@ -7,7 +7,7 @@ module RabbitApi
 
     def create
       if resource.authenticate(params[:password])
-        create_token_and_set_header
+        create_token_and_set_header(resource, resource_name)
         render_success(data: resource)
       else
         render_error(422, message: 'Invalid login credentials')
@@ -15,7 +15,6 @@ module RabbitApi
     end
 
     def destroy
-      # Destroy refresh token and blacklist JWT token
       blacklist_token
       render_success(message: 'Signed out successfully!')
     end

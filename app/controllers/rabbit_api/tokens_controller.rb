@@ -7,8 +7,8 @@ module RabbitApi
 
     def create
       @refresh_token.destroy
-      create_token_and_set_header # Create JWT token and refresh token
-      render_success(data: resource)
+      create_token_and_set_header(current_resource, resource_name)
+      render_success(data: current_resource)
     end
 
     private
@@ -17,7 +17,7 @@ module RabbitApi
       refresh_token_from_header = request.headers['Refresh-Token']
 
       if refresh_token_from_header
-        @refresh_token = resource.refresh_tokens.find_by_token(refresh_token_from_header)
+        @refresh_token = current_resource.refresh_tokens.find_by_token(refresh_token_from_header)
         return render_error(401, message: 'Invalid refresh token') unless @refresh_token
       else
         render_error(401, message: 'Refresh token is missing in the request')
