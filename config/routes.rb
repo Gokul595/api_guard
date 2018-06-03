@@ -1,3 +1,4 @@
 RabbitApi::Engine.routes.draw do
-  # See 'lib/rabbit_api/route_mapper.rb'
+  # Can't see anything here?
+  # Goto 'lib/rabbit_api/route_mapper.rb'
 end

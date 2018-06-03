@@ -41,7 +41,7 @@ describe 'Refresh token - User', type: :request do
     end
 
     context 'with valid params' do
-      it 'should login user - valid access token and refresh token' do
+      it 'should generate new access token - valid access token and refresh token' do
         @user = create(:user)
         access_token, refresh_token = access_token_for_resource(@user, 'user')
 
@@ -53,7 +53,7 @@ describe 'Refresh token - User', type: :request do
         expect(response.headers['Refresh-Token']).to be_present
       end
 
-      it 'should login user - expired access token and valid refresh token' do
+      it 'should generate new access token - expired access token and valid refresh token' do
         @user = create(:user)
         expired_access_token, refresh_token = access_token_for_resource(@user, 'user', true)
 

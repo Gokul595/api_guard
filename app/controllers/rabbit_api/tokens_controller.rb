@@ -17,7 +17,7 @@ module RabbitApi
       refresh_token_from_header = request.headers['Refresh-Token']
 
       if refresh_token_from_header
-        @refresh_token = current_resource.refresh_tokens.find_by_token(refresh_token_from_header)
+        @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_header)
         return render_error(401, message: 'Invalid refresh token') unless @refresh_token
       else
         render_error(401, message: 'Refresh token is missing in the request')
