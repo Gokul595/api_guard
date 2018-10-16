@@ -43,6 +43,7 @@ module RabbitApi
       # Decode the JWT token
       # and don't verify token expiry for refresh token API request
       def decode_token
+        # TODO: Set token refresh controller dynamic
         verify_token = (controller_name != 'tokens' || action_name != 'create')
         @decoded_token = decode(@token, verify_token)
       end
@@ -52,12 +53,6 @@ module RabbitApi
       def valid_issued_at?
         return true unless RabbitApi.invalidate_old_tokens_on_password_change
         !current_resource.token_issued_at || @decoded_token[:iat] >= current_resource.token_issued_at.to_i
-      end
-
-      # Returns whether the JWT token is blacklisted or not
-      def blacklisted?
-        return false unless RabbitApi.blacklist_token
-        current_resource.blacklisted_tokens.exists?(token: @token)
       end
 
       # Authenticate the resource with the '{{resource_name}}_id' in the decoded JWT token

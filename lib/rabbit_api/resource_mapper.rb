@@ -43,5 +43,9 @@ module RabbitApi
       # TODO: Check whether `self` is ok.
       self.resource = resource_class.new(params)
     end
+
+    def current_resource
+      public_send("current_#{resource_name}")
+    end
   end
 end

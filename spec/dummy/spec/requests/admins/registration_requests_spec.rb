@@ -1,13 +1,6 @@
 require 'dummy/spec/rails_helper'
 
 describe 'Registration - Admin', type: :request do
-  before(:each) do
-    RabbitApi.generate_refresh_token = false
-  end
-
-  after(:each) do
-    RabbitApi.generate_refresh_token = true
-  end
 
   describe 'POST #create' do
     context 'with invalid params' do

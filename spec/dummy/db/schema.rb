@@ -22,8 +22,10 @@ ActiveRecord::Schema.define(version: 20180512133858) do
   create_table "refresh_tokens", force: :cascade do |t|
     t.string "token"
     t.integer "user_id"
+    t.integer "admin_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_refresh_tokens_on_admin_id"
     t.index ["token"], name: "index_refresh_tokens_on_token", unique: true
     t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
   end

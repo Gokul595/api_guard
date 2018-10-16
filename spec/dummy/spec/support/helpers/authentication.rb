@@ -1,3 +1,5 @@
+include RabbitApi::JwtAuth::RefreshJwtToken
+
 # Returns JWT access token for the resource
 # Also, updates the 'token_issued_at' column if configured to invalidate old tokens
 def access_token_for_resource(resource, resource_name, expired_token = false)
@@ -12,20 +14,6 @@ def access_token_for_resource(resource, resource_name, expired_token = false)
     ),
     new_refresh_token(resource)
   ]
-end
-
-# Generate and return unique refresh token
-def uniq_refresh_token
-  loop do
-    random_token = SecureRandom.urlsafe_base64
-    return random_token unless RefreshToken.exists?(token: random_token)
-  end
-end
-
-# Create a new refresh_token for the current resource
-def new_refresh_token(resource)
-  return nil unless RabbitApi.generate_refresh_token
-  resource.refresh_tokens.create(token: uniq_refresh_token).token
 end
 
 def current_time

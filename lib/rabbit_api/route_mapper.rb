@@ -43,7 +43,7 @@ module ActionDispatch::Routing
       authentication_routes(options[:authentication])
       registration_routes(options[:registration])
       passwords_routes(options[:passwords])
-      tokens_routes(options[:tokens]) if RabbitApi.generate_refresh_token
+      tokens_routes(options[:tokens]) # TODO: Add option to skip
     end
 
     def authentication_routes(controller_name = nil)

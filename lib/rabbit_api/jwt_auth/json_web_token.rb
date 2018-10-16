@@ -40,12 +40,6 @@ module RabbitApi
         set_token_headers(token, new_refresh_token(resource))
       end
 
-      # Blacklist the current JWT token from future access
-      def blacklist_token
-        return unless RabbitApi.blacklist_token
-        current_resource.blacklisted_tokens.create(token: @token, expire_at: Time.at(@decoded_token[:exp]).utc)
-      end
-
       # Set token details in response headers
       def set_token_headers(token, refresh_token = nil)
         response.headers['Access-Token'] = token
@@ -58,10 +52,6 @@ module RabbitApi
       def invalidate_old_jwt_tokens(resource)
         return unless RabbitApi.invalidate_old_tokens_on_password_change
         resource.token_issued_at = Time.at(token_issued_at).utc
-      end
-
-      def current_resource
-        public_send("current_#{resource_name}")
       end
     end
   end

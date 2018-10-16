@@ -1,14 +1,6 @@
 require 'dummy/spec/rails_helper'
 
 describe 'Authentication - Admin', type: :request do
-  before(:each) do
-    RabbitApi.generate_refresh_token = false
-  end
-
-  after(:each) do
-    RabbitApi.generate_refresh_token = true
-  end
-
   describe 'POST #create' do
     context 'with invalid params' do
       it 'should return 401 - invalid login credentials' do
@@ -28,7 +20,6 @@ describe 'Authentication - Admin', type: :request do
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present
         expect(response.headers['Expire-At']).to be_present
-        expect(response.headers['Refresh-Token']).not_to be_present
       end
     end
   end
