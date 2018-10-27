@@ -7,3 +7,7 @@ pkg/
 spec/dummy/log/*
 spec/dummy/tmp/*
 spec/dummy/db/*
+
+# CodeCoverage
+coverage/*
+spec/dummy/coverage/*
