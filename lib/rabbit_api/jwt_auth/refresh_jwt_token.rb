@@ -3,7 +3,7 @@ module RabbitApi
     # Common module for refresh token functionality
     module RefreshJwtToken
       def refresh_token_association(resource)
-        resource.class.rabbit_api_token_associations[resource.class.name][:refresh_token]
+        RabbitApi.rabbit_api_token_associations[resource.class.name][:refresh_token]
       end
 
       def refresh_token_enabled?(resource)

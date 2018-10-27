@@ -6,6 +6,9 @@ module RabbitApi
   mattr_accessor :invalidate_old_tokens_on_password_change
   self.invalidate_old_tokens_on_password_change = false
 
+  mattr_accessor :rabbit_api_token_associations
+  self.rabbit_api_token_associations = {}
+
   mattr_reader :mapped_resource
   @@mapped_resource = {}
 

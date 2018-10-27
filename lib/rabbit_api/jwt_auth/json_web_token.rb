@@ -9,6 +9,7 @@ module RabbitApi
       end
 
       def token_expire_at
+        # TODO: Customizable expiry delay
         @expire_at ||= (current_time + 30.minutes).to_i
       end
 

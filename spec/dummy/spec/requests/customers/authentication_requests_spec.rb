@@ -63,6 +63,15 @@ describe 'Authentication - Customer', type: :request do
 
         expect(response).to have_http_status(200)
       end
+
+      it 'should blacklist access token from future use' do
+        @customer = create(:user)
+        access_token = access_token_for_resource(@customer, 'user')[0]
+
+        expect do
+          delete '/customers/sign_out', headers: {'Authorization' => "Bearer #{access_token}"}
+        end.to change(@customer.blacklisted_tokens, :count).by(1)
+      end
     end
   end
 end

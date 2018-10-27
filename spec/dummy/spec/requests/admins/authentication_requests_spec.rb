@@ -62,6 +62,15 @@ describe 'Authentication - Admin', type: :request do
 
         expect(response).to have_http_status(200)
       end
+
+      it 'should blacklist access token from future use' do
+        @admin = create(:admin)
+        access_token = access_token_for_resource(@admin, 'admin')[0]
+
+        expect do
+          delete '/admins/sign_out', headers: {'Authorization' => "Bearer #{access_token}"}
+        end.to change(@admin.blacklisted_tokens, :count).by(1)
+      end
     end
   end
 end

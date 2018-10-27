@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  rabbit_token_associations refresh_token: 'refresh_tokens'
+  rabbit_token_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blacklisted_tokens'
 
   # == Validations =====================================================================================================
   validates :email, presence: true
@@ -9,4 +9,5 @@ class User < ApplicationRecord
 
   # == Relationships ===================================================================================================
   has_many :refresh_tokens
+  has_many :blacklisted_tokens
 end

@@ -3,7 +3,7 @@ module RabbitApi
     # Common module for token blacklisting functionality
     module BlacklistToken
       def blacklisted_token_association(resource)
-        resource.class.rabbit_api_token_associations[resource.class.name][:blacklist_token]
+        RabbitApi.rabbit_api_token_associations[resource.class.name][:blacklisted_token]
       end
 
       def token_blacklisting_enabled?(resource)
