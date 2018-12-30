@@ -15,7 +15,6 @@ module ApiGuard
     end
 
     def destroy
-      # TODO: Check whether we need to invalidate old access tokens
       blacklist_token
       render_success(message: 'Signed out successfully!')
     end
