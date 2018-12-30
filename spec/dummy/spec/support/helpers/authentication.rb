@@ -1,4 +1,4 @@
-include RabbitApi::JwtAuth::RefreshJwtToken
+include ApiGuard::JwtAuth::RefreshJwtToken
 
 # Returns JWT access token for the resource
 # Also, updates the 'token_issued_at' column if configured to invalidate old tokens

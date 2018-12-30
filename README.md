@@ -1,9 +1,9 @@
-# RabbitApi
+# API Guard
 
 In Progress...
 
 <!---
-# RabbitApi
+# API Guard
 Short description and motivation.
 
 ## Usage
@@ -13,7 +13,7 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rabbit_api'
+gem 'api_guard'
 ```
 
 And then execute:
@@ -23,7 +23,7 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install rabbit_api
+$ gem install api_guard
 ```
 
 ## Contributing

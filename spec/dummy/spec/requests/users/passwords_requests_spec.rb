@@ -34,7 +34,7 @@ describe 'Change password - User', type: :request do
         access_token, refresh_token = access_token_for_resource(@user, 'user')
 
         patch '/users/passwords',
-              params: { user: { password: 'rabbit-pass', password_confirmation: 'rabbit-pppp' } },
+              params: { user: { password: 'api-pass', password_confirmation: 'api-pppp' } },
               headers: { 'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token }
 
         expect(response).to have_http_status(422)
@@ -48,7 +48,7 @@ describe 'Change password - User', type: :request do
         access_token, refresh_token = access_token_for_resource(@user, 'user')
 
         patch '/users/passwords',
-              params: { user: { password: 'rabbit-pass', password_confirmation: 'rabbit-pass' } },
+              params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },
               headers: { 'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token }
 
         expect(response).to have_http_status(200)
@@ -62,7 +62,7 @@ describe 'Change password - User', type: :request do
         access_token, refresh_token = access_token_for_resource(@user, 'user')
 
         patch '/users/passwords',
-              params: { user: { password: 'rabbit-pass', password_confirmation: 'rabbit-pass' } },
+              params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },
               headers: { 'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token }
 
         expect(response).to have_http_status(200)

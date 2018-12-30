@@ -1,5 +1,5 @@
 module Admins
-  class AuthController < RabbitApi::AuthenticationController
+  class AuthController < ApiGuard::AuthenticationController
     before_action :find_resource, only: [:create]
 
     def create

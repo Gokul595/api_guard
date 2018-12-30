@@ -1,5 +1,5 @@
 module Admins
-  class RegistrationController < RabbitApi::RegistrationController
+  class RegistrationController < ApiGuard::RegistrationController
     def create
       super
     end

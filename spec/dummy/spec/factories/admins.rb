@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :admin do
-    email 'admin@rabbitapi.com'
-    password 'rabbit_pass'
-    password_confirmation 'rabbit_pass'
+    email 'admin@api_guard.com'
+    password 'api_pass'
+    password_confirmation 'api_pass'
   end
 end

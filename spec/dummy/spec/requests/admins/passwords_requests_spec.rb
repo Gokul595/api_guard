@@ -34,7 +34,7 @@ describe 'Change password - Admin', type: :request do
         access_token, refresh_token = access_token_for_resource(@admin, 'admin')
 
         patch '/admins/passwords',
-              params: { admin: { password: 'rabbit-pass', password_confirmation: 'rabbit-pppp' } },
+              params: { admin: { password: 'api-pass', password_confirmation: 'api-pppp' } },
               headers: { 'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token }
 
         expect(response).to have_http_status(422)
@@ -48,7 +48,7 @@ describe 'Change password - Admin', type: :request do
         access_token, refresh_token = access_token_for_resource(@admin, 'admin')
 
         patch '/admins/passwords',
-              params: { admin: { password: 'rabbit-pass', password_confirmation: 'rabbit-pass' } },
+              params: { admin: { password: 'api-pass', password_confirmation: 'api-pass' } },
               headers: { 'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token }
 
         expect(response).to have_http_status(200)

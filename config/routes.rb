@@ -1,4 +1,4 @@
-RabbitApi::Engine.routes.draw do
+ApiGuard::Engine.routes.draw do
   # Can't see anything here?
-  # Goto 'lib/rabbit_api/route_mapper.rb'
+  # Goto 'lib/api_guard/route_mapper.rb'
 end

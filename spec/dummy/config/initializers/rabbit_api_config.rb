@@ -1,2 +1,2 @@
-RabbitApi.setup do |config|
+ApiGuard.setup do |config|
 end
