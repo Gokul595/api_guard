@@ -7,6 +7,7 @@ module ActionDispatch::Routing
     # TODO: Add except, only options
     def api_guard_routes(options = {})
       routes_for = options.delete(:for).to_s || 'users'
+      # TODO: Check whether 'class_name' is needed
       class_name = options.delete(:class_name) || routes_for.classify
 
       controller_options = options.delete(:controller)
@@ -57,7 +58,7 @@ module ActionDispatch::Routing
       controller_name = controller_name || 'api_guard/registration'
 
       post 'sign_up' => "#{controller_name}#create"
-      delete 'sign_down' => "#{controller_name}#destroy"
+      delete 'delete' => "#{controller_name}#destroy"
     end
 
     def passwords_routes(controller_name = nil)

@@ -16,7 +16,7 @@ module ApiGuard
 
     def destroy
       blacklist_token
-      render_success(message: 'Signed out successfully!')
+      render_success(message: 'Signed out successfully')
     end
 
     private

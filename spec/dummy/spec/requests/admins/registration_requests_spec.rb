@@ -38,4 +38,46 @@ describe 'Registration - Admin', type: :request do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'with invalid params' do
+      it 'should return 401 - missing access token' do
+        @admin = create(:admin)
+        delete '/admins/delete'
+
+        expect(response).to have_http_status(401)
+        expect(response_errors).to include('Access token is missing in the request')
+      end
+
+      it 'should return 401 - invalid access token' do
+        @admin = create(:admin)
+        delete '/admins/delete', headers: { 'Authorization': 'Bearer 123213' }
+
+        expect(response).to have_http_status(401)
+        expect(response_errors).to include('Invalid access token')
+      end
+
+      it 'should return 401 - expired access token' do
+        @admin = create(:admin)
+        expired_access_token = access_token_for_resource(@admin, 'admin', true)[0]
+
+        delete '/admins/delete', headers: { 'Authorization': "Bearer #{expired_access_token}" }
+
+        expect(response).to have_http_status(401)
+        expect(response_errors).to include('Access token expired')
+      end
+    end
+
+    context 'with valid params' do
+      it 'should return 200 - successfully deleted' do
+        @admin = create(:admin)
+        access_token = access_token_for_resource(@admin, 'admin')[0]
+
+        delete '/admins/delete', headers: { 'Authorization': "Bearer #{access_token}" }
+
+        expect(response).to have_http_status(200)
+        expect(parsed_response['message']).to eq('Admin destroyed successfully')
+      end
+    end
+  end
 end

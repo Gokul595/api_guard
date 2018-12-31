@@ -13,7 +13,7 @@ describe 'Refresh token - Customer', type: :request do
 
       it 'should return 401 - invalid access token' do
         @customer = create(:user)
-        post '/customers/tokens', headers: {'Authorization' => 'Bearer 123213'}
+        post '/customers/tokens', headers: {'Authorization': 'Bearer 123213'}
 
         expect(response).to have_http_status(401)
         expect(response_errors).to include('Invalid access token')
@@ -23,7 +23,7 @@ describe 'Refresh token - Customer', type: :request do
         @customer = create(:user)
         access_token = access_token_for_resource(@customer, 'user')
 
-        post '/customers/tokens', headers: {'Authorization' => "Bearer #{access_token}"}
+        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}"}
 
         expect(response).to have_http_status(401)
         expect(response_errors).to include('Refresh token is missing in the request')
@@ -33,7 +33,7 @@ describe 'Refresh token - Customer', type: :request do
         @customer = create(:user)
         access_token = access_token_for_resource(@customer, 'user')[0]
 
-        post '/customers/tokens', headers: {'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => '12312'}
+        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312'}
 
         expect(response).to have_http_status(401)
         expect(response_errors).to include('Invalid refresh token')
@@ -45,7 +45,7 @@ describe 'Refresh token - Customer', type: :request do
         @customer = create(:user)
         access_token, refresh_token = access_token_for_resource(@customer, 'user')
 
-        post '/customers/tokens', headers: {'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token}
+        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present
@@ -57,7 +57,7 @@ describe 'Refresh token - Customer', type: :request do
         @customer = create(:user)
         access_token, refresh_token = access_token_for_resource(@customer, 'user', true)
 
-        post '/customers/tokens', headers: {'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token}
+        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present

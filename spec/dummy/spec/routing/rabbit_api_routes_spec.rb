@@ -8,7 +8,7 @@ describe 'ApiGuardRoutesSpec', type: :routing do
       end
 
       expect(post: "/admins/sign_up").to route_to('api_guard/registration#create')
-      expect(delete: "/admins/sign_down").to route_to('api_guard/registration#destroy')
+      expect(delete: "/admins/delete").to route_to('api_guard/registration#destroy')
 
       expect(post: "/admins/sign_in").to route_to('api_guard/authentication#create')
       expect(delete: "/admins/sign_out").to route_to('api_guard/authentication#destroy')
@@ -24,7 +24,7 @@ describe 'ApiGuardRoutesSpec', type: :routing do
       end
 
       expect(post: "/customers/sign_up").to route_to('api_guard/registration#create')
-      expect(delete: "/customers/sign_down").to route_to('api_guard/registration#destroy')
+      expect(delete: "/customers/delete").to route_to('api_guard/registration#destroy')
 
       expect(post: "/customers/sign_in").to route_to('api_guard/authentication#create')
       expect(delete: "/customers/sign_out").to route_to('api_guard/authentication#destroy')
@@ -40,7 +40,7 @@ describe 'ApiGuardRoutesSpec', type: :routing do
       end
 
       expect(customer_sign_up_path).to eq('/users/sign_up')
-      expect(customer_sign_down_path).to eq('/users/sign_down')
+      expect(customer_delete_path).to eq('/users/delete')
 
       expect(customer_sign_in_path).to eq('/users/sign_in')
       expect(customer_sign_out_path).to eq('/users/sign_out')
@@ -56,7 +56,7 @@ describe 'ApiGuardRoutesSpec', type: :routing do
       end
 
       expect(post: "/customers/sign_up").to route_to('api_guard/registration#create')
-      expect(delete: "/customers/sign_down").to route_to('api_guard/registration#destroy')
+      expect(delete: "/customers/delete").to route_to('api_guard/registration#destroy')
 
       expect(post: "/customers/sign_in").to route_to('api_guard/authentication#create')
       expect(delete: "/customers/sign_out").to route_to('api_guard/authentication#destroy')
@@ -70,7 +70,7 @@ describe 'ApiGuardRoutesSpec', type: :routing do
       end
 
       expect(post: "/sign_up").to route_to('api_guard/registration#create')
-      expect(delete: "/sign_down").to route_to('api_guard/registration#destroy')
+      expect(delete: "/delete").to route_to('api_guard/registration#destroy')
 
       expect(post: "/sign_in").to route_to('api_guard/authentication#create')
       expect(delete: "/sign_out").to route_to('api_guard/authentication#destroy')
@@ -89,7 +89,7 @@ describe 'ApiGuardRoutesSpec', type: :routing do
       end
 
       expect(post: "/admins/sign_up").to route_to('admins/registration#create')
-      expect(delete: "/admins/sign_down").to route_to('admins/registration#destroy')
+      expect(delete: "/admins/delete").to route_to('admins/registration#destroy')
 
       expect(post: "/admins/sign_in").to route_to('admins/auth#create')
       expect(delete: "/admins/sign_out").to route_to('admins/auth#destroy')

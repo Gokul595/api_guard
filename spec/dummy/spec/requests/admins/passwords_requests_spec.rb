@@ -13,7 +13,7 @@ describe 'Change password - Admin', type: :request do
 
       it 'should return 401 - invalid access token' do
         @admin = create(:admin)
-        patch '/admins/passwords', headers: { 'Authorization' => 'Bearer 123213' }
+        patch '/admins/passwords', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to include('Invalid access token')
@@ -23,7 +23,7 @@ describe 'Change password - Admin', type: :request do
         @admin = create(:admin)
         expired_access_token = access_token_for_resource(@admin, 'admin', true)[0]
 
-        patch '/admins/passwords', headers: { 'Authorization' => "Bearer #{expired_access_token}" }
+        patch '/admins/passwords', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to include('Access token expired')
@@ -35,7 +35,7 @@ describe 'Change password - Admin', type: :request do
 
         patch '/admins/passwords',
               params: { admin: { password: 'api-pass', password_confirmation: 'api-pppp' } },
-              headers: { 'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token }
+              headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
 
         expect(response).to have_http_status(422)
         expect(response_errors).to include("Password confirmation doesn't match Password")
@@ -49,7 +49,7 @@ describe 'Change password - Admin', type: :request do
 
         patch '/admins/passwords',
               params: { admin: { password: 'api-pass', password_confirmation: 'api-pass' } },
-              headers: { 'Authorization' => "Bearer #{access_token}", 'Refresh-Token' => refresh_token }
+              headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present

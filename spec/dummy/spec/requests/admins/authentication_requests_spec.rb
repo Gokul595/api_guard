@@ -36,7 +36,7 @@ describe 'Authentication - Admin', type: :request do
 
       it 'should return 401 - invalid access token' do
         @admin = create(:admin)
-        delete '/admins/sign_out', headers: {'Authorization' => "Bearer 1232143"}
+        delete '/admins/sign_out', headers: {'Authorization': "Bearer 1232143"}
 
         expect(response).to have_http_status(401)
         expect(response_errors).to include('Invalid access token')
@@ -46,7 +46,7 @@ describe 'Authentication - Admin', type: :request do
         @admin = create(:admin)
         expired_access_token = access_token_for_resource(@admin, 'admin', true)[0]
 
-        delete '/admins/sign_out', headers: {'Authorization' => "Bearer #{expired_access_token}"}
+        delete '/admins/sign_out', headers: {'Authorization': "Bearer #{expired_access_token}"}
 
         expect(response).to have_http_status(401)
         expect(response_errors).to include('Access token expired')
@@ -58,7 +58,7 @@ describe 'Authentication - Admin', type: :request do
         @admin = create(:admin)
         access_token = access_token_for_resource(@admin, 'admin')[0]
 
-        delete '/admins/sign_out', headers: {'Authorization' => "Bearer #{access_token}"}
+        delete '/admins/sign_out', headers: {'Authorization': "Bearer #{access_token}"}
 
         expect(response).to have_http_status(200)
       end
@@ -68,7 +68,7 @@ describe 'Authentication - Admin', type: :request do
         access_token = access_token_for_resource(@admin, 'admin')[0]
 
         expect do
-          delete '/admins/sign_out', headers: {'Authorization' => "Bearer #{access_token}"}
+          delete '/admins/sign_out', headers: {'Authorization': "Bearer #{access_token}"}
         end.to change(@admin.blacklisted_tokens, :count).by(1)
       end
     end

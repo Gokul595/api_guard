@@ -2,6 +2,8 @@ require_dependency 'api_guard/application_controller'
 
 module ApiGuard
   class RegistrationController < ApplicationController
+    before_action :authenticate_resource, only: [:destroy]
+
     def create
       init_resource(sign_up_params)
       if resource.save
@@ -13,7 +15,7 @@ module ApiGuard
     end
 
     def destroy
-      resource.destroy
+      current_resource.destroy
       render_success(message: "#{resource_name.capitalize} destroyed successfully")
     end
 

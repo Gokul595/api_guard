@@ -8,6 +8,6 @@ class Admin < ApplicationRecord
   validates :email, uniqueness: true, allow_blank: true
 
   # == Relationships ===================================================================================================
-  has_many :refresh_tokens
-  has_many :blacklisted_tokens
+  has_many :refresh_tokens, dependent: :delete_all
+  has_many :blacklisted_tokens, dependent: :delete_all
 end
