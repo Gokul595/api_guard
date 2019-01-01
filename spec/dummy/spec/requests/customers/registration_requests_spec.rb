@@ -5,7 +5,7 @@ describe 'Registration - Customer(User)', type: :request do
     context 'with valid params' do
       it 'should create a new customer (i.e.) User' do
         expect do
-          post "/customers/sign_up", params: { customer: attributes_for(:user) }
+          post "/customers/create", params: { customer: attributes_for(:user) }
         end.to change(User, :count).by(1)
 
         expect(response).to have_http_status(200)
@@ -13,7 +13,7 @@ describe 'Registration - Customer(User)', type: :request do
       end
 
       it 'should respond access token and refresh token in response headers' do
-        post "/customers/sign_up", params: { customer: attributes_for(:user) }
+        post "/customers/create", params: { customer: attributes_for(:user) }
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present
