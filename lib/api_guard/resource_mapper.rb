@@ -40,7 +40,6 @@ module ApiGuard
     end
 
     def init_resource(params)
-      # TODO: Check whether `self` is ok.
       self.resource = resource_class.new(params)
     end
 

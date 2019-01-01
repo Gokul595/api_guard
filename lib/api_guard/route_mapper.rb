@@ -10,6 +10,7 @@ module ActionDispatch::Routing
       # TODO: Check whether 'class_name' is needed
       class_name = options.delete(:class_name) || routes_for.classify
 
+      controllers = controllers(options[:only], options[:except])
       controller_options = options.delete(:controller)
 
       options[:as] = options[:as] || routes_for.singularize
@@ -20,7 +21,7 @@ module ActionDispatch::Routing
       api_guard_scope(routes_for) do
         # TODO: add logics to handle module in options
         scope options do
-          generate_routes(controller_options)
+          generate_routes(controller_options, controllers)
         end
       end
     end
@@ -38,13 +39,19 @@ module ActionDispatch::Routing
 
     private
 
-    def generate_routes(options)
+    def controllers(only, except)
+      return only if only
+
+      controllers = %i[registration authentication tokens passwords]
+      except ? (controllers - except) : controllers
+    end
+
+    def generate_routes(options, controllers)
       options ||= {}
 
-      authentication_routes(options[:authentication])
-      registration_routes(options[:registration])
-      passwords_routes(options[:passwords])
-      tokens_routes(options[:tokens]) # TODO: Add option to skip
+      controllers.each do |controller|
+        send("#{controller.to_s}_routes", options[controller])
+      end
     end
 
     def authentication_routes(controller_name = nil)
