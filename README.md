@@ -1,5 +1,9 @@
 # API Guard
 
+JSON Web Token (JWT) based authentication solution with token refreshing & blacklisting for APIs built on Rails.
+
+[![Build Status](https://travis-ci.org/Gokul595/api_guard.svg?branch=master)](https://travis-ci.org/Gokul595/api_guard)
+
 In Progress...
 
 <!---
