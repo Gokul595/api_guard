@@ -4,11 +4,8 @@
 # Customizable API routes
 module ActionDispatch::Routing
   class Mapper
-    # TODO: Add except, only options
     def api_guard_routes(options = {})
       routes_for = options.delete(:for).to_s || 'users'
-      # TODO: Check whether 'class_name' is needed
-      class_name = options.delete(:class_name) || routes_for.classify
 
       controllers = controllers(options[:only], options[:except])
       controller_options = options.delete(:controller)
@@ -16,10 +13,7 @@ module ActionDispatch::Routing
       options[:as] = options[:as] || routes_for.singularize
       options[:path] = options[:path] || routes_for
 
-      ApiGuard.map_resource(routes_for, class_name)
-
       api_guard_scope(routes_for) do
-        # TODO: add logics to handle module in options
         scope options do
           generate_routes(controller_options, controllers)
         end
@@ -27,6 +21,8 @@ module ActionDispatch::Routing
     end
 
     def api_guard_scope(routes_for)
+      ApiGuard.map_resource(routes_for, routes_for.classify) unless ApiGuard.mapped_resource[routes_for.to_sym]
+
       constraint = lambda do |request|
         request.env["api_guard.mapping"] = ApiGuard.mapped_resource[routes_for.to_sym]
         true
