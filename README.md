@@ -1,13 +1,17 @@
 # API Guard
 
-JSON Web Token (JWT) based authentication solution with token refreshing & blacklisting for APIs built on Rails.
-
 [![Build Status](https://travis-ci.org/Gokul595/api_guard.svg?branch=master)](https://travis-ci.org/Gokul595/api_guard)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ced3e74a26a66ed915cb/maintainability)](https://codeclimate.com/github/Gokul595/api_guard/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ced3e74a26a66ed915cb/test_coverage)](https://codeclimate.com/github/Gokul595/api_guard/test_coverage)
 
 
-**In Progress...**
+[JSON Web Token (JWT)](https://jwt.io/) based authentication solution with token refreshing & blacklisting for APIs 
+built on Rails. 
+
+This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem.
+
+>**In Progress...**
+
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -30,7 +34,7 @@ $ gem install api_guard
 
 Below steps are provided assuming the model in `User`.
 
-### Routes
+### API Guard Routes
 
 Add this line to the application routes (`config/routes.rb`) file:
 
@@ -40,7 +44,7 @@ api_guard_routes for: 'users'
 
 This will generate default routes such as sign up, sign in, sign out, token refresh, password change.
 
-#### Sign In (Getting JWT access token)
+### Sign In (Getting JWT access token)
  
 This will authenticate the resource (here User) with email and password and responds with access token, refresh token 
 and access token expiry timestamp in response header.
@@ -132,7 +136,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwM
 Refresh-Token: Iy9s0S4Lf7Xh9MbFFBdxkw
 ```
 
-The response for this request will be same as sign in API.
+The response for this request will be same as [sign in API](#sign-in-getting-jwt-access-token).
 
 ## Contributing
 
