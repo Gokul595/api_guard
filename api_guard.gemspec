@@ -18,7 +18,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.3.0'
 
   s.add_dependency 'jwt', '~> 2.1.0'
-  s.add_dependency 'active_model_serializers', '~> 0.10.0'
 
   s.add_development_dependency "rails", "~> 5.1.5"
   s.add_development_dependency 'sqlite3', '~> 1.3.13'
