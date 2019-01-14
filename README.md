@@ -115,7 +115,7 @@ and also, using below instance variable:
 @current_user
 ```
 
-Replace '_user' with your model name if your model is not User.
+>**Note:** Replace "_user" with your model name if your model is not User.
 
 ### Refreshing access token
 
@@ -202,5 +202,6 @@ You can just:
 5. Create new Pull Request
 
 ## License
+
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
