@@ -202,6 +202,10 @@ ApiGuard.setup do |config|
   # Secret key for signing (encoding & decoding) the JWT access token
   # Default: 'secret_key_base' from Rails secrets 
   config.token_signing_secret = Rails.application.secrets.secret_key_base
+
+  # Invalidate old tokens on changing the password
+  # Default: false
+  config.invalidate_old_tokens_on_password_change = false
 end
 ```
 
@@ -224,6 +228,20 @@ Override this by configuring `token_signing_secret`
 ```ruby
 config.token_signing_secret = 'my_signing_secret'
 ```
+
+### Invalidate tokens on password change
+
+By default, API Guard will not invalidate old JWT access tokens on changing password. If you need, you can enable it by 
+configuring `invalidate_old_tokens_on_password_change` to `true`.
+
+>**Note:** To make this work, a column named `token_issued_at` with datatype `datetime` is needed in the resource (here User) table.
+
+```ruby
+config.invalidate_old_tokens_on_password_change = true
+```
+
+If your app allows multiple logins then, you must set this value to `true` so that, this prevent access for all logins 
+(access tokens) on changing the password.
 
 ## Contributing
 
