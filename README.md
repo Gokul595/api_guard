@@ -191,7 +191,7 @@ Example response:
 
 ### Default configuration
 
-**config/initializers/api_guard_config.rb**
+**config/initializers/api_guard.rb**
 
 ```ruby
 ApiGuard.setup do |config|
