@@ -46,7 +46,7 @@ This will generate default routes such as sign up, sign in, sign out, token refr
 
 ### Sign In (Getting JWT access token)
  
-This will authenticate the resource (here User) with email and password and responds with access token, refresh token 
+This will authenticate the resource (here User) with email and password and respond with access token, refresh token 
 and access token expiry timestamp in response header.
 
 Example request:
@@ -186,6 +186,31 @@ Example response:
     "message": "Signed out successfully"
 }
 ```
+
+## Configuration
+
+### Default configuration
+
+**config/initializers/api_guard_config.rb**
+
+```ruby
+ApiGuard.setup do |config|
+  # Validity of the JWT access token
+  config.token_validity = 1.day
+end
+```
+
+### Access token validity
+
+By default, the validity of the JWT access token is 1 day from the creation. Override this by setting `token_validity` 
+in the API Guard config file
+
+```ruby
+config.token_validity = 1.hour # Set one hour validity for access tokens
+```
+
+On accessing the authenticated API with expired access token, API Guard will respond 401 (Unauthenticated) with message 
+"Access token expired".
 
 ## Contributing
 
