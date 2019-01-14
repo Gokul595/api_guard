@@ -18,13 +18,13 @@ module ApiGuard
 
       # Encode the payload with the secret key and return the JWT token
       def encode(payload)
-        JWT.encode(payload, Rails.application.secrets.secret_key_base)
+        JWT.encode(payload, ApiGuard.token_signing_secret)
       end
 
       # Decode the JWT token and return the payload
       def decode(token, verify = true)
         HashWithIndifferentAccess.new(
-          JWT.decode(token, Rails.application.secrets.secret_key_base, verify, verify_iat: true)[0]
+          JWT.decode(token, ApiGuard.token_signing_secret, verify, verify_iat: true)[0]
         )
       end
 

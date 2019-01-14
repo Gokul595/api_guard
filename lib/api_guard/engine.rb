@@ -6,5 +6,10 @@ module ApiGuard
       g.test_framework :rspec
       g.fixture_replacement :factory_girl, :dir => 'spec/factories'
     end
+
+    # Use 'secret_key_base' from Rails secrets if 'token_signing_secret' is not configured
+    initializer 'ApiGuard.token_signing_secret' do |app|
+      ApiGuard.token_signing_secret ||= Rails.application.secrets.secret_key_base
+    end
   end
 end

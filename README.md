@@ -196,14 +196,18 @@ Example response:
 ```ruby
 ApiGuard.setup do |config|
   # Validity of the JWT access token
+  # Default: 1 day
   config.token_validity = 1.day
+
+  # Secret key for signing (encoding & decoding) the JWT access token
+  # Default: 'secret_key_base' from Rails secrets 
+  config.token_signing_secret = Rails.application.secrets.secret_key_base
 end
 ```
 
 ### Access token validity
 
-By default, the validity of the JWT access token is 1 day from the creation. Override this by setting `token_validity` 
-in the API Guard config file
+By default, the validity of the JWT access token is 1 day from the creation. Override this by configuring `token_validity`
 
 ```ruby
 config.token_validity = 1.hour # Set one hour validity for access tokens
@@ -211,6 +215,15 @@ config.token_validity = 1.hour # Set one hour validity for access tokens
 
 On accessing the authenticated API with expired access token, API Guard will respond 401 (Unauthenticated) with message 
 "Access token expired".
+
+### Access token signing secret
+
+By default, the `secret_key_base` from the Rails secrets will be used for signing (encoding & decoding) the JWT access token.
+Override this by configuring `token_signing_secret`
+
+```ruby
+config.token_signing_secret = 'my_signing_secret'
+```
 
 ## Contributing
 

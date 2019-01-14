@@ -6,6 +6,9 @@ module ApiGuard
   mattr_accessor :token_validity
   self.token_validity = 1.day
 
+  mattr_accessor :token_signing_secret
+  self.token_signing_secret = nil
+
   mattr_accessor :invalidate_old_tokens_on_password_change
   self.invalidate_old_tokens_on_password_change = false
 
