@@ -4,8 +4,8 @@ module ApiGuard
       extend ActiveSupport::Concern
 
       class_methods do
-        def api_guard_token_associations(refresh_token: nil, blacklisted_token: nil)
-          return if ApiGuard.api_guard_associations[self.class.name]
+        def api_guard_associations(refresh_token: nil, blacklisted_token: nil)
+          return if ApiGuard.api_guard_associations[self.name]
 
           ApiGuard.api_guard_associations[self.name] = {}
           ApiGuard.api_guard_associations[self.name][:refresh_token] = refresh_token
