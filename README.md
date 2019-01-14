@@ -42,7 +42,7 @@ Add this line to the application routes (`config/routes.rb`) file:
 api_guard_routes for: 'users'
 ``` 
 
-This will generate default routes such as sign up, sign in, sign out, token refresh, password change.
+This will generate default routes such as sign up, sign in, sign out, token refresh, password change for User.
 
 ### Sign In (Getting JWT access token)
  
@@ -88,7 +88,7 @@ Expire-At: 1546708020
 The access token will only be valid till the expiry time. After the expiry you need to refresh the token and get new 
 access token and refresh token.
 
-### Controller Request Authentication
+### Authenticating API Request
 
 To authenticate the API request just add this before_action in the controller:
 
@@ -122,8 +122,8 @@ Replace '_user' with your model name if your model is not User.
 Once the access token expires it won't work and the `authenticate_and_set_user` method used in before_action in 
 controller will respond with 401 (Unauthenticated). 
 
-To refresh the expired/unexpired access token and get new JWT access token and refresh token you can use the below request 
-with both access token and request token (which was got in sign in API) in the request header. 
+To refresh the expired/unexpired access token and get new JWT access token and refresh token you can use this request 
+with both access token and request token (which you got in sign in API) in the request header. 
 
 Example request:
 
@@ -137,6 +137,55 @@ Refresh-Token: Iy9s0S4Lf7Xh9MbFFBdxkw
 ```
 
 The response for this request will be same as [sign in API](#sign-in-getting-jwt-access-token).
+
+### Changing password
+
+To change password of a resource (here User) you can use this request with the access token in the header and new 
+password in the body.
+
+By default, changing password will invalidate all old access tokens and refresh tokens generated for this resource and 
+responds with new access token and refresh token. 
+
+Example request:
+
+```
+# URL
+PATCH "/users/passwords"
+
+# Request header
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwMjAsImlhdCI6MTU0NjcwNjIyMH0.F_JM7fUcKEAq9ZxXMxNb3Os-WeY-tuRYQnKXr_bWo5E
+
+# Request body
+{
+    "password": "api_password_new",
+    "password_confirmation": "api_password_new"
+}
+```
+
+The response for this request will be same as [sign in API](#sign-in-getting-jwt-access-token).
+
+### Sign out
+
+You can use this request to sign out a resource. This will blacklist the current access token from future use.
+
+Example request:
+
+```
+# URL
+DELETE "/users/sign_out"
+
+# Request header
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwMjAsImlhdCI6MTU0NjcwNjIyMH0.F_JM7fUcKEAq9ZxXMxNb3Os-WeY-tuRYQnKXr_bWo5E
+```
+
+Example response:
+
+```json
+{
+    "status": "success",
+    "message": "Signed out successfully"
+}
+```
 
 ## Contributing
 
