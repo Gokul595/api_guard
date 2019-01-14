@@ -9,8 +9,7 @@ module ApiGuard
       end
 
       def token_expire_at
-        # TODO: Customizable expiry delay
-        @expire_at ||= (current_time + 30.minutes).to_i
+        @expire_at ||= (current_time + ApiGuard.token_validity).to_i
       end
 
       def token_issued_at

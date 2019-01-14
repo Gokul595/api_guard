@@ -3,6 +3,9 @@ require "api_guard/route_mapper"
 require "api_guard/modules"
 
 module ApiGuard
+  mattr_accessor :token_validity
+  self.token_validity = 1.day
+
   mattr_accessor :invalidate_old_tokens_on_password_change
   self.invalidate_old_tokens_on_password_change = false
 
