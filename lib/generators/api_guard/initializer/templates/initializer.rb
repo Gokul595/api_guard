@@ -1,0 +1,13 @@
+ApiGuard.setup do |config|
+  # Validity of the JWT access token
+  # Default: 1 day
+  config.token_validity = 1.day
+
+  # Secret key for signing (encoding & decoding) the JWT access token
+  # Default: 'secret_key_base' from Rails secrets
+  config.token_signing_secret = Rails.application.secrets.secret_key_base
+
+  # Invalidate old tokens on changing the password
+  # Default: false
+  config.invalidate_old_tokens_on_password_change = false
+end

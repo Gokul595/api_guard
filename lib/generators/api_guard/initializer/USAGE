@@ -1,0 +1,8 @@
+Description:
+    Creates initializer for configuring API Guard
+
+Example:
+    rails generate api_guard:initializer
+
+    This will create:
+        config/initializers/api_guard.rb

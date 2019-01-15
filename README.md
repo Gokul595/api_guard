@@ -194,6 +194,15 @@ Example response:
 
 ## Configuration
 
+To configure the API Guard you need to first create an initializer using
+
+```ruby
+rails generate api_guard:initializer
+```
+
+This will generate an initializer named **api_guard.rb** in your app **config/initializers** directory with default 
+configurations.
+
 ### Default configuration
 
 **config/initializers/api_guard.rb**
