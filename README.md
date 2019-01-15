@@ -45,9 +45,14 @@ api_guard_routes for: 'users'
 This will generate default routes such as sign up, sign in, sign out, token refresh, password change for User.
 
 ### Sign In (Getting JWT access token)
- 
+
 This will authenticate the resource (here User) with email and password and respond with access token, refresh token 
 and access token expiry timestamp in response header.
+
+To make this work, the resource model (here User) should have an `authenticate` method as available in 
+[has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password). 
+You can use [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password) 
+or your own logic to authenticate the user in `authenticate` method.
 
 Example request:
 
