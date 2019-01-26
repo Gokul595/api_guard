@@ -127,7 +127,7 @@ and also, using below instance variable:
 Once the access token expires it won't work and the `authenticate_and_set_user` method used in before_action in 
 controller will respond with 401 (Unauthenticated). 
 
-To refresh the expired/unexpired access token and get new JWT access token and refresh token you can use this request 
+To refresh the expired access token and get new access and refresh token you can use this request 
 with both access token and request token (which you got in sign in API) in the request header. 
 
 Example request:
@@ -265,7 +265,7 @@ You can override the default API Guard controllers and customize the code as you
 your app
 
 ```ruby
-rails generate api_guard:controllers # TODO: Needs to be done
+rails generate api_guard:controllers
 ```
 
 This will generate all default controllers in the directory **app/controllers/api_guard**.

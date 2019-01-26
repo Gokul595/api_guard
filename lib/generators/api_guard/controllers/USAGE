@@ -1,0 +1,11 @@
+Description:
+    Generates all API Guard controllers in app/controllers/api_guard
+
+Example:
+    rails generate api_guard:controllers
+
+    This will create:
+        app/controllers/api_guard/registration_controller.rb
+        app/controllers/api_guard/authentication_controller.rb
+        app/controllers/api_guard/tokens_controller.rb
+        app/controllers/api_guard/passwords_controller.rb
