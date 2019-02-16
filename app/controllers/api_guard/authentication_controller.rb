@@ -8,7 +8,7 @@ module ApiGuard
     def create
       if resource.authenticate(params[:password])
         create_token_and_set_header(resource, resource_name)
-        render_success(data: resource)
+        render_success(message: 'Signed in successfully')
       else
         render_error(422, message: 'Invalid login credentials')
       end

@@ -9,7 +9,7 @@ describe 'Registration - Customer(User)', type: :request do
         end.to change(User, :count).by(1)
 
         expect(response).to have_http_status(200)
-        expect(response_data['id']).to eq(User.last.id)
+        expect(response_message).to eq('Signed up successfully')
       end
 
       it 'should respond access token and refresh token in response headers' do

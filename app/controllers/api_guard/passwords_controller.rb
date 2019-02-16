@@ -12,7 +12,7 @@ module ApiGuard
         destroy_all_refresh_tokens(current_resource)
 
         create_token_and_set_header(current_resource, resource_name)
-        render_success(data: current_resource)
+        render_success(message: 'Password changed successfully')
       else
         render_error(422, object: current_resource)
       end

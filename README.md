@@ -12,6 +12,26 @@ This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem.
 
 >**In Progress...**
 
+## Table of Contents
+
+* [Installation](#installation)
+* [Getting Started](#getting-started)
+    * [Configuring Routes](#configuring-routes)
+    * [Registration](#registration)
+    * [Sign In (Getting JWT access token)](#sign-in-getting-jwt-access-token)
+    * [Authenticate API Request](#authenticate-api-request)
+    * [Refresh access token](#refresh-access-token)
+    * [Change password](#change-password)
+    * [Sign out](#sign-out)
+    * [Delete Account](#delete-account)
+* [Configuration](#configuration)
+    * [Default configuration](#default-configuration)
+    * [Access token validity](#access-token-validity)
+    * [Access token signing secret](#access-token-signing-secret)
+    * [Invalidate tokens on password change](#invalidate-tokens-on-password-change)
+* [Overriding defaults](#overriding-defaults)
+    * [Controllers](#controllers)
+    * [Routes](#routes)
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -34,7 +54,7 @@ $ gem install api_guard
 
 Below steps are provided assuming the model in `User`.
 
-### API Guard Routes
+### Configuring Routes
 
 Add this line to the application routes (`config/routes.rb`) file:
 
@@ -44,9 +64,48 @@ api_guard_routes for: 'users'
 
 This will generate default routes such as sign up, sign in, sign out, token refresh, password change for User.
 
+### Registration
+
+This will create an user with the params and responds with access token, refresh token and access token expiry 
+timestamp in response header.
+
+Example request:
+
+```
+# URL
+POST "/users/sign_up"
+
+# Request body
+{
+    "email": "user@apiguard.com",
+    "password": "api_password",
+    "password_confirmation": "api_password"
+}
+```
+
+Example response body:
+
+```json
+{
+    "status": "success",
+    "message": "Signed up successfully"
+}
+```
+
+Example response headers:
+
+```
+Access-Token: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwMjAsImlhdCI6MTU0NjcwNjIyMH0.F_JM7fUcKEAq9ZxXMxNb3Os-WeY-tuRYQnKXr_bWo5E
+Refresh-Token: Iy9s0S4Lf7Xh9MbFFBdxkw
+Expire-At: 1546708020
+```
+
+The access token will only be valid till the expiry time. After the expiry you need to 
+[refresh the token](#refreshing-access-token) and get new access token and refresh token.
+
 ### Sign In (Getting JWT access token)
 
-This will authenticate the resource (here User) with email and password and respond with access token, refresh token 
+This will authenticate the user with email and password and respond with access token, refresh token 
 and access token expiry timestamp in response header.
 
 >To make this work, the resource model (here User) should have an `authenticate` method as available in 
@@ -72,28 +131,15 @@ Example response body:
 ```json
 {
     "status": "success",
-    "data": {
-        "id": 1,
-        "email": "user@apiguard.com",
-        "password_digest": "$2a$10$v1xNT0MfwfSzhzLFtisnNOy/uTcn11llcyn4EYnTWUjlv0WETtWim",
-        "created_at": "2018-03-17T14:37:33.184Z",
-        "updated_at": "2018-03-17T14:37:33.184Z"
-    }
+    "message": "Signed in successfully"
 }
 ```
 
 Example response headers:
 
-```
-Access-Token: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwMjAsImlhdCI6MTU0NjcwNjIyMH0.F_JM7fUcKEAq9ZxXMxNb3Os-WeY-tuRYQnKXr_bWo5E
-Refresh-Token: Iy9s0S4Lf7Xh9MbFFBdxkw
-Expire-At: 1546708020
-```
+The response headers for this request will be same as [registration API](#registration).
 
-The access token will only be valid till the expiry time. After the expiry you need to refresh the token and get new 
-access token and refresh token.
-
-### Authenticating API Request
+### Authenticate API Request
 
 To authenticate the API request just add this before_action in the controller:
 
@@ -122,7 +168,7 @@ and also, using below instance variable:
 
 >**Note:** Replace "_user" with your model name if your model is not User.
 
-### Refreshing access token
+### Refresh access token
 
 Once the access token expires it won't work and the `authenticate_and_set_user` method used in before_action in 
 controller will respond with 401 (Unauthenticated). 
@@ -141,14 +187,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwM
 Refresh-Token: Iy9s0S4Lf7Xh9MbFFBdxkw
 ```
 
-The response for this request will be same as [sign in API](#sign-in-getting-jwt-access-token).
+Example response body:
 
-### Changing password
+```json
+{
+    "status": "success",
+    "message": "Token refreshed successfully"
+}
+```
 
-To change password of a resource (here User) you can use this request with the access token in the header and new 
+Example response headers:
+
+The response headers for this request will be same as [registration API](#registration).
+
+### Change password
+
+To change password of an user you can use this request with the access token in the header and new 
 password in the body.
 
-By default, changing password will invalidate all old access tokens and refresh tokens generated for this resource and 
+By default, changing password will invalidate all old access tokens and refresh tokens generated for this user and 
 responds with new access token and refresh token. 
 
 Example request:
@@ -167,11 +224,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwM
 }
 ```
 
-The response for this request will be same as [sign in API](#sign-in-getting-jwt-access-token).
+Example response body:
+
+```json
+{
+    "status": "success",
+    "message": "Password changed successfully"
+}
+```
+
+Example response headers:
+
+The response headers for this request will be same as [registration API](#registration).
 
 ### Sign out
 
-You can use this request to sign out a resource. This will blacklist the current access token from future use.
+You can use this request to sign out an user. This will blacklist the current access token from future use.
 
 Example request:
 
@@ -189,6 +257,29 @@ Example response:
 {
     "status": "success",
     "message": "Signed out successfully"
+}
+```
+
+### Delete account
+
+You can use this request to delete an user. This will delete the user and its associated refresh tokens.
+
+Example request:
+
+```
+# URL
+DELETE "/users/delete"
+
+# Request header
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1NDY3MDgwMjAsImlhdCI6MTU0NjcwNjIyMH0.F_JM7fUcKEAq9ZxXMxNb3Os-WeY-tuRYQnKXr_bWo5E
+```
+
+Example response:
+
+```json
+{
+    "status": "success",
+    "message": "Account deleted successfully"
 }
 ```
 

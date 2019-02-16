@@ -8,7 +8,7 @@ module ApiGuard
     def create
       @refresh_token.destroy
       create_token_and_set_header(current_resource, resource_name)
-      render_success(data: current_resource)
+      render_success(message: 'Token refreshed successfully')
     end
 
     private

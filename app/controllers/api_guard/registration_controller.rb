@@ -8,7 +8,7 @@ module ApiGuard
       init_resource(sign_up_params)
       if resource.save
         create_token_and_set_header(resource, resource_name)
-        render_success(data: resource, message: "#{resource_name.capitalize} created successfully")
+        render_success(message: 'Signed up successfully')
       else
         render_error(422, object: resource)
       end
@@ -16,7 +16,7 @@ module ApiGuard
 
     def destroy
       current_resource.destroy
-      render_success(message: "#{resource_name.capitalize} destroyed successfully")
+      render_success(message: "Account deleted successfully")
     end
 
     private

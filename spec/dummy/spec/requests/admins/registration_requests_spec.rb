@@ -25,7 +25,7 @@ describe 'Registration - Admin', type: :request do
         end.to change(Admin, :count).by(1)
 
         expect(response).to have_http_status(200)
-        expect(response_data['id']).to eq(Admin.last.id)
+        expect(response_message).to eq('Signed up successfully')
       end
 
       it 'should respond access token and refresh token in response headers' do
@@ -76,7 +76,7 @@ describe 'Registration - Admin', type: :request do
         delete '/admins/delete', headers: { 'Authorization': "Bearer #{access_token}" }
 
         expect(response).to have_http_status(200)
-        expect(parsed_response['message']).to eq('Admin destroyed successfully')
+        expect(parsed_response['message']).to eq('Account deleted successfully')
       end
     end
   end
