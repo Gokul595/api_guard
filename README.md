@@ -101,7 +101,7 @@ Expire-At: 1546708020
 ```
 
 The access token will only be valid till the expiry time. After the expiry you need to 
-[refresh the token](#refreshing-access-token) and get new access token and refresh token.
+[refresh the token](#refresh-access-token) and get new access token and refresh token.
 
 ### Sign In (Getting JWT access token)
 
