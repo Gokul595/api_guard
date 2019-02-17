@@ -102,6 +102,8 @@ Expire-At: 1546708020
 The access token will only be valid till the expiry time. After the expiry you need to 
 [refresh the token](#refresh-access-token) and get new access token and refresh token.
 
+You can customize the parameters of this API by [overriding the controller](#controllers) code if needed.
+
 ### Sign In (Getting JWT access token)
 
 This will authenticate the user with email and password and respond with access token, refresh token and access token 
@@ -138,6 +140,8 @@ Example response headers:
 
 The response headers for this request will be same as [registration API](#registration).
 
+You can customize the parameters of this API by [overriding the controller](#controllers) code if needed.
+
 ### Authenticate API Request
 
 To authenticate the API request just add this before_action in the controller:
@@ -165,9 +169,12 @@ and also, using below instance variable:
 @current_user
 ```
 
->**Note:** Replace "_user" with your model name if your model is not User.
+>**Note:** Replace `_user` with your model name if your model is not User.
 
 ### Refresh access token
+
+This will work only if token refreshing configured for the resource.
+Please see [token refreshing](#token-refreshing) for details about configuring token refreshing.
 
 Once the access token expires it won't work and the `authenticate_and_set_user` method used in before_action in 
 controller will respond with 401 (Unauthenticated). 
@@ -238,7 +245,8 @@ The response headers for this request will be same as [registration API](#regist
 
 ### Sign out
 
-You can use this request to sign out an user. This will blacklist the current access token from future use.
+You can use this request to sign out an user. This will blacklist the current access token from future use if 
+[token blacklisting](#token-blacklisting) configured.
 
 Example request:
 
@@ -346,6 +354,56 @@ config.invalidate_old_tokens_on_password_change = true
 
 If your app allows multiple logins then, you must set this value to `true` so that, this prevent access for all logins 
 (access tokens) on changing the password.
+
+### Token refreshing
+
+To include token refreshing in your application you need to create a table to store the refresh tokens.
+
+Use below commands to create a model `RefeshToken` with columns to store the token and the user reference
+
+```ruby
+rails g model refresh_token token:string:uniq user:references
+
+rails db:migrate
+```
+
+>**Note:** Replace `user` in the above command with your model name if your model is not User.
+
+After creating model and table for refresh token configure the association in the resource model using
+`api_guard_associations` method
+
+```ruby
+class User < ApplicationRecord
+  api_guard_associations refresh_token: 'refresh_tokens'
+  has_many :refresh_tokens, dependent: :delete_all
+end
+```
+
+### Token blacklisting
+
+To include token blacklisting in your application you need to create a table to store the refresh tokens. This will be 
+used to blacklist a JWT access token from future use. The access token will be blacklisted on successful sign out of the 
+resource.
+
+Use below commands to create a model `RefeshToken` with columns to store the token and the user reference
+
+```ruby
+rails g model blacklisted_token token:string user:references expire_at:datetime
+
+rails db:migrate
+```
+
+>**Note:** Replace `user` in the above command with your model name if your model is not User.
+
+After creating model and table for blacklisted token configure the association in the resource model using 
+`api_guard_associations` method
+
+```ruby
+class User < ApplicationRecord
+  api_guard_associations blacklisted_token: 'blacklisted_tokens'
+  has_many :blacklisted_tokens, dependent: :delete_all
+end
+```
 
 ## Overriding defaults
 
