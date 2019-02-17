@@ -4,7 +4,7 @@ describe 'Refresh token - User', type: :request do
   describe 'POST #create' do
     context 'with invalid params' do
       it 'should return 401 - missing access token' do
-        @user = create(:user)
+        user = create(:user)
         post '/users/tokens'
 
         expect(response).to have_http_status(401)
@@ -12,7 +12,7 @@ describe 'Refresh token - User', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        @user = create(:user)
+        user = create(:user)
         post '/users/tokens', headers: {'Authorization': 'Bearer 123213'}
 
         expect(response).to have_http_status(401)
@@ -20,8 +20,8 @@ describe 'Refresh token - User', type: :request do
       end
 
       it 'should return 401 - missing refresh token' do
-        @user = create(:user)
-        access_token = access_token_for_resource(@user, 'user')
+        user = create(:user)
+        access_token = access_token_for_resource(user, 'user')
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}"}
 
@@ -30,8 +30,8 @@ describe 'Refresh token - User', type: :request do
       end
 
       it 'should return 401 - invalid refresh token' do
-        @user = create(:user)
-        access_token = access_token_for_resource(@user, 'user')[0]
+        user = create(:user)
+        access_token = access_token_for_resource(user, 'user')[0]
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312'}
 
@@ -42,8 +42,8 @@ describe 'Refresh token - User', type: :request do
 
     context 'with valid params' do
       it 'should generate new access token - valid access token and refresh token' do
-        @user = create(:user)
-        access_token, refresh_token = access_token_for_resource(@user, 'user')
+        user = create(:user)
+        access_token, refresh_token = access_token_for_resource(user, 'user')
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
 
@@ -54,8 +54,8 @@ describe 'Refresh token - User', type: :request do
       end
 
       it 'should generate new access token - expired access token and valid refresh token' do
-        @user = create(:user)
-        expired_access_token, refresh_token = access_token_for_resource(@user, 'user', true)
+        user = create(:user)
+        expired_access_token, refresh_token = access_token_for_resource(user, 'user', true)
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{expired_access_token}", 'Refresh-Token': refresh_token}
 

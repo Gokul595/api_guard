@@ -1,6 +1,6 @@
 module ApiGuard
   class ResourceMapper
-    attr_reader :resource_name, :resource_class_name, :resource_class, :resource_instance_name
+    attr_reader :resource_name, :resource_class, :resource_instance_name
 
     def initialize(routes_for, class_name)
       @resource_name = routes_for.singularize
@@ -36,10 +36,6 @@ module ApiGuard
 
     def init_resource(params)
       self.resource = resource_class.new(params)
-    end
-
-    def current_resource
-      public_send("current_#{resource_name}")
     end
   end
 end

@@ -18,4 +18,6 @@ Rails.application.routes.draw do
       delete 'delete' => 'registration#destroy'
     end
   end
+
+  resources :posts, only: [:index]
 end

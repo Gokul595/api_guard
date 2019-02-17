@@ -4,7 +4,7 @@ describe 'Authentication - Customer', type: :request do
   describe 'POST #create' do
     context 'with invalid params' do
       it 'should return 422 - invalid login credentials' do
-        @customer = create(:user)
+        customer = create(:user)
         post '/customers/sign_in', params: attributes_for(:user).merge(password: 'paas')
 
         expect(response).to have_http_status(422)
@@ -14,7 +14,7 @@ describe 'Authentication - Customer', type: :request do
 
     context 'with valid params' do
       it 'should login customer - valid login credentials' do
-        @customer = create(:user)
+        customer = create(:user)
         post '/customers/sign_in', params: attributes_for(:user)
 
         expect(response).to have_http_status(200)
@@ -28,7 +28,7 @@ describe 'Authentication - Customer', type: :request do
   describe 'DELETE #destroy' do
     context 'with invalid params' do
       it 'should return 401 - missing access token' do
-        @customer = create(:user)
+        customer = create(:user)
         delete '/customers/sign_out'
 
         expect(response).to have_http_status(401)
@@ -36,7 +36,7 @@ describe 'Authentication - Customer', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        @customer = create(:user)
+        customer = create(:user)
         delete '/customers/sign_out', headers: {'Authorization': "Bearer 1232143"}
 
         expect(response).to have_http_status(401)
@@ -44,8 +44,8 @@ describe 'Authentication - Customer', type: :request do
       end
 
       it 'should return 401 - expired access token' do
-        @customer = create(:user)
-        expired_access_token = access_token_for_resource(@customer, 'user', true)[0]
+        customer = create(:user)
+        expired_access_token = access_token_for_resource(customer, 'user', true)[0]
 
         delete '/customers/sign_out', headers: {'Authorization': "Bearer #{expired_access_token}"}
 
@@ -56,8 +56,8 @@ describe 'Authentication - Customer', type: :request do
 
     context 'with valid params' do
       it 'should logout customer - valid access token' do
-        @customer = create(:user)
-        access_token = access_token_for_resource(@customer, 'user')[0]
+        customer = create(:user)
+        access_token = access_token_for_resource(customer, 'user')[0]
 
         delete '/customers/sign_out', headers: {'Authorization': "Bearer #{access_token}"}
 
@@ -65,12 +65,12 @@ describe 'Authentication - Customer', type: :request do
       end
 
       it 'should blacklist access token from future use' do
-        @customer = create(:user)
-        access_token = access_token_for_resource(@customer, 'user')[0]
+        customer = create(:user)
+        access_token = access_token_for_resource(customer, 'user')[0]
 
         expect do
           delete '/customers/sign_out', headers: {'Authorization': "Bearer #{access_token}"}
-        end.to change(@customer.blacklisted_tokens, :count).by(1)
+        end.to change(customer.blacklisted_tokens, :count).by(1)
       end
     end
   end

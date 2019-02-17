@@ -41,7 +41,7 @@ describe 'Registration - User', type: :request do
   describe 'DELETE #destroy' do
     context 'with invalid params' do
       it 'should return 401 - missing access token' do
-        @user = create(:user)
+        user = create(:user)
         delete '/users/delete'
 
         expect(response).to have_http_status(401)
@@ -49,7 +49,7 @@ describe 'Registration - User', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        @user = create(:user)
+        user = create(:user)
         delete '/users/delete', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
@@ -57,8 +57,8 @@ describe 'Registration - User', type: :request do
       end
 
       it 'should return 401 - expired access token' do
-        @user = create(:user)
-        expired_access_token = access_token_for_resource(@user, 'user', true)[0]
+        user = create(:user)
+        expired_access_token = access_token_for_resource(user, 'user', true)[0]
 
         delete '/users/delete', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
@@ -69,8 +69,8 @@ describe 'Registration - User', type: :request do
 
     context 'with valid params' do
       it 'should return 200 - successfully deleted' do
-        @user = create(:user)
-        access_token = access_token_for_resource(@user, 'user')[0]
+        user = create(:user)
+        access_token = access_token_for_resource(user, 'user')[0]
 
         delete '/users/delete', headers: { 'Authorization': "Bearer #{access_token}" }
 

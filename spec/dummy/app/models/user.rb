@@ -10,4 +10,5 @@ class User < ApplicationRecord
   # == Relationships ===================================================================================================
   has_many :refresh_tokens, dependent: :delete_all
   has_many :blacklisted_tokens, dependent: :delete_all
+  has_many :posts, dependent: :delete_all
 end
