@@ -4,7 +4,6 @@ describe 'Change password - Customer', type: :request do
   describe 'patch #create' do
     context 'with invalid params' do
       it 'should return 401 - missing access token' do
-        customer = create(:user)
         patch '/customers/passwords'
 
         expect(response).to have_http_status(401)
@@ -12,7 +11,6 @@ describe 'Change password - Customer', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        customer = create(:user)
         patch '/customers/passwords', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
