@@ -8,12 +8,14 @@ require "api_guard/models/concerns"
 
 module ApiGuard
   module Modules
-    include ApiGuard::Resource
-    include ApiGuard::JwtAuth::JsonWebToken
-    include ApiGuard::JwtAuth::Authentication
-    include ApiGuard::JwtAuth::RefreshJwtToken
-    include ApiGuard::JwtAuth::BlacklistToken
-    include ApiGuard::ResponseFormatters::Renderer
+    ActiveSupport.on_load(:action_controller) {
+      include ApiGuard::Resource
+      include ApiGuard::JwtAuth::JsonWebToken
+      include ApiGuard::JwtAuth::Authentication
+      include ApiGuard::JwtAuth::RefreshJwtToken
+      include ApiGuard::JwtAuth::BlacklistToken
+      include ApiGuard::ResponseFormatters::Renderer
+    }
 
     ActiveSupport.on_load(:active_record) {
       include ApiGuard::Models::Concerns
