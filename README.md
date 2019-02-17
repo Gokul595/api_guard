@@ -66,8 +66,7 @@ This will generate default routes such as sign up, sign in, sign out, token refr
 
 ### Registration
 
-This will create an user with the params and responds with access token, refresh token and access token expiry 
-timestamp in response header.
+This will create an user and responds with access token, refresh token and access token expiry in the response header.
 
 Example request:
 
@@ -105,8 +104,8 @@ The access token will only be valid till the expiry time. After the expiry you n
 
 ### Sign In (Getting JWT access token)
 
-This will authenticate the user with email and password and respond with access token, refresh token 
-and access token expiry timestamp in response header.
+This will authenticate the user with email and password and respond with access token, refresh token and access token 
+expiry in the response header.
 
 >To make this work, the resource model (here User) should have an `authenticate` method as available in 
 [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password). 
@@ -339,7 +338,7 @@ config.token_signing_secret = 'my_signing_secret'
 By default, API Guard will not invalidate old JWT access tokens on changing password. If you need, you can enable it by 
 configuring `invalidate_old_tokens_on_password_change` to `true`.
 
->**Note:** To make this work, a column named `token_issued_at` with datatype `datetime` is needed in the resource (here User) table.
+>**Note:** To make this work, a column named `token_issued_at` with datatype `datetime` is needed in the resource table.
 
 ```ruby
 config.invalidate_old_tokens_on_password_change = true
