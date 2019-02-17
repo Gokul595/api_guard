@@ -2,12 +2,16 @@
 # https://github.com/plataformatec/devise/blob/master/lib/devise/rails/routes.rb
 #
 # Customizable API routes
+
+require 'api_guard/jwt_auth/refresh_jwt_token'
+include ApiGuard::JwtAuth::RefreshJwtToken
+
 module ActionDispatch::Routing
   class Mapper
     def api_guard_routes(options = {})
       routes_for = options.delete(:for).to_s || 'users'
 
-      controllers = controllers(options[:only], options[:except])
+      controllers = configured_controllers(options[:only], options[:except])
       controller_options = options.delete(:controller)
 
       options[:as] = options[:as] || routes_for.singularize
@@ -15,7 +19,7 @@ module ActionDispatch::Routing
 
       api_guard_scope(routes_for) do
         scope options do
-          generate_routes(controller_options, controllers)
+          generate_routes(routes_for, controller_options, controllers)
         end
       end
     end
@@ -35,15 +39,17 @@ module ActionDispatch::Routing
 
     private
 
-    def controllers(only, except)
+    def configured_controllers(only, except)
       return only if only
 
       controllers = %i[registration authentication tokens passwords]
       except ? (controllers - except) : controllers
     end
 
-    def generate_routes(options, controllers)
+    def generate_routes(resource, options, controllers)
       options ||= {}
+
+      controllers -= %i[tokens] unless refresh_token_enabled?(resource.classify.constantize.new)
 
       controllers.each do |controller|
         send("#{controller.to_s}_routes", options[controller])
