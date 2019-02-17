@@ -29,6 +29,8 @@ This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem.
     * [Access token validity](#access-token-validity)
     * [Access token signing secret](#access-token-signing-secret)
     * [Invalidate tokens on password change](#invalidate-tokens-on-password-change)
+    * [Token refreshing](#token-refreshing)
+    * [Token blacklisting](#token-blacklisting)
 * [Overriding defaults](#overriding-defaults)
     * [Controllers](#controllers)
     * [Routes](#routes)
