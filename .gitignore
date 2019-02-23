@@ -6,8 +6,7 @@ pkg/
 # Dummy app
 spec/dummy/log/*
 spec/dummy/tmp/*
-spec/dummy/db/development.sqlite3
-spec/dummy/db/production.sqlite3
+spec/dummy/db/*.sqlite3
 
 # CodeCoverage
 coverage/*
