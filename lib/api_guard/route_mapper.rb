@@ -7,7 +7,7 @@ module ActionDispatch::Routing
     def api_guard_routes(options = {})
       routes_for = options.delete(:for).to_s || 'users'
 
-      controllers = configured_controllers(options[:only], options[:except])
+      controllers = default_controllers(options[:only], options[:except])
       controller_options = options.delete(:controller)
 
       options[:as] = options[:as] || routes_for.singularize
@@ -35,7 +35,7 @@ module ActionDispatch::Routing
 
     private
 
-    def configured_controllers(only, except)
+    def default_controllers(only, except)
       return only if only
 
       controllers = %i[registration authentication tokens passwords]
