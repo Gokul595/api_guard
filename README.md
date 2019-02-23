@@ -8,7 +8,7 @@
 [JSON Web Token (JWT)](https://jwt.io/) based authentication solution with token refreshing & blacklisting for APIs 
 built on Rails. 
 
-This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem. Currently Api Guard supports only 'HS256' algorithm 
+This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem. Currently API Guard supports only HS256 algorithm 
 for cryptographic signing.
 
 ## Table of Contents
