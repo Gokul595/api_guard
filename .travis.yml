@@ -18,7 +18,6 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - RAILS_ENV=test bundle exec rails db:migrate --trace
   - bundle exec rspec --format documentation
 
 after_script:
