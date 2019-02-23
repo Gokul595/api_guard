@@ -7,15 +7,15 @@ describe 'ApiGuardRoutesSpec', type: :routing do
         api_guard_routes for: 'users'
       end
 
-      expect(post: "/users/sign_up").to route_to('api_guard/registration#create')
-      expect(delete: "/users/delete").to route_to('api_guard/registration#destroy')
+      expect(post: '/users/sign_up').to route_to('api_guard/registration#create')
+      expect(delete: '/users/delete').to route_to('api_guard/registration#destroy')
 
-      expect(post: "/users/sign_in").to route_to('api_guard/authentication#create')
-      expect(delete: "/users/sign_out").to route_to('api_guard/authentication#destroy')
+      expect(post: '/users/sign_in').to route_to('api_guard/authentication#create')
+      expect(delete: '/users/sign_out').to route_to('api_guard/authentication#destroy')
 
-      expect(patch: "/users/passwords").to route_to('api_guard/passwords#update')
+      expect(patch: '/users/passwords').to route_to('api_guard/passwords#update')
 
-      expect(post: "/users/tokens").to route_to('api_guard/tokens#create')
+      expect(post: '/users/tokens').to route_to('api_guard/tokens#create')
     end
 
     it 'should create routes for admin' do
@@ -23,15 +23,15 @@ describe 'ApiGuardRoutesSpec', type: :routing do
         api_guard_routes for: 'admins'
       end
 
-      expect(post: "/admins/sign_up").to route_to('api_guard/registration#create')
-      expect(delete: "/admins/delete").to route_to('api_guard/registration#destroy')
+      expect(post: '/admins/sign_up').to route_to('api_guard/registration#create')
+      expect(delete: '/admins/delete').to route_to('api_guard/registration#destroy')
 
-      expect(post: "/admins/sign_in").to route_to('api_guard/authentication#create')
-      expect(delete: "/admins/sign_out").to route_to('api_guard/authentication#destroy')
+      expect(post: '/admins/sign_in').to route_to('api_guard/authentication#create')
+      expect(delete: '/admins/sign_out').to route_to('api_guard/authentication#destroy')
 
-      expect(patch: "/admins/passwords").to route_to('api_guard/passwords#update')
+      expect(patch: '/admins/passwords').to route_to('api_guard/passwords#update')
 
-      expect(post: "/admins/tokens").to route_to('api_guard/tokens#create')
+      expect(post: '/admins/tokens').to route_to('api_guard/tokens#create')
     end
   end
 
@@ -60,15 +60,15 @@ describe 'ApiGuardRoutesSpec', type: :routing do
           api_guard_routes for: 'users', path: 'customers'
         end
 
-        expect(post: "/customers/sign_up").to route_to('api_guard/registration#create')
-        expect(delete: "/customers/delete").to route_to('api_guard/registration#destroy')
+        expect(post: '/customers/sign_up').to route_to('api_guard/registration#create')
+        expect(delete: '/customers/delete').to route_to('api_guard/registration#destroy')
 
-        expect(post: "/customers/sign_in").to route_to('api_guard/authentication#create')
-        expect(delete: "/customers/sign_out").to route_to('api_guard/authentication#destroy')
+        expect(post: '/customers/sign_in').to route_to('api_guard/authentication#create')
+        expect(delete: '/customers/sign_out').to route_to('api_guard/authentication#destroy')
 
-        expect(patch: "/customers/passwords").to route_to('api_guard/passwords#update')
+        expect(patch: '/customers/passwords').to route_to('api_guard/passwords#update')
 
-        expect(post: "/customers/tokens").to route_to('api_guard/tokens#create')
+        expect(post: '/customers/tokens').to route_to('api_guard/tokens#create')
       end
 
       it 'should create routes for users with no path prefix' do
@@ -76,15 +76,15 @@ describe 'ApiGuardRoutesSpec', type: :routing do
           api_guard_routes for: 'users', path: ''
         end
 
-        expect(post: "/sign_up").to route_to('api_guard/registration#create')
-        expect(delete: "/delete").to route_to('api_guard/registration#destroy')
+        expect(post: '/sign_up').to route_to('api_guard/registration#create')
+        expect(delete: '/delete').to route_to('api_guard/registration#destroy')
 
-        expect(post: "/sign_in").to route_to('api_guard/authentication#create')
-        expect(delete: "/sign_out").to route_to('api_guard/authentication#destroy')
+        expect(post: '/sign_in').to route_to('api_guard/authentication#create')
+        expect(delete: '/sign_out').to route_to('api_guard/authentication#destroy')
 
-        expect(patch: "/passwords").to route_to('api_guard/passwords#update')
+        expect(patch: '/passwords').to route_to('api_guard/passwords#update')
 
-        expect(post: "/tokens").to route_to('api_guard/tokens#create')
+        expect(post: '/tokens').to route_to('api_guard/tokens#create')
       end
     end
 
@@ -97,11 +97,11 @@ describe 'ApiGuardRoutesSpec', type: :routing do
           }
         end
 
-        expect(post: "/admins/sign_up").to route_to('admins/registration#create')
-        expect(delete: "/admins/delete").to route_to('admins/registration#destroy')
+        expect(post: '/admins/sign_up').to route_to('admins/registration#create')
+        expect(delete: '/admins/delete').to route_to('admins/registration#destroy')
 
-        expect(post: "/admins/sign_in").to route_to('admins/auth#create')
-        expect(delete: "/admins/sign_out").to route_to('admins/auth#destroy')
+        expect(post: '/admins/sign_in').to route_to('admins/auth#create')
+        expect(delete: '/admins/sign_out').to route_to('admins/auth#destroy')
       end
     end
 
@@ -111,15 +111,15 @@ describe 'ApiGuardRoutesSpec', type: :routing do
           api_guard_routes for: 'users', except: %i[passwords]
         end
 
-        expect(post: "/users/sign_up").to route_to('api_guard/registration#create')
-        expect(delete: "/users/delete").to route_to('api_guard/registration#destroy')
+        expect(post: '/users/sign_up').to route_to('api_guard/registration#create')
+        expect(delete: '/users/delete').to route_to('api_guard/registration#destroy')
 
-        expect(post: "/users/sign_in").to route_to('api_guard/authentication#create')
-        expect(delete: "/users/sign_out").to route_to('api_guard/authentication#destroy')
+        expect(post: '/users/sign_in').to route_to('api_guard/authentication#create')
+        expect(delete: '/users/sign_out').to route_to('api_guard/authentication#destroy')
 
-        expect(patch: "/users/passwords").to_not route_to('api_guard/passwords#update')
+        expect(patch: '/users/passwords').to_not route_to('api_guard/passwords#update')
 
-        expect(post: "/users/tokens").to route_to('api_guard/tokens#create')
+        expect(post: '/users/tokens').to route_to('api_guard/tokens#create')
       end
 
       it 'should create user routes only for authentication & tokens controller' do
@@ -127,15 +127,15 @@ describe 'ApiGuardRoutesSpec', type: :routing do
           api_guard_routes for: 'users', only: %i[authentication tokens]
         end
 
-        expect(post: "/users/sign_up").to_not route_to('api_guard/registration#create')
-        expect(delete: "/users/delete").to_not route_to('api_guard/registration#destroy')
+        expect(post: '/users/sign_up').to_not route_to('api_guard/registration#create')
+        expect(delete: '/users/delete').to_not route_to('api_guard/registration#destroy')
 
-        expect(post: "/users/sign_in").to route_to('api_guard/authentication#create')
-        expect(delete: "/users/sign_out").to route_to('api_guard/authentication#destroy')
+        expect(post: '/users/sign_in').to route_to('api_guard/authentication#create')
+        expect(delete: '/users/sign_out').to route_to('api_guard/authentication#destroy')
 
-        expect(patch: "/users/passwords").to_not route_to('api_guard/passwords#update')
+        expect(patch: '/users/passwords').to_not route_to('api_guard/passwords#update')
 
-        expect(post: "/users/tokens").to route_to('api_guard/tokens#create')
+        expect(post: '/users/tokens').to route_to('api_guard/tokens#create')
       end
     end
   end
@@ -151,8 +151,22 @@ describe 'ApiGuardRoutesSpec', type: :routing do
         end
       end
 
-      expect(post: "customers/create").to route_to('customers/registration#create')
-      expect(delete: "customers/delete").to route_to('customers/registration#destroy')
+      expect(post: 'customers/create').to route_to('customers/registration#create')
+      expect(delete: 'customers/delete').to route_to('customers/registration#destroy')
+    end
+
+    it "should use custom routes for registration controllers" do
+      Rails.application.routes.draw do
+        api_guard_routes for: 'users', except: [:registration]
+
+        api_guard_scope 'users' do
+          post 'account/create' => 'api_guard/registration#create'
+          delete 'account/delete' => 'api_guard/registration#destroy'
+        end
+      end
+
+      expect(post: 'account/create').to route_to('api_guard/registration#create')
+      expect(delete: 'account/delete').to route_to('api_guard/registration#destroy')
     end
   end
 end
