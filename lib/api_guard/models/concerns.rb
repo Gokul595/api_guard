@@ -11,6 +11,10 @@ module ApiGuard
           ApiGuard.api_guard_associations[self.name][:refresh_token] = refresh_token
           ApiGuard.api_guard_associations[self.name][:blacklisted_token] = blacklisted_token
         end
+
+        def refresh_token_association
+          ApiGuard.api_guard_associations.dig(self.name, :refresh_token)
+        end
       end
     end
   end

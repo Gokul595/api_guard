@@ -2,10 +2,6 @@
 # https://github.com/plataformatec/devise/blob/master/lib/devise/rails/routes.rb
 #
 # Customizable API routes
-
-require 'api_guard/jwt_auth/refresh_jwt_token'
-include ApiGuard::JwtAuth::RefreshJwtToken
-
 module ActionDispatch::Routing
   class Mapper
     def api_guard_routes(options = {})
@@ -17,23 +13,23 @@ module ActionDispatch::Routing
       options[:as] = options[:as] || routes_for.singularize
       options[:path] = options[:path] || routes_for
 
-      api_guard_scope(routes_for) do
+      api_guard_scope(routes_for) do |mapped_resource|
         scope options do
-          generate_routes(routes_for, controller_options, controllers)
+          generate_routes(mapped_resource, controller_options, controllers)
         end
       end
     end
 
     def api_guard_scope(routes_for)
-      ApiGuard.map_resource(routes_for, routes_for.classify) unless ApiGuard.mapped_resource[routes_for.to_sym]
+      mapped_resource = ApiGuard.mapped_resource[routes_for.to_sym].presence || ApiGuard.map_resource(routes_for, routes_for.classify)
 
       constraint = lambda do |request|
-        request.env["api_guard.mapping"] = ApiGuard.mapped_resource[routes_for.to_sym]
+        request.env["api_guard.mapping"] = mapped_resource
         true
       end
 
       constraints(constraint) do
-        yield
+        yield(mapped_resource)
       end
     end
 
@@ -46,10 +42,10 @@ module ActionDispatch::Routing
       except ? (controllers - except) : controllers
     end
 
-    def generate_routes(resource, options, controllers)
+    def generate_routes(mapped_resource, options, controllers)
       options ||= {}
 
-      controllers -= %i[tokens] unless refresh_token_enabled?(resource.classify.constantize.new)
+      controllers -= %i[tokens] unless mapped_resource.resource_class.refresh_token_association
 
       controllers.each do |controller|
         send("#{controller.to_s}_routes", options[controller])
