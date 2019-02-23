@@ -18,7 +18,8 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - cd spec/dummy && bundle exec rake db:test:prepare && cd ..
+  - ls
+  - cd spec/dummy && bundle exec rake db:test:prepare && cd ../..
   - bundle exec rspec --format documentation
 
 after_script:
