@@ -8,9 +8,8 @@
 [JSON Web Token (JWT)](https://jwt.io/) based authentication solution with token refreshing & blacklisting for APIs 
 built on Rails. 
 
-This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem.
-
->**In Progress...**
+This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem. Currently Api Guard supports only 'HS256' algorithm 
+for cryptographic signing.
 
 ## Table of Contents
 
@@ -469,14 +468,6 @@ Above configuration will replace default registration routes `users/sign_up` & `
 Bug reports and pull requests are welcome on GitHub at https://github.com/Gokul595/api_guard. 
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to 
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-You can just:
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
 
 ## License
 
