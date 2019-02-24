@@ -8,7 +8,7 @@ describe 'Authentication - Admin', type: :request do
         post '/admins/sign_in', params: attributes_for(:admin).merge(password: 'paas')
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid admin credentials')
+        expect(response_errors).to eq('Invalid admin credentials')
       end
     end
 
@@ -31,7 +31,7 @@ describe 'Authentication - Admin', type: :request do
         delete '/admins/sign_out'
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token is missing in the request')
+        expect(response_errors).to eq('Access token is missing in the request')
       end
 
       it 'should return 401 - invalid access token' do
@@ -39,7 +39,7 @@ describe 'Authentication - Admin', type: :request do
         delete '/admins/sign_out', headers: {'Authorization': "Bearer 1232143"}
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
 
       it 'should return 401 - expired access token' do
@@ -49,7 +49,7 @@ describe 'Authentication - Admin', type: :request do
         delete '/admins/sign_out', headers: {'Authorization': "Bearer #{expired_access_token}"}
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token expired')
+        expect(response_errors).to eq('Access token expired')
       end
     end
 

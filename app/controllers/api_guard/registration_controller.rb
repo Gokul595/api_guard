@@ -22,7 +22,7 @@ module ApiGuard
     private
 
     def sign_up_params
-      params.require(resource_name.to_sym).permit(:email, :password, :password_confirmation)
+      params.permit(:email, :password, :password_confirmation)
     end
   end
 end

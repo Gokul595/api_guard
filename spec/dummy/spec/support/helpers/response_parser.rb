@@ -9,5 +9,5 @@ end
 
 # Returns the errors from the parsed JSON response
 def response_errors
-  parsed_response['errors']
+  parsed_response['error']
 end

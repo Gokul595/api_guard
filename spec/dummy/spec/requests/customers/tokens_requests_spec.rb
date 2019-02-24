@@ -8,7 +8,7 @@ describe 'Refresh token - Customer', type: :request do
         post '/customers/tokens'
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token is missing in the request')
+        expect(response_errors).to eq('Access token is missing in the request')
       end
 
       it 'should return 401 - invalid access token' do
@@ -16,7 +16,7 @@ describe 'Refresh token - Customer', type: :request do
         post '/customers/tokens', headers: {'Authorization': 'Bearer 123213'}
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
 
       it 'should return 401 - missing refresh token' do
@@ -26,7 +26,7 @@ describe 'Refresh token - Customer', type: :request do
         post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}"}
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Refresh token is missing in the request')
+        expect(response_errors).to eq('Refresh token is missing in the request')
       end
 
       it 'should return 401 - invalid refresh token' do
@@ -36,7 +36,7 @@ describe 'Refresh token - Customer', type: :request do
         post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312'}
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid refresh token')
+        expect(response_errors).to eq('Invalid refresh token')
       end
     end
 

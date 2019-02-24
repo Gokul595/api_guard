@@ -3,24 +3,18 @@ require 'dummy/spec/rails_helper'
 describe 'Registration - User', type: :request do
   describe 'POST #create' do
     context 'with invalid params' do
-      it 'should raise exception - missing param' do
-        expect {
-          post "/users/sign_up"
-        }.to raise_error ActionController::ParameterMissing
-      end
-
       it 'should return 422 - email blank' do
-        post "/users/sign_up", params: { user: attributes_for(:user).except(:email) }
+        post "/users/sign_up", params: attributes_for(:user).except(:email)
 
         expect(response).to have_http_status(422)
-        expect(response_errors).to include("Email can't be blank")
+        expect(response_errors).to eq("Email can't be blank")
       end
     end
 
     context 'with valid params' do
       it 'should create a new user' do
         expect do
-          post "/users/sign_up", params: { user: attributes_for(:user) }
+          post "/users/sign_up", params: attributes_for(:user)
         end.to change(User, :count).by(1)
 
         expect(response).to have_http_status(200)
@@ -28,7 +22,7 @@ describe 'Registration - User', type: :request do
       end
 
       it 'should respond access token and refresh token in response headers' do
-        post "/users/sign_up", params: { user: attributes_for(:user) }
+        post "/users/sign_up", params: attributes_for(:user)
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present
@@ -45,7 +39,7 @@ describe 'Registration - User', type: :request do
         delete '/users/delete'
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token is missing in the request')
+        expect(response_errors).to eq('Access token is missing in the request')
       end
 
       it 'should return 401 - invalid access token' do
@@ -53,7 +47,7 @@ describe 'Registration - User', type: :request do
         delete '/users/delete', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
 
       it 'should return 401 - expired access token' do
@@ -63,7 +57,7 @@ describe 'Registration - User', type: :request do
         delete '/users/delete', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token expired')
+        expect(response_errors).to eq('Access token expired')
       end
     end
 

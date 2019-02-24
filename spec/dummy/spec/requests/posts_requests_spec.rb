@@ -7,14 +7,14 @@ describe 'Posts', type: :request do
         get '/posts'
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token is missing in the request')
+        expect(response_errors).to eq('Access token is missing in the request')
       end
 
       it 'should return 401 - invalid access token' do
         get '/posts', headers: { 'Authorization': "Bearer invalid_token" }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
 
       it 'should return 401 - expired access token' do
@@ -24,7 +24,7 @@ describe 'Posts', type: :request do
         get '/posts', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token expired')
+        expect(response_errors).to eq('Access token expired')
       end
 
       it 'should return 401 - blacklisted access token' do
@@ -36,7 +36,7 @@ describe 'Posts', type: :request do
         get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
 
       it 'should return 401 - old access token' do
@@ -48,7 +48,7 @@ describe 'Posts', type: :request do
         get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
     end
 

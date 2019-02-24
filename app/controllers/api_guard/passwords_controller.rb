@@ -21,7 +21,7 @@ module ApiGuard
     private
 
     def password_params
-      params.require(resource_name.to_sym).permit(:password, :password_confirmation)
+      params.permit(:password, :password_confirmation)
     end
   end
 end

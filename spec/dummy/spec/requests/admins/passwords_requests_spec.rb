@@ -7,14 +7,14 @@ describe 'Change password - Admin', type: :request do
         patch '/admins/passwords'
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token is missing in the request')
+        expect(response_errors).to eq('Access token is missing in the request')
       end
 
       it 'should return 401 - invalid access token' do
         patch '/admins/passwords', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
 
       it 'should return 401 - expired access token' do
@@ -24,7 +24,7 @@ describe 'Change password - Admin', type: :request do
         patch '/admins/passwords', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token expired')
+        expect(response_errors).to eq('Access token expired')
       end
 
       it 'should return 422 - invalid password confirmation' do
@@ -32,11 +32,11 @@ describe 'Change password - Admin', type: :request do
         access_token, refresh_token = access_token_for_resource(admin, 'admin')
 
         patch '/admins/passwords',
-              params: { admin: { password: 'api-pass', password_confirmation: 'api-pppp' } },
+              params: { password: 'api-pass', password_confirmation: 'api-pppp' },
               headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
 
         expect(response).to have_http_status(422)
-        expect(response_errors).to include("Password confirmation doesn't match Password")
+        expect(response_errors).to eq("Password confirmation doesn't match Password")
       end
     end
 
@@ -46,7 +46,7 @@ describe 'Change password - Admin', type: :request do
         access_token, refresh_token = access_token_for_resource(admin, 'admin')
 
         patch '/admins/passwords',
-              params: { admin: { password: 'api-pass', password_confirmation: 'api-pass' } },
+              params: { password: 'api-pass', password_confirmation: 'api-pass' },
               headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
 
         expect(response).to have_http_status(200)

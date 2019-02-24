@@ -6,7 +6,7 @@
 
 
 [JSON Web Token (JWT)](https://jwt.io/) based authentication solution with token refreshing & blacklisting for APIs 
-built on Rails. 
+built on Rails.
 
 This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem. Currently API Guard supports only HS256 algorithm 
 for cryptographic signing.
@@ -15,6 +15,7 @@ for cryptographic signing.
 
 * [Installation](#installation)
 * [Getting Started](#getting-started)
+    * [Creating User model](#creating-user-model)
     * [Configuring Routes](#configuring-routes)
     * [Registration](#registration)
     * [Sign In (Getting JWT access token)](#sign-in-getting-jwt-access-token)
@@ -41,7 +42,7 @@ Add this line to your application's Gemfile:
 gem 'api_guard'
 ```
 
-And then execute:
+And then execute in your terminal:
 ```bash
 $ bundle install
 ```
@@ -54,6 +55,43 @@ $ gem install api_guard
 ## Getting Started
 
 Below steps are provided assuming the model in `User`.
+
+### Creating User model
+
+Create a model for User with below command
+
+```bash
+$ rails generate model user name:string email:string:uniq password_digest:string
+```
+
+Then, run migration to create the `users` table
+
+```bash
+$ rails db:migrate
+```
+
+Add [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password) 
+in `User` model for password authentication
+
+```ruby
+class User < ApplicationRecord
+  has_secure_password
+end
+```
+
+Then, add `bcrypt` gem in your Gemfile which is used by 
+[has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password)
+for encrypting password and authentication
+
+```ruby
+gem 'bcrypt', '~> 3.1.7'
+```
+
+And then execute in your terminal:
+
+```bash
+$ bundle install
+```
 
 ### Configuring Routes
 
@@ -295,8 +333,8 @@ Example response:
 
 To configure the API Guard you need to first create an initializer using
 
-```ruby
-rails generate api_guard:initializer
+```bash
+$ rails generate api_guard:initializer
 ```
 
 This will generate an initializer named **api_guard.rb** in your app **config/initializers** directory with default 
@@ -360,12 +398,16 @@ If your app allows multiple logins then, you must set this value to `true` so th
 
 To include token refreshing in your application you need to create a table to store the refresh tokens.
 
-Use below commands to create a model `RefeshToken` with columns to store the token and the user reference
+Use below command to create a model `RefeshToken` with columns to store the token and the user reference
 
-```ruby
-rails g model refresh_token token:string:uniq user:references
+```bash
+$ rails generate model refresh_token token:string:uniq user:references
+```
 
-rails db:migrate
+Then, run migration to create the `refresh_tokens` table
+
+```bash
+$ rails db:migrate
 ```
 
 >**Note:** Replace `user` in the above command with your model name if your model is not User.
@@ -380,18 +422,28 @@ class User < ApplicationRecord
 end
 ```
 
+If you also have token blacklisting enabled you need to specify both associations as below
+
+```ruby
+api_guard_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blacklisted_tokens'
+```
+
 ### Token blacklisting
 
 To include token blacklisting in your application you need to create a table to store the refresh tokens. This will be 
 used to blacklist a JWT access token from future use. The access token will be blacklisted on successful sign out of the 
 resource.
 
-Use below commands to create a model `RefeshToken` with columns to store the token and the user reference
+Use below command to create a model `RefeshToken` with columns to store the token and the user reference
 
-```ruby
-rails g model blacklisted_token token:string user:references expire_at:datetime
+```bash
+$ rails generate model blacklisted_token token:string user:references expire_at:datetime
+```
 
-rails db:migrate
+Then, run migration to create the `blacklisted_tokens` table
+
+```bash
+$ rails db:migrate
 ```
 
 >**Note:** Replace `user` in the above command with your model name if your model is not User.
@@ -406,6 +458,16 @@ class User < ApplicationRecord
 end
 ```
 
+If you also have token refreshing enabled you need to specify both associations as below
+
+```ruby
+api_guard_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blacklisted_tokens'
+```
+
+And, as this creates rows in `blacklisted_tokens` table you need to have a mechanism to delete the expired blacklisted 
+tokens to prevent this table from growing. One option is to have a CRON job to run a task that deletes the blacklisted 
+tokens that are expired (`expire_at < DateTime.now`).
+
 ## Overriding defaults
 
 ### Controllers
@@ -413,8 +475,8 @@ end
 You can override the default API Guard controllers and customize the code as your need by generating the controllers in 
 your app
 
-```ruby
-rails generate api_guard:controllers
+```bash
+$ rails generate api_guard:controllers
 ```
 
 This will generate all default controllers in the directory **app/controllers/api_guard**.
@@ -446,6 +508,8 @@ You can also specify only the controller routes you need,
 ```ruby
 api_guard_routes for: 'users', only: [:authentication]
 ```
+
+>**Available controllers:** registration, authentication, tokens, passwords
 
 ##### Customizing the routes
 

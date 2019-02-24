@@ -30,7 +30,7 @@ describe 'Registration - Customer(User)', type: :request do
         delete '/customers/delete'
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token is missing in the request')
+        expect(response_errors).to eq('Access token is missing in the request')
       end
 
       it 'should return 401 - invalid access token' do
@@ -38,7 +38,7 @@ describe 'Registration - Customer(User)', type: :request do
         delete '/customers/delete', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Invalid access token')
+        expect(response_errors).to eq('Invalid access token')
       end
 
       it 'should return 401 - expired access token' do
@@ -48,7 +48,7 @@ describe 'Registration - Customer(User)', type: :request do
         delete '/customers/delete', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
         expect(response).to have_http_status(401)
-        expect(response_errors).to include('Access token expired')
+        expect(response_errors).to eq('Access token expired')
       end
     end
 
