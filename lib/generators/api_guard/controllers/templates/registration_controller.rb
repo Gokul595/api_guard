@@ -1,7 +1,5 @@
-require_dependency 'api_guard/application_controller'
-
-module ApiGuard
-  class RegistrationController < ApplicationController
+module <%= @controller_scope %>
+  class RegistrationController < ApiGuard::RegistrationController
     # before_action :authenticate_resource, only: [:destroy]
 
     # def create

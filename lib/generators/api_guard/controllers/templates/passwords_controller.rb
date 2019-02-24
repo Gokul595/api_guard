@@ -1,7 +1,5 @@
-require_dependency 'api_guard/application_controller'
-
-module ApiGuard
-  class PasswordsController < ApplicationController
+module <%= @controller_scope %>
+  class PasswordsController < ApiGuard::PasswordsController
     # before_action :authenticate_resource, only: [:update]
 
     # def update

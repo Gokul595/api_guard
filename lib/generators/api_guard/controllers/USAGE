@@ -1,11 +1,11 @@
 Description:
-    Generates all API Guard controllers in app/controllers/api_guard
+    Generates all API Guard controllers in app/controllers/
 
 Example:
-    rails generate api_guard:controllers
+    rails generate api_guard:controllers users
 
     This will create:
-        app/controllers/api_guard/registration_controller.rb
-        app/controllers/api_guard/authentication_controller.rb
-        app/controllers/api_guard/tokens_controller.rb
-        app/controllers/api_guard/passwords_controller.rb
+        app/controllers/users/registration_controller.rb
+        app/controllers/users/authentication_controller.rb
+        app/controllers/users/tokens_controller.rb
+        app/controllers/users/passwords_controller.rb

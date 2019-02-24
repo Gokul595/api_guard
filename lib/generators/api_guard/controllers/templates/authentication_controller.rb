@@ -1,7 +1,5 @@
-require_dependency 'api_guard/application_controller'
-
-module ApiGuard
-  class AuthenticationController < ApplicationController
+module <%= @controller_scope %>
+  class AuthenticationController < ApiGuard::AuthenticationController
     # before_action :find_resource, only: [:create]
     # before_action :authenticate_resource, only: [:destroy]
 

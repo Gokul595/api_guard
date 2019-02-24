@@ -1,13 +1,23 @@
-class ApiGuard::ControllersGenerator < Rails::Generators::Base
-  source_root File.expand_path('../templates', __FILE__)
+module ApiGuard
+  class ControllersGenerator < Rails::Generators::Base
+    CONTROLLERS = %i[registration authentication tokens passwords]
 
-  desc 'Generates all API Guard controllers in app/controllers/api_guard'
+    desc 'Generates API Guard controllers in app/controllers/'
+    source_root File.expand_path('../templates', __FILE__)
 
-  def create_controllers
-    controllers = %i[registration authentication tokens passwords]
+    argument :scope, required: true,
+             desc: "The scope to create controllers in, e.g. users, admins"
 
-    controllers.each do |controller_name|
-      copy_file "#{controller_name}_controller.rb", "app/controllers/api_guard/#{controller_name}_controller.rb"
+    class_option :controllers, aliases: "-c", type: :array,
+                 desc: "Specify the controllers to generate (#{CONTROLLERS.join(', ')})"
+
+    def create_controllers
+      @controller_scope = scope.camelize
+      controllers = options[:controllers] || CONTROLLERS
+
+      controllers.each do |controller_name|
+        template "#{controller_name}_controller.rb", "app/controllers/#{scope}/#{controller_name}_controller.rb"
+      end
     end
   end
 end

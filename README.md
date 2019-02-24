@@ -148,7 +148,7 @@ You can customize the parameters of this API by [overriding the controller](#con
 This will authenticate the user with email and password and respond with access token, refresh token and access token 
 expiry in the response header.
 
->To make this work, the resource model (here User) should have an `authenticate` method as available in 
+>To make this work, the resource model (User) should have an `authenticate` method as available in 
 [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password). 
 You can use [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password) 
 or your own logic to authenticate the user in `authenticate` method.
@@ -465,8 +465,8 @@ api_guard_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blac
 ```
 
 And, as this creates rows in `blacklisted_tokens` table you need to have a mechanism to delete the expired blacklisted 
-tokens to prevent this table from growing. One option is to have a CRON job to run a task that deletes the blacklisted 
-tokens that are expired (`expire_at < DateTime.now`).
+tokens to prevent this table from growing. One option is to have a CRON job to run a task daily that deletes the 
+blacklisted tokens that are expired i.e. `expire_at < DateTime.now`.
 
 ## Overriding defaults
 
@@ -476,18 +476,28 @@ You can override the default API Guard controllers and customize the code as you
 your app
 
 ```bash
-$ rails generate api_guard:controllers
+$ rails generate api_guard:controllers users
 ```
 
-This will generate all default controllers in the directory **app/controllers/api_guard**.
+In above command `users` is the scope of the controllers. If needed, you can replace `users` with your own scope.
 
-If you have the controllers in directory other than **controllers/api_guard** you need to specify the path in the routes
+This will generate all default controllers for `users` in the directory **app/controllers/users**.
+
+Then, configure this controller in the routes
 
 ```ruby
 api_guard_routes for: 'users', controller: {
   registration: 'users/registration',
-  authentication: 'users/auth'
+  authentication: 'users/authentication',
+  passwords: 'users/passwords',
+  tokens: 'users/tokens'
 }
+```
+
+You can also specify the controllers that you need to generate using `-c` or `--controllers` option.
+
+```bash
+$ rails generate api_guard:controllers users -c registration authentication
 ```
 
 >**Available controllers:** registration, authentication, tokens, passwords

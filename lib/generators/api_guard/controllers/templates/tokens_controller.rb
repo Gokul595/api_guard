@@ -1,7 +1,5 @@
-require_dependency 'api_guard/application_controller'
-
-module ApiGuard
-  class TokensController < ApplicationController
+module <%= @controller_scope %>
+  class TokensController < ApiGuard::TokensController
     # before_action :authenticate_resource, only: [:create]
     # before_action :find_refresh_token, only: [:create]
 
