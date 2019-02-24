@@ -3,11 +3,11 @@ module ApiGuard
     # Common module for token blacklisting functionality
     module BlacklistToken
       def blacklisted_token_association(resource)
-        ApiGuard.api_guard_associations.dig(resource.class.name, :blacklisted_token)
+        resource.class.blacklisted_token_association
       end
 
       def token_blacklisting_enabled?(resource)
-        blacklisted_token_association(resource)
+        blacklisted_token_association(resource).present?
       end
 
       def blacklisted_tokens_for(resource)

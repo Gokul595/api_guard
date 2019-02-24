@@ -15,6 +15,10 @@ module ApiGuard
         def refresh_token_association
           ApiGuard.api_guard_associations.dig(self.name, :refresh_token)
         end
+
+        def blacklisted_token_association
+          ApiGuard.api_guard_associations.dig(self.name, :blacklisted_token)
+        end
       end
     end
   end

@@ -3,11 +3,11 @@ module ApiGuard
     # Common module for refresh token functionality
     module RefreshJwtToken
       def refresh_token_association(resource)
-        ApiGuard.api_guard_associations.dig(resource.class.name, :refresh_token)
+        resource.class.refresh_token_association
       end
 
       def refresh_token_enabled?(resource)
-        refresh_token_association(resource)
+        refresh_token_association(resource).present?
       end
 
       def refresh_tokens_for(resource)
