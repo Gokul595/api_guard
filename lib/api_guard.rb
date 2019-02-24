@@ -3,6 +3,10 @@ require "api_guard/route_mapper"
 require "api_guard/modules"
 
 module ApiGuard
+  module Test
+    autoload :ControllerHelper, 'api_guard/test/controller_helper'
+  end
+
   mattr_accessor :token_validity
   self.token_validity = 1.day
 

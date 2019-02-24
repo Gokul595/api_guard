@@ -19,7 +19,7 @@ describe 'Change password - Customer', type: :request do
 
       it 'should return 401 - expired access token' do
         customer = create(:user)
-        expired_access_token = access_token_for_resource(customer, 'user', true)[0]
+        expired_access_token = jwt_and_refresh_token(customer, 'user', true)[0]
 
         patch '/customers/passwords', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
@@ -29,7 +29,7 @@ describe 'Change password - Customer', type: :request do
 
       it 'should return 422 - invalid password confirmation' do
         customer = create(:user)
-        access_token, refresh_token = access_token_for_resource(customer, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(customer, 'user')
 
         patch '/customers/passwords',
               params: { password: 'api-pass', password_confirmation: 'api-pppp' },
@@ -43,7 +43,7 @@ describe 'Change password - Customer', type: :request do
     context 'with valid params' do
       it 'should change password' do
         customer = create(:user)
-        access_token, refresh_token = access_token_for_resource(customer, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(customer, 'user')
 
         patch '/customers/passwords',
               params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },
@@ -57,7 +57,7 @@ describe 'Change password - Customer', type: :request do
 
       it 'should delete old refresh tokens and must have only the new refresh token' do
         customer = create(:user)
-        access_token, refresh_token = access_token_for_resource(customer, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(customer, 'user')
 
         patch '/customers/passwords',
               params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },

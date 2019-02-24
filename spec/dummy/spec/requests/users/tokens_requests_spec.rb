@@ -1,4 +1,5 @@
 require 'dummy/spec/rails_helper'
+include ApiGuard::JwtAuth::JsonWebToken
 
 describe 'Refresh token - User', type: :request do
   describe 'POST #create' do
@@ -21,7 +22,7 @@ describe 'Refresh token - User', type: :request do
 
       it 'should return 401 - missing refresh token' do
         user = create(:user)
-        access_token = access_token_for_resource(user, 'user')
+        access_token = jwt_and_refresh_token(user, 'user')
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}"}
 
@@ -31,7 +32,7 @@ describe 'Refresh token - User', type: :request do
 
       it 'should return 401 - invalid refresh token' do
         user = create(:user)
-        access_token = access_token_for_resource(user, 'user')[0]
+        access_token = jwt_and_refresh_token(user, 'user')[0]
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312'}
 
@@ -43,7 +44,7 @@ describe 'Refresh token - User', type: :request do
     context 'with valid params' do
       it 'should generate new access token - valid access token and refresh token' do
         user = create(:user)
-        access_token, refresh_token = access_token_for_resource(user, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
 
@@ -55,7 +56,7 @@ describe 'Refresh token - User', type: :request do
 
       it 'should generate new access token - expired access token and valid refresh token' do
         user = create(:user)
-        expired_access_token, refresh_token = access_token_for_resource(user, 'user', true)
+        expired_access_token, refresh_token = jwt_and_refresh_token(user, 'user', true)
 
         post '/users/tokens', headers: {'Authorization': "Bearer #{expired_access_token}", 'Refresh-Token': refresh_token}
 

@@ -44,7 +44,7 @@ describe 'Authentication - Admin', type: :request do
 
       it 'should return 401 - expired access token' do
         admin = create(:admin)
-        expired_access_token = access_token_for_resource(admin, 'admin', true)[0]
+        expired_access_token = jwt_and_refresh_token(admin, 'admin', true)[0]
 
         delete '/admins/sign_out', headers: {'Authorization': "Bearer #{expired_access_token}"}
 
@@ -56,7 +56,7 @@ describe 'Authentication - Admin', type: :request do
     context 'with valid params' do
       it 'should logout admin - valid access token' do
         admin = create(:admin)
-        access_token = access_token_for_resource(admin, 'admin')[0]
+        access_token = jwt_and_refresh_token(admin, 'admin')[0]
 
         delete '/admins/sign_out', headers: {'Authorization': "Bearer #{access_token}"}
 
@@ -65,7 +65,7 @@ describe 'Authentication - Admin', type: :request do
 
       it 'should blacklist access token from future use' do
         admin = create(:admin)
-        access_token = access_token_for_resource(admin, 'admin')[0]
+        access_token = jwt_and_refresh_token(admin, 'admin')[0]
 
         expect do
           delete '/admins/sign_out', headers: {'Authorization': "Bearer #{access_token}"}

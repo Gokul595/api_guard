@@ -34,6 +34,10 @@ for cryptographic signing.
 * [Overriding defaults](#overriding-defaults)
     * [Controllers](#controllers)
     * [Routes](#routes)
+* [Testing](#testing)
+* [Contributing](#contributing)
+* [License](#license)
+
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -536,6 +540,49 @@ end
 
 Above configuration will replace default registration routes `users/sign_up` & `users/delete` with `account/create` & 
 `account/delete`
+
+## Testing
+
+API Guard comes with helper for creating JWT access token and refresh token for the resource which you can use it for 
+testing the controllers of your application.
+
+For using it include the helper in you test framework
+
+**RSpec**
+
+If you're using RSpec as your test framework then include the helper in **spec/rails_helper.rb** file
+
+```ruby
+RSpec.configure do |config|
+  config.include ApiGuard::Test::ControllerHelper
+end
+```
+
+**Minitest**
+
+If you're using Minitest as your test framework then include the helper in your test file
+
+```ruby
+include ApiGuard::Test::ControllerHelper
+```
+
+After including the helper, you can use this method to create the JWT access token and refresh token for the resource
+
+```ruby
+jwt_and_refresh_token(user, 'user')
+```
+
+Where the first argument is the resource(User) object and the second argument is the resource name which is `user`. 
+
+This method will return two values which is access token and refresh token.
+
+If you need expired JWT access token for testing you can pass the third optional argument value as `true`
+
+```ruby
+jwt_and_refresh_token(user, 'user', true)
+```
+
+Then, you can set the access token and refresh token in appropriate request header on each test request.
 
 ## Contributing
 

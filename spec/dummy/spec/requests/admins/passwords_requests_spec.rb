@@ -19,7 +19,7 @@ describe 'Change password - Admin', type: :request do
 
       it 'should return 401 - expired access token' do
         admin = create(:admin)
-        expired_access_token = access_token_for_resource(admin, 'admin', true)[0]
+        expired_access_token = jwt_and_refresh_token(admin, 'admin', true)[0]
 
         patch '/admins/passwords', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
@@ -29,7 +29,7 @@ describe 'Change password - Admin', type: :request do
 
       it 'should return 422 - invalid password confirmation' do
         admin = create(:admin)
-        access_token, refresh_token = access_token_for_resource(admin, 'admin')
+        access_token, refresh_token = jwt_and_refresh_token(admin, 'admin')
 
         patch '/admins/passwords',
               params: { password: 'api-pass', password_confirmation: 'api-pppp' },
@@ -43,7 +43,7 @@ describe 'Change password - Admin', type: :request do
     context 'with valid params' do
       it 'should change password' do
         admin = create(:admin)
-        access_token, refresh_token = access_token_for_resource(admin, 'admin')
+        access_token, refresh_token = jwt_and_refresh_token(admin, 'admin')
 
         patch '/admins/passwords',
               params: { password: 'api-pass', password_confirmation: 'api-pass' },

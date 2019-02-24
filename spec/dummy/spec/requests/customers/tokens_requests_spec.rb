@@ -21,7 +21,7 @@ describe 'Refresh token - Customer', type: :request do
 
       it 'should return 401 - missing refresh token' do
         customer = create(:user)
-        access_token = access_token_for_resource(customer, 'user')
+        access_token = jwt_and_refresh_token(customer, 'user')
 
         post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}"}
 
@@ -31,7 +31,7 @@ describe 'Refresh token - Customer', type: :request do
 
       it 'should return 401 - invalid refresh token' do
         customer = create(:user)
-        access_token = access_token_for_resource(customer, 'user')[0]
+        access_token = jwt_and_refresh_token(customer, 'user')[0]
 
         post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312'}
 
@@ -43,7 +43,7 @@ describe 'Refresh token - Customer', type: :request do
     context 'with valid params' do
       it 'should generate new access token - valid access token and refresh token' do
         customer = create(:user)
-        access_token, refresh_token = access_token_for_resource(customer, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(customer, 'user')
 
         post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
 
@@ -55,7 +55,7 @@ describe 'Refresh token - Customer', type: :request do
 
       it 'should generate new access token - expired access token and valid refresh token' do
         customer = create(:user)
-        access_token, refresh_token = access_token_for_resource(customer, 'user', true)
+        access_token, refresh_token = jwt_and_refresh_token(customer, 'user', true)
 
         post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
 

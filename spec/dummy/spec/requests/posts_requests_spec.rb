@@ -19,7 +19,7 @@ describe 'Posts', type: :request do
 
       it 'should return 401 - expired access token' do
         user = create(:user)
-        expired_access_token = access_token_for_resource(user, 'user', true)[0]
+        expired_access_token = jwt_and_refresh_token(user, 'user', true)[0]
 
         get '/posts', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
@@ -29,7 +29,7 @@ describe 'Posts', type: :request do
 
       it 'should return 401 - blacklisted access token' do
         user = create(:user)
-        access_token = access_token_for_resource(user, 'user')[0]
+        access_token = jwt_and_refresh_token(user, 'user')[0]
 
         user.blacklisted_tokens.create(token: access_token, expire_at: Time.now.utc)
 
@@ -41,7 +41,7 @@ describe 'Posts', type: :request do
 
       it 'should return 401 - old access token' do
         user = create(:user)
-        access_token = access_token_for_resource(user, 'user')[0]
+        access_token = jwt_and_refresh_token(user, 'user')[0]
 
         user.update(token_issued_at: Time.now.utc + 1.second)
 
@@ -60,7 +60,7 @@ describe 'Posts', type: :request do
         user_posts = create_list(:post, 2, user_id: user.id)
         create_list(:post, 2, user_id: user_1.id)
 
-        access_token = access_token_for_resource(user, 'user')[0]
+        access_token = jwt_and_refresh_token(user, 'user')[0]
 
         get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
 

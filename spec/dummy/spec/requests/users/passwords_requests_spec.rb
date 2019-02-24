@@ -19,7 +19,7 @@ describe 'Change password - User', type: :request do
 
       it 'should return 401 - expired access token' do
         user = create(:user)
-        expired_access_token = access_token_for_resource(user, 'user', true)[0]
+        expired_access_token = jwt_and_refresh_token(user, 'user', true)[0]
 
         patch '/users/passwords', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
@@ -29,7 +29,7 @@ describe 'Change password - User', type: :request do
 
       it 'should return 422 - invalid password confirmation' do
         user = create(:user)
-        access_token, refresh_token = access_token_for_resource(user, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
 
         patch '/users/passwords',
               params: { password: 'api-pass', password_confirmation: 'api-pppp' },
@@ -43,7 +43,7 @@ describe 'Change password - User', type: :request do
     context 'with valid params' do
       it 'should change password' do
         user = create(:user)
-        access_token, refresh_token = access_token_for_resource(user, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
 
         patch '/users/passwords',
               params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },
@@ -57,7 +57,7 @@ describe 'Change password - User', type: :request do
 
       it 'should set token_issued_at to current time - invalidate old tokens is enabled' do
         user = create(:user)
-        access_token, refresh_token = access_token_for_resource(user, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
 
         patch '/users/passwords',
               params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },
@@ -71,7 +71,7 @@ describe 'Change password - User', type: :request do
         ApiGuard.invalidate_old_tokens_on_password_change = false
 
         user = create(:user)
-        access_token, refresh_token = access_token_for_resource(user, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
 
         patch '/users/passwords',
               params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },
@@ -85,7 +85,7 @@ describe 'Change password - User', type: :request do
 
       it 'should delete old refresh tokens and must have only the new refresh token' do
         user = create(:user)
-        access_token, refresh_token = access_token_for_resource(user, 'user')
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
 
         patch '/users/passwords',
               params: { user: { password: 'api-pass', password_confirmation: 'api-pass' } },
