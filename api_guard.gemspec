@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ['m.gokul595@gmail.com']
   s.homepage    = "https://github.com/Gokul595/api_guard"
   s.summary     = "Rails API authentication made easy"
-  s.description = "Authentication solution for Rails API with JWT"
+  s.description = "JWT authentication solution for Rails APIs"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
