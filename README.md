@@ -1,5 +1,6 @@
 # API Guard
 
+[![Version](https://img.shields.io/gem/v/api_guard.svg?color=green)](https://rubygems.org/gems/api_guard)
 [![Build Status](https://travis-ci.org/Gokul595/api_guard.svg?branch=master)](https://travis-ci.org/Gokul595/api_guard)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ced3e74a26a66ed915cb/maintainability)](https://codeclimate.com/github/Gokul595/api_guard/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ced3e74a26a66ed915cb/test_coverage)](https://codeclimate.com/github/Gokul595/api_guard/test_coverage)
