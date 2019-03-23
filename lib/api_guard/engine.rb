@@ -9,7 +9,10 @@ module ApiGuard
 
     # Use 'secret_key_base' from Rails secrets if 'token_signing_secret' is not configured
     initializer 'ApiGuard.token_signing_secret' do |app|
-      ApiGuard.token_signing_secret ||= Rails.application.secrets.secret_key_base
+      unless ApiGuard.token_signing_secret
+        signing_secret = app.respond_to?(:credentials) ? app.credentials.secret_key_base : app.secrets.secret_key_base
+        ApiGuard.token_signing_secret = signing_secret
+      end
     end
   end
 end
