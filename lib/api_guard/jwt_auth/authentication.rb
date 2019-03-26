@@ -18,11 +18,10 @@ module ApiGuard
       def authenticate_and_set_resource(resource_name)
         @resource_name = resource_name
 
-        authenticate_or_request_with_http_token do |token, _|
-          @token = token
-          authenticate_token
-          true # Return true to handle 'Invalid access token' request separately
-        end
+        @token = request.headers['Authorization']&.split('Bearer ')&.last
+        return render_error(401, message: 'Access token is missing in the request') unless @token
+
+        authenticate_token
 
         # Render error response only if no resource found and no previous render happened
         render_error(401, message: 'Invalid access token') if !current_resource && !performed?
@@ -32,12 +31,6 @@ module ApiGuard
         else
           render_error(401, message: 'Invalid access token')
         end
-      end
-
-      # Override to send JSON response instead of plain HTML
-      # if 'Authorization' header is empty or value of the header is invalid
-      def request_http_token_authentication(realm = 'Application', _message = nil)
-        render_error(401, message: 'Access token is missing in the request')
       end
 
       # Decode the JWT token
