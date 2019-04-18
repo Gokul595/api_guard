@@ -66,6 +66,20 @@ describe 'Refresh token - User', type: :request do
         expect(response.headers['Refresh-Token']).to be_present
       end
 
+      it 'should delete refresh token received in request' do
+        user = create(:user)
+        expired_access_token, refresh_token = jwt_and_refresh_token(user, 'user', true)
+
+        post '/users/tokens', headers: {'Authorization': "Bearer #{expired_access_token}", 'Refresh-Token': refresh_token}
+
+        expect(response).to have_http_status(200)
+        expect(response.headers['Access-Token']).to be_present
+        expect(response.headers['Expire-At']).to be_present
+        expect(response.headers['Refresh-Token']).to be_present
+
+        expect(user.refresh_tokens.find_by(token: refresh_token)).to be_nil
+      end
+
       it 'should blacklist JWT access token after refreshing' do
         user = create(:user)
         access_token, refresh_token = jwt_and_refresh_token(user, 'user')
