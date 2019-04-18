@@ -65,6 +65,38 @@ describe 'Refresh token - User', type: :request do
         expect(response.headers['Expire-At']).to be_present
         expect(response.headers['Refresh-Token']).to be_present
       end
+
+      it 'should blacklist JWT access token after refreshing' do
+        user = create(:user)
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
+
+        ApiGuard.blacklist_token_after_refreshing = true
+
+        expect do
+          post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
+        end.to change(user.blacklisted_tokens, :count).by(1)
+
+        ApiGuard.blacklist_token_after_refreshing = false
+
+        expect(response).to have_http_status(200)
+        expect(response.headers['Access-Token']).to be_present
+        expect(response.headers['Expire-At']).to be_present
+        expect(response.headers['Refresh-Token']).to be_present
+      end
+
+      it 'should not blacklist JWT access token after refreshing' do
+        user = create(:user)
+        access_token, refresh_token = jwt_and_refresh_token(user, 'user')
+
+        expect do
+          post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
+        end.to change(user.blacklisted_tokens, :count).by(0)
+
+        expect(response).to have_http_status(200)
+        expect(response.headers['Access-Token']).to be_present
+        expect(response.headers['Expire-At']).to be_present
+        expect(response.headers['Refresh-Token']).to be_present
+      end
     end
   end
 end
