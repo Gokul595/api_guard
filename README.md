@@ -362,6 +362,10 @@ ApiGuard.setup do |config|
   # Invalidate old tokens on changing the password
   # Default: false
   config.invalidate_old_tokens_on_password_change = false
+
+  # Blacklist JWT access token after refreshing
+  # Default: false
+  config.blacklist_token_after_refreshing = false
 end
 ```
 
@@ -472,6 +476,15 @@ api_guard_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blac
 And, as this creates rows in `blacklisted_tokens` table you need to have a mechanism to delete the expired blacklisted 
 tokens to prevent this table from growing. One option is to have a CRON job to run a task daily that deletes the 
 blacklisted tokens that are expired i.e. `expire_at < DateTime.now`.
+
+**Blacklisting after refreshing token**
+
+By default, the JWT access token will not be blacklisted on refreshing the JWT access token. To enable this, you can 
+configure it in API Guard initializer as below,
+
+```ruby
+config.blacklist_token_after_refreshing = true
+```
 
 ## Overriding defaults
 
