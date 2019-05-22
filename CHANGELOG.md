@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.2.1 - 2019-05-22
+
+* Bug fixes
+    * [Issue #11](https://github.com/Gokul595/api_guard/issues/11) - Skip verifying authenticity token as everything is 
+    API here.
+
 ### 0.2.0 - 2019-04-27
 
 * Features
