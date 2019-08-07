@@ -3,6 +3,8 @@ require "api_guard/route_mapper"
 require "api_guard/modules"
 
 module ApiGuard
+  autoload :AppSecretKey, 'api_guard/app_secret_key'
+
   module Test
     autoload :ControllerHelper, 'api_guard/test/controller_helper'
   end
