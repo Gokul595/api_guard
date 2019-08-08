@@ -5,21 +5,16 @@ module ApiGuard
     end
 
     def detect
-      if @application.respond_to?(:credentials) && secret_key_present?(@application.credentials)
-        @application.credentials.secret_key_base
-      elsif @application.respond_to?(:secrets) && secret_key_present?(@application.secrets)
-        @application.secrets.secret_key_base
-      elsif @application.config.respond_to?(:secret_key_base) && secret_key_present?(@application.config)
-        @application.config.secret_key_base
-      elsif @application.respond_to?(:secret_key_base) && secret_key_present?(@application)
-        @application.secret_key_base
-      end
+      secret_key_base(:credentials) || secret_key_base(:secrets) ||
+        secret_key_base(:config) || secret_key_base
     end
 
     private
 
-    def secret_key_present?(config)
-      config.secret_key_base.present?
+    def secret_key_base(source = nil)
+      return @application.secret_key_base unless source
+
+      @application.send(source).secret_key_base.presence if @application.respond_to?(source)
     end
   end
 end
