@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.2.2 - 2019-08-08
+
+* Bug fixes
+    * [Issue #11](https://github.com/Gokul595/api_guard/issues/11) - Added code to detect `secret_key_base` from various 
+    configs as the location is not same in all Rails versions. 
+
 ### 0.2.1 - 2019-05-22
 
 * Bug fixes
