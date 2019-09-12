@@ -5,7 +5,7 @@ describe 'Refresh token - User', type: :request do
   describe 'POST #create' do
     context 'with invalid params' do
       it 'should return 401 - missing access token' do
-        user = create(:user)
+        create(:user)
         post '/users/tokens'
 
         expect(response).to have_http_status(401)
@@ -13,7 +13,7 @@ describe 'Refresh token - User', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        user = create(:user)
+        create(:user)
         post '/users/tokens', headers: {'Authorization': 'Bearer 123213'}
 
         expect(response).to have_http_status(401)

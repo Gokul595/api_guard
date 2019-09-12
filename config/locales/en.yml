@@ -1,0 +1,22 @@
+en:
+  api_guard:
+    authentication:
+      signed_in: 'Signed in successfully'
+      signed_out: 'Signed out successfully'
+      invalid_login_credentials: 'Invalid login credentials'
+    password:
+      changed: 'Password changed successfully'
+    registration:
+      signed_up: 'Signed up successfully'
+      account_deleted: 'Account deleted successfully'
+    access_token:
+      refreshed: 'Token refreshed successfully'
+      missing: 'Access token is missing in the request'
+      invalid: 'Invalid access token'
+      expired: 'Access token expired'
+    refresh_token:
+      invalid: 'Invalid refresh token'
+      missing: 'Refresh token is missing in the request'
+    response:
+      success: 'success'
+      error: 'error'
