@@ -555,6 +555,22 @@ end
 Above configuration will replace default registration routes `users/sign_up` & `users/delete` with `account/create` & 
 `account/delete`
 
+### Customizing / translating response messages using I18n
+
+API Guard uses [I18n](https://guides.rubyonrails.org/i18n.html) for success and error messages. You can create your own 
+locale file and customize the messages for any language.
+
+```yaml
+en:
+  api_guard:
+    authentication:
+      signed_in: 'Signed in successfully'
+      signed_out: 'Signed out successfully'
+``` 
+
+You can find the complete list of available keys in this file:
+https://github.com/Gokul595/api_guard/config/locales/en.yml
+
 ## Testing
 
 API Guard comes with helper for creating JWT access token and refresh token for the resource which you can use it for 
