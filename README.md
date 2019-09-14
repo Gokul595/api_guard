@@ -35,6 +35,7 @@ for cryptographic signing.
 * [Overriding defaults](#overriding-defaults)
     * [Controllers](#controllers)
     * [Routes](#routes)
+    * [Customizing / translating response messages using I18n](#customizing--translating-response-messages-using-i18n)
 * [Testing](#testing)
 * [Contributing](#contributing)
 * [License](#license)
