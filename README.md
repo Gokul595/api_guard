@@ -567,10 +567,10 @@ en:
     authentication:
       signed_in: 'Signed in successfully'
       signed_out: 'Signed out successfully'
-``` 
+```
 
 You can find the complete list of available keys in this file:
-https://github.com/Gokul595/api_guard/config/locales/en.yml
+https://github.com/Gokul595/api_guard/blob/master/config/locales/en.yml
 
 ## Testing
 
