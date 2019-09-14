@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.3.0 - 2019-09-14
+
+* Features
+    * [Pull #15](https://github.com/Gokul595/api_guard/pull/15) - Added option to customize / translate response 
+    messages using I18n.
+
 ### 0.2.2 - 2019-08-08
 
 * Bug fixes

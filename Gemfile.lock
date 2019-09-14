@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    api_guard (0.2.2)
+    api_guard (0.3.0)
       jwt (~> 2.1, >= 2.1.0)
 
 GEM
@@ -62,7 +62,7 @@ GEM
     i18n (1.0.0)
       concurrent-ruby (~> 1.0)
     json (2.1.0)
-    jwt (2.1.0)
+    jwt (2.2.1)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
