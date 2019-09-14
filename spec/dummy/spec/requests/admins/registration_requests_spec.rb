@@ -36,7 +36,7 @@ describe 'Registration - Admin', type: :request do
   describe 'DELETE #destroy' do
     context 'with invalid params' do
       it 'should return 401 - missing access token' do
-        admin = create(:admin)
+        create(:admin)
         delete '/admins/delete'
 
         expect(response).to have_http_status(401)
@@ -44,7 +44,7 @@ describe 'Registration - Admin', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        admin = create(:admin)
+        create(:admin)
         delete '/admins/delete', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)

@@ -11,7 +11,7 @@ module ApiGuard
       @refresh_token.destroy
       blacklist_token if ApiGuard.blacklist_token_after_refreshing
 
-      render_success(message: 'Token refreshed successfully')
+      render_success(message: I18n.t('api_guard.access_token.refreshed'))
     end
 
     private
@@ -21,9 +21,9 @@ module ApiGuard
 
       if refresh_token_from_header
         @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_header)
-        return render_error(401, message: 'Invalid refresh token') unless @refresh_token
+        return render_error(401, message: I18n.t('api_guard.refresh_token.invalid')) unless @refresh_token
       else
-        render_error(401, message: 'Refresh token is missing in the request')
+        render_error(401, message: I18n.t('api_guard.refresh_token.missing'))
       end
     end
   end

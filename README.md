@@ -35,6 +35,7 @@ for cryptographic signing.
 * [Overriding defaults](#overriding-defaults)
     * [Controllers](#controllers)
     * [Routes](#routes)
+    * [Customizing / translating response messages using I18n](#customizing--translating-response-messages-using-i18n)
 * [Testing](#testing)
 * [Contributing](#contributing)
 * [License](#license)
@@ -353,19 +354,19 @@ configurations.
 ApiGuard.setup do |config|
   # Validity of the JWT access token
   # Default: 1 day
-  config.token_validity = 1.day
+  # config.token_validity = 1.day
 
   # Secret key for signing (encoding & decoding) the JWT access token
   # Default: 'secret_key_base' from Rails secrets 
-  config.token_signing_secret = Rails.application.secrets.secret_key_base
+  # config.token_signing_secret = 'my_signing_secret'
 
   # Invalidate old tokens on changing the password
   # Default: false
-  config.invalidate_old_tokens_on_password_change = false
+  # config.invalidate_old_tokens_on_password_change = false
 
   # Blacklist JWT access token after refreshing
   # Default: false
-  config.blacklist_token_after_refreshing = false
+  # config.blacklist_token_after_refreshing = false
 end
 ```
 
@@ -554,6 +555,22 @@ end
 
 Above configuration will replace default registration routes `users/sign_up` & `users/delete` with `account/create` & 
 `account/delete`
+
+### Customizing / translating response messages using I18n
+
+API Guard uses [I18n](https://guides.rubyonrails.org/i18n.html) for success and error messages. You can create your own 
+locale file and customize the messages for any language.
+
+```yaml
+en:
+  api_guard:
+    authentication:
+      signed_in: 'Signed in successfully'
+      signed_out: 'Signed out successfully'
+``` 
+
+You can find the complete list of available keys in this file:
+https://github.com/Gokul595/api_guard/config/locales/en.yml
 
 ## Testing
 

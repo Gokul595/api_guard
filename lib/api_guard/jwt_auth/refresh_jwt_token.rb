@@ -30,11 +30,13 @@ module ApiGuard
       # Create a new refresh_token for the current resource
       def new_refresh_token(resource)
         return unless refresh_token_enabled?(resource)
+
         refresh_tokens_for(resource).create(token: uniq_refresh_token(resource)).token
       end
 
       def destroy_all_refresh_tokens(resource)
         return unless refresh_token_enabled?(resource)
+
         refresh_tokens_for(resource).destroy_all
       end
     end

@@ -59,6 +59,7 @@ module ApiGuard
       # to restrict access to old access(JWT) tokens
       def invalidate_old_jwt_tokens(resource)
         return unless ApiGuard.invalidate_old_tokens_on_password_change
+
         resource.token_issued_at = Time.at(token_issued_at).utc
       end
     end

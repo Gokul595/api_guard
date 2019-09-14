@@ -1,0 +1,29 @@
+en_1:
+  api_guard:
+    authentication:
+      signed_in: 'Signed in'
+      signed_out: 'Signed out'
+      invalid_login_credentials: 'Invalid credentials'
+    password:
+      changed: 'Password changed'
+    registration:
+      signed_up: 'Signed up'
+      account_deleted: 'Account deleted'
+    access_token:
+      refreshed: 'Token refreshed'
+      missing: 'Access token is missing'
+      invalid: 'Invalid token'
+      expired: 'Token expired'
+    refresh_token:
+      invalid: 'Refresh token invalid'
+      missing: 'Refresh token is missing'
+
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "doesn't match Password"
+            email:
+              blank: "can't be blank"

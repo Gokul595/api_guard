@@ -4,7 +4,7 @@ describe 'Authentication - Admin', type: :request do
   describe 'POST #create' do
     context 'with invalid params' do
       it 'should return 401 - invalid login credentials' do
-        admin = create(:admin)
+        create(:admin)
         post '/admins/sign_in', params: attributes_for(:admin).merge(password: 'paas')
 
         expect(response).to have_http_status(401)
@@ -14,7 +14,7 @@ describe 'Authentication - Admin', type: :request do
 
     context 'with valid params' do
       it 'should login admin - valid login credentials' do
-        admin = create(:admin)
+        create(:admin)
         post '/admins/sign_in', params: attributes_for(:admin)
 
         expect(response).to have_http_status(200)
@@ -27,7 +27,7 @@ describe 'Authentication - Admin', type: :request do
   describe 'DELETE #destroy' do
     context 'with invalid params' do
       it 'should return 401 - missing access token' do
-        admin = create(:admin)
+        create(:admin)
         delete '/admins/sign_out'
 
         expect(response).to have_http_status(401)
@@ -35,7 +35,7 @@ describe 'Authentication - Admin', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        admin = create(:admin)
+        create(:admin)
         delete '/admins/sign_out', headers: {'Authorization': "Bearer 1232143"}
 
         expect(response).to have_http_status(401)
