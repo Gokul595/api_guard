@@ -390,6 +390,10 @@ Override this by configuring `token_signing_secret`
 config.token_signing_secret = 'my_signing_secret'
 ```
 
+>**Note:** Avoid committing this token signing secret in your version control (GIT) and always keep this secure. As,
+>exposing this allow anyone to generate JWT access token and give full access to APIs. Better way is storing this value
+>in environment variable or in encrypted secrets (Rails 5.2+)
+
 ### Invalidate tokens on password change
 
 By default, API Guard will not invalidate old JWT access tokens on changing password. If you need, you can enable it by 
