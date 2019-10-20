@@ -46,10 +46,7 @@ module ActionDispatch::Routing
 
     def generate_routes(mapped_resource, options, controllers)
       options ||= {}
-
-      unless mapped_resource.resource_class.refresh_token_association
-        controllers -= %i[tokens]
-      end
+      controllers -= %i[tokens] unless mapped_resource.resource_class.refresh_token_association
 
       controllers.each do |controller|
         send("#{controller}_routes", options[controller])
