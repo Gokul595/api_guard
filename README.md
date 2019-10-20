@@ -581,7 +581,7 @@ https://github.com/Gokul595/api_guard/blob/master/config/locales/en.yml
 API Guard comes with helper for creating JWT access token and refresh token for the resource which you can use it for 
 testing the controllers of your application.
 
-For using it include the helper in you test framework
+For using it, just include the helper in your test framework.
 
 **RSpec**
 
