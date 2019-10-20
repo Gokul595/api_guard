@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dummy/spec/rails_helper'
 
 describe 'Posts', type: :request do
@@ -11,7 +13,7 @@ describe 'Posts', type: :request do
       end
 
       it 'should return 401 - invalid access token' do
-        get '/posts', headers: { 'Authorization': "Bearer invalid_token" }
+        get '/posts', headers: { 'Authorization': 'Bearer invalid_token' }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Invalid access token')
@@ -65,7 +67,7 @@ describe 'Posts', type: :request do
         get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
 
         expect(response).to have_http_status(200)
-        expect(parsed_response.map{ |p| p['id'] }).to match_array(user_posts.map(&:id))
+        expect(parsed_response.map { |p| p['id'] }).to match_array(user_posts.map(&:id))
       end
     end
   end

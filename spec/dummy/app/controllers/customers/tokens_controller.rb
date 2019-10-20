@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Customers
   class TokensController < ApiGuard::TokensController
     skip_before_action :authenticate_resource, only: [:create]

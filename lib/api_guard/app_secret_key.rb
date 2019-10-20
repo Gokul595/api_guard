@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiGuard
   class AppSecretKey
     def initialize(application)
@@ -14,7 +16,9 @@ module ApiGuard
     def secret_key_base(source = nil)
       return @application.secret_key_base unless source
 
-      @application.send(source).secret_key_base.presence if @application.respond_to?(source)
+      if @application.respond_to?(source)
+        @application.send(source).secret_key_base.presence
+      end
     end
   end
 end

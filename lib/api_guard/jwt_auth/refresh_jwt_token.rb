@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiGuard
   module JwtAuth
     # Common module for refresh token functionality
@@ -23,7 +25,9 @@ module ApiGuard
       def uniq_refresh_token(resource)
         loop do
           random_token = SecureRandom.urlsafe_base64
-          return random_token unless refresh_tokens_for(resource).exists?(token: random_token)
+          unless refresh_tokens_for(resource).exists?(token: random_token)
+            return random_token
+          end
         end
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dummy/spec/rails_helper'
 
 describe 'Authentication - Customer', type: :request do
@@ -37,7 +39,7 @@ describe 'Authentication - Customer', type: :request do
 
       it 'should return 401 - invalid access token' do
         create(:user)
-        delete '/customers/sign_out', headers: {'Authorization': "Bearer 1232143"}
+        delete '/customers/sign_out', headers: { 'Authorization': 'Bearer 1232143' }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Invalid access token')
@@ -47,7 +49,7 @@ describe 'Authentication - Customer', type: :request do
         customer = create(:user)
         expired_access_token = jwt_and_refresh_token(customer, 'user', true)[0]
 
-        delete '/customers/sign_out', headers: {'Authorization': "Bearer #{expired_access_token}"}
+        delete '/customers/sign_out', headers: { 'Authorization': "Bearer #{expired_access_token}" }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Access token expired')
@@ -59,7 +61,7 @@ describe 'Authentication - Customer', type: :request do
         customer = create(:user)
         access_token = jwt_and_refresh_token(customer, 'user')[0]
 
-        delete '/customers/sign_out', headers: {'Authorization': "Bearer #{access_token}"}
+        delete '/customers/sign_out', headers: { 'Authorization': "Bearer #{access_token}" }
 
         expect(response).to have_http_status(200)
       end
@@ -69,7 +71,7 @@ describe 'Authentication - Customer', type: :request do
         access_token = jwt_and_refresh_token(customer, 'user')[0]
 
         expect do
-          delete '/customers/sign_out', headers: {'Authorization': "Bearer #{access_token}"}
+          delete '/customers/sign_out', headers: { 'Authorization': "Bearer #{access_token}" }
         end.to change(customer.blacklisted_tokens, :count).by(1)
       end
     end

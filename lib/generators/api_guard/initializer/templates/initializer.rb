@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ApiGuard.setup do |config|
   # Validity of the JWT access token
   # Default: 1 day

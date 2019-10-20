@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 begin
   require 'bundler/setup'
 rescue LoadError
@@ -14,11 +16,6 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-
-
 load 'rails/tasks/statistics.rake'
 
-
-
 require 'bundler/gem_tasks'
-

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Referenced from devise gem:
 # https://github.com/plataformatec/devise/blob/master/lib/devise/rails/routes.rb
 #
@@ -24,7 +26,7 @@ module ActionDispatch::Routing
       mapped_resource = ApiGuard.mapped_resource[routes_for.to_sym].presence || ApiGuard.map_resource(routes_for, routes_for.classify)
 
       constraint = lambda do |request|
-        request.env["api_guard.mapping"] = mapped_resource
+        request.env['api_guard.mapping'] = mapped_resource
         true
       end
 
@@ -45,35 +47,37 @@ module ActionDispatch::Routing
     def generate_routes(mapped_resource, options, controllers)
       options ||= {}
 
-      controllers -= %i[tokens] unless mapped_resource.resource_class.refresh_token_association
+      unless mapped_resource.resource_class.refresh_token_association
+        controllers -= %i[tokens]
+      end
 
       controllers.each do |controller|
-        send("#{controller.to_s}_routes", options[controller])
+        send("#{controller}_routes", options[controller])
       end
     end
 
     def authentication_routes(controller_name = nil)
-      controller_name = controller_name || 'api_guard/authentication'
+      controller_name ||= 'api_guard/authentication'
 
       post 'sign_in' => "#{controller_name}#create"
       delete 'sign_out' => "#{controller_name}#destroy"
     end
 
     def registration_routes(controller_name = nil)
-      controller_name = controller_name || 'api_guard/registration'
+      controller_name ||= 'api_guard/registration'
 
       post 'sign_up' => "#{controller_name}#create"
       delete 'delete' => "#{controller_name}#destroy"
     end
 
     def passwords_routes(controller_name = nil)
-      controller_name = controller_name || 'api_guard/passwords'
+      controller_name ||= 'api_guard/passwords'
 
       patch 'passwords' => "#{controller_name}#update"
     end
 
     def tokens_routes(controller_name = nil)
-      controller_name = controller_name || 'api_guard/tokens'
+      controller_name ||= 'api_guard/tokens'
 
       post 'tokens' => "#{controller_name}#create"
     end

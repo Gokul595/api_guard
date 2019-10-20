@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiGuard
   module JwtAuth
     # Common module for API authentication
@@ -19,12 +21,16 @@ module ApiGuard
         @resource_name = resource_name
 
         @token = request.headers['Authorization']&.split('Bearer ')&.last
-        return render_error(401, message: I18n.t('api_guard.access_token.missing')) unless @token
+        unless @token
+          return render_error(401, message: I18n.t('api_guard.access_token.missing'))
+        end
 
         authenticate_token
 
         # Render error response only if no resource found and no previous render happened
-        render_error(401, message: I18n.t('api_guard.access_token.invalid')) if !current_resource && !performed?
+        if !current_resource && !performed?
+          render_error(401, message: I18n.t('api_guard.access_token.invalid'))
+        end
       rescue JWT::DecodeError => e
         if e.message == 'Signature has expired'
           render_error(401, message: I18n.t('api_guard.access_token.expired'))
@@ -45,6 +51,7 @@ module ApiGuard
       # Returns true if password hasn't changed by the user
       def valid_issued_at?
         return true unless ApiGuard.invalidate_old_tokens_on_password_change
+
         !current_resource.token_issued_at || @decoded_token[:iat] >= current_resource.token_issued_at.to_i
       end
 
@@ -54,7 +61,9 @@ module ApiGuard
       # Also, set "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
       # for accessing the authenticated resource
       def authenticate_token
-        return unless decode_token && @decoded_token[:"#{@resource_name}_id"].present?
+        unless decode_token && @decoded_token[:"#{@resource_name}_id"].present?
+          return
+        end
 
         resource = @resource_name.classify.constantize.find_by(id: @decoded_token[:"#{@resource_name}_id"])
 

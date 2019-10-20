@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dummy/spec/rails_helper'
 
 describe 'Refresh token - Customer', type: :request do
@@ -13,7 +15,7 @@ describe 'Refresh token - Customer', type: :request do
 
       it 'should return 401 - invalid access token' do
         create(:user)
-        post '/customers/tokens', headers: {'Authorization': 'Bearer 123213'}
+        post '/customers/tokens', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Invalid access token')
@@ -23,7 +25,7 @@ describe 'Refresh token - Customer', type: :request do
         customer = create(:user)
         access_token = jwt_and_refresh_token(customer, 'user')
 
-        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}"}
+        post '/customers/tokens', headers: { 'Authorization': "Bearer #{access_token}" }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Refresh token is missing in the request')
@@ -33,7 +35,7 @@ describe 'Refresh token - Customer', type: :request do
         customer = create(:user)
         access_token = jwt_and_refresh_token(customer, 'user')[0]
 
-        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312'}
+        post '/customers/tokens', headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312' }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Invalid refresh token')
@@ -45,7 +47,7 @@ describe 'Refresh token - Customer', type: :request do
         customer = create(:user)
         access_token, refresh_token = jwt_and_refresh_token(customer, 'user')
 
-        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
+        post '/customers/tokens', headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present
@@ -57,7 +59,7 @@ describe 'Refresh token - Customer', type: :request do
         customer = create(:user)
         access_token, refresh_token = jwt_and_refresh_token(customer, 'user', true)
 
-        post '/customers/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
+        post '/customers/tokens', headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present
