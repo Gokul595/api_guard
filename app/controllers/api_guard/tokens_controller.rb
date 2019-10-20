@@ -23,9 +23,7 @@ module ApiGuard
 
       if refresh_token_from_header
         @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_header)
-        unless @refresh_token
-          return render_error(401, message: I18n.t('api_guard.refresh_token.invalid'))
-        end
+        return render_error(401, message: I18n.t('api_guard.refresh_token.invalid')) unless @refresh_token
       else
         render_error(401, message: I18n.t('api_guard.refresh_token.missing'))
       end

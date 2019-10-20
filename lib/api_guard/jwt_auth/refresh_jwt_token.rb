@@ -25,9 +25,7 @@ module ApiGuard
       def uniq_refresh_token(resource)
         loop do
           random_token = SecureRandom.urlsafe_base64
-          unless refresh_tokens_for(resource).exists?(token: random_token)
-            return random_token
-          end
+          return random_token unless refresh_tokens_for(resource).exists?(token: random_token)
         end
       end
 
