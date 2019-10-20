@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiGuard
   class ResourceMapper
     attr_reader :resource_name, :resource_class, :resource_instance_name
@@ -19,7 +21,7 @@ module ApiGuard
     end
 
     def current_resource_mapping
-      request.env["api_guard.mapping"]
+      request.env['api_guard.mapping']
     end
 
     def resource_name

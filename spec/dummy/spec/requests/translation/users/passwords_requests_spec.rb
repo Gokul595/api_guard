@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dummy/spec/rails_helper'
 
 describe 'Change password - User', type: :request do

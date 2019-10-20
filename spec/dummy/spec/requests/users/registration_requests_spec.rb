@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'dummy/spec/rails_helper'
 
 describe 'Registration - User', type: :request do
   describe 'POST #create' do
     context 'with invalid params' do
       it 'should return 422 - email blank' do
-        post "/users/sign_up", params: attributes_for(:user).except(:email)
+        post '/users/sign_up', params: attributes_for(:user).except(:email)
 
         expect(response).to have_http_status(422)
         expect(response_errors).to eq("Email can't be blank")
@@ -14,7 +16,7 @@ describe 'Registration - User', type: :request do
     context 'with valid params' do
       it 'should create a new user' do
         expect do
-          post "/users/sign_up", params: attributes_for(:user)
+          post '/users/sign_up', params: attributes_for(:user)
         end.to change(User, :count).by(1)
 
         expect(response).to have_http_status(200)
@@ -22,7 +24,7 @@ describe 'Registration - User', type: :request do
       end
 
       it 'should respond access token and refresh token in response headers' do
-        post "/users/sign_up", params: attributes_for(:user)
+        post '/users/sign_up', params: attributes_for(:user)
 
         expect(response).to have_http_status(200)
         expect(response.headers['Access-Token']).to be_present

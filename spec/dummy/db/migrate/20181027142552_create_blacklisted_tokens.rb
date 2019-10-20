@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateBlacklistedTokens < ActiveRecord::Migration[5.1]
   def change
     create_table :blacklisted_tokens do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dummy/spec/rails_helper'
 
 describe 'ApiGuardRoutesSpec', type: :routing do
@@ -155,7 +157,7 @@ describe 'ApiGuardRoutesSpec', type: :routing do
       expect(delete: 'customers/delete').to route_to('customers/registration#destroy')
     end
 
-    it "should use custom routes for registration controllers" do
+    it 'should use custom routes for registration controllers' do
       Rails.application.routes.draw do
         api_guard_routes for: 'users', except: [:registration]
 

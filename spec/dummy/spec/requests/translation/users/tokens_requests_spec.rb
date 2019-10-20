@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dummy/spec/rails_helper'
 include ApiGuard::JwtAuth::JsonWebToken
 
@@ -22,7 +24,7 @@ describe 'Refresh token - User', type: :request do
 
       it 'should return 401 - invalid access token' do
         create(:user)
-        post '/users/tokens', headers: {'Authorization': 'Bearer 123213'}
+        post '/users/tokens', headers: { 'Authorization': 'Bearer 123213' }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Invalid token')
@@ -32,7 +34,7 @@ describe 'Refresh token - User', type: :request do
         user = create(:user)
         access_token = jwt_and_refresh_token(user, 'user')
 
-        post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}"}
+        post '/users/tokens', headers: { 'Authorization': "Bearer #{access_token}" }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Refresh token is missing')
@@ -42,7 +44,7 @@ describe 'Refresh token - User', type: :request do
         user = create(:user)
         access_token = jwt_and_refresh_token(user, 'user')[0]
 
-        post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312'}
+        post '/users/tokens', headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': '12312' }
 
         expect(response).to have_http_status(401)
         expect(response_errors).to eq('Refresh token invalid')
@@ -54,7 +56,7 @@ describe 'Refresh token - User', type: :request do
         user = create(:user)
         access_token, refresh_token = jwt_and_refresh_token(user, 'user')
 
-        post '/users/tokens', headers: {'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token}
+        post '/users/tokens', headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
 
         expect(response).to have_http_status(200)
         expect(response_message).to eq('Token refreshed')

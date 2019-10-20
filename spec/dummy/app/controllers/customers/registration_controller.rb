@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Customers
   class RegistrationController < ApiGuard::RegistrationController
     skip_before_action :authenticate_resource, only: [:destroy]
@@ -9,7 +11,7 @@ module Customers
 
     def destroy
       current_user.destroy
-      render_success(message: "Customer destroyed successfully")
+      render_success(message: 'Customer destroyed successfully')
     end
 
     private

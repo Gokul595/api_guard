@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiGuard
   module JwtAuth
     # Common module for API authentication
@@ -45,6 +47,7 @@ module ApiGuard
       # Returns true if password hasn't changed by the user
       def valid_issued_at?
         return true unless ApiGuard.invalidate_old_tokens_on_password_change
+
         !current_resource.token_issued_at || @decoded_token[:iat] >= current_resource.token_issued_at.to_i
       end
 
