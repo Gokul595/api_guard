@@ -57,10 +57,10 @@ describe 'Posts', type: :request do
     context 'with valid params' do
       it 'should return current user posts' do
         user = create(:user)
-        user_1 = create(:user_1)
+        user1 = create(:user_1)
 
         user_posts = create_list(:post, 2, user_id: user.id)
-        create_list(:post, 2, user_id: user_1.id)
+        create_list(:post, 2, user_id: user1.id)
 
         access_token = jwt_and_refresh_token(user, 'user')[0]
 

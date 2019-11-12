@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require 'dummy/spec/rails_helper'
-include ApiGuard::JwtAuth::JsonWebToken
 
 describe 'Refresh token - User', type: :request do
+  include ApiGuard::JwtAuth::JsonWebToken
+
   before :all do
     I18n.locale = :en_1
   end
