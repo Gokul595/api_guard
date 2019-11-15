@@ -11,11 +11,11 @@ module ApiGuard
       end
 
       def token_expire_at
-        @expire_at ||= (current_time + ApiGuard.token_validity).to_i
+        @token_expire_at ||= (current_time + ApiGuard.token_validity).to_i
       end
 
       def token_issued_at
-        @issued_at ||= current_time.to_i
+        @token_issued_at ||= current_time.to_i
       end
 
       # Encode the payload with the secret key and return the JWT token
