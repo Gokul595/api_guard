@@ -62,7 +62,8 @@ module ApiGuard
         resource = @resource_name.classify.constantize.find_by(id: @decoded_token[:"#{@resource_name}_id"])
 
         self.class.send(:define_method, "current_#{@resource_name}") do
-          instance_variable_get("@current_#{@resource_name}") || instance_variable_set("@current_#{@resource_name}", resource)
+          instance_variable_get("@current_#{@resource_name}") ||
+            instance_variable_set("@current_#{@resource_name}", resource)
         end
 
         return if current_resource && valid_issued_at? && !blacklisted?
