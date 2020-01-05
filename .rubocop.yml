@@ -1,3 +1,7 @@
+AllCops:
+  Exclude:
+    - 'lib/generators/api_guard/controllers/templates/*'
+
 Rails:
   Enabled: true
 
