@@ -16,6 +16,10 @@ module ApiGuard
         end
       end
 
+      def respond_to_missing?(method_name, include_private = false)
+        method_name.to_s.start_with?('authenticate_and_set_') || super
+      end
+
       # Authenticate the JWT token and set resource
       def authenticate_and_set_resource(resource_name)
         @resource_name = resource_name
