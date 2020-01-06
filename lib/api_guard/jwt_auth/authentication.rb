@@ -55,9 +55,9 @@ module ApiGuard
         !current_resource.token_issued_at || @decoded_token[:iat] >= current_resource.token_issued_at.to_i
       end
 
-      # Sets "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
+      # Defines "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
       # that returns "resource" value
-      def define_current_resource_method(resource)
+      def define_current_resource_accessors(resource)
         self.class.send(:define_method, "current_#{@resource_name}") do
           instance_variable_get("@current_#{@resource_name}") ||
             instance_variable_set("@current_#{@resource_name}", resource)
