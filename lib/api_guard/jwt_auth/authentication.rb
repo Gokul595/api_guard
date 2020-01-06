@@ -74,7 +74,7 @@ module ApiGuard
 
         resource = @resource_name.classify.constantize.find_by(id: @decoded_token[:"#{@resource_name}_id"])
 
-        define_current_resource_method(resource)
+        define_current_resource_accessors(resource)
 
         return if current_resource && valid_issued_at? && !blacklisted?
 
