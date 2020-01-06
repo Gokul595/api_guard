@@ -26,14 +26,15 @@ module ApiGuard
   mattr_accessor :api_guard_associations
   self.api_guard_associations = {}
 
-  mattr_reader :mapped_resource
-  @@mapped_resource = {}
+  mattr_reader :mapped_resource do
+    {}
+  end
 
   def self.setup
     yield self
   end
 
   def self.map_resource(routes_for, class_name)
-    @@mapped_resource[routes_for.to_sym] = ApiGuard::ResourceMapper.new(routes_for, class_name)
+    mapped_resource[routes_for.to_sym] = ApiGuard::ResourceMapper.new(routes_for, class_name)
   end
 end

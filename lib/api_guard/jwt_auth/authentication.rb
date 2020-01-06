@@ -16,6 +16,10 @@ module ApiGuard
         end
       end
 
+      def respond_to_missing?(method_name, include_private = false)
+        method_name.to_s.start_with?('authenticate_and_set_') || super
+      end
+
       # Authenticate the JWT token and set resource
       def authenticate_and_set_resource(resource_name)
         @resource_name = resource_name
@@ -51,6 +55,15 @@ module ApiGuard
         !current_resource.token_issued_at || @decoded_token[:iat] >= current_resource.token_issued_at.to_i
       end
 
+      # Defines "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
+      # that returns "resource" value
+      def define_current_resource_accessors(resource)
+        self.class.send(:define_method, "current_#{@resource_name}") do
+          instance_variable_get("@current_#{@resource_name}") ||
+            instance_variable_set("@current_#{@resource_name}", resource)
+        end
+      end
+
       # Authenticate the resource with the '{{resource_name}}_id' in the decoded JWT token
       # and also, check for valid issued at time and not blacklisted
       #
@@ -61,9 +74,7 @@ module ApiGuard
 
         resource = @resource_name.classify.constantize.find_by(id: @decoded_token[:"#{@resource_name}_id"])
 
-        self.class.send(:define_method, "current_#{@resource_name}") do
-          instance_variable_get("@current_#{@resource_name}") || instance_variable_set("@current_#{@resource_name}", resource)
-        end
+        define_current_resource_accessors(resource)
 
         return if current_resource && valid_issued_at? && !blacklisted?
 
