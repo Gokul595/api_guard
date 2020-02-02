@@ -64,6 +64,8 @@ Below steps are provided assuming the model in `User`.
 
 ### Creating User model
 
+> If you already using Devise authentication in your app refer [this Wiki](https://github.com/Gokul595/api_guard/wiki/Using-API-Guard-with-Devise#authentication) for configuring API Guard Authentication to work with Devise.
+
 Create a model for User with below command
 
 ```bash
@@ -108,6 +110,8 @@ api_guard_routes for: 'users'
 ``` 
 
 This will generate default routes such as sign up, sign in, sign out, token refresh, password change for User.
+
+> If you already using Devise authentication in your app refer [this Wiki](https://github.com/Gokul595/api_guard/wiki/Using-API-Guard-with-Devise#routes) for configuring API Guard routes to work with Devise.
 
 ### Registration
 
