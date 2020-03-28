@@ -37,6 +37,8 @@ for cryptographic signing.
     * [Routes](#routes)
     * [Customizing / translating response messages using I18n](#customizing--translating-response-messages-using-i18n)
 * [Testing](#testing)
+* [Wiki](https://github.com/Gokul595/api_guard/wiki)
+    * [Using API Guard with Devise](https://github.com/Gokul595/api_guard/wiki/Using-API-Guard-with-Devise)
 * [Contributing](#contributing)
 * [License](#license)
 
@@ -111,7 +113,7 @@ api_guard_routes for: 'users'
 
 This will generate default routes such as sign up, sign in, sign out, token refresh, password change for User.
 
-> If you already using Devise authentication in your app refer [this Wiki](https://github.com/Gokul595/api_guard/wiki/Using-API-Guard-with-Devise#routes) for configuring API Guard routes to work with Devise.
+> Refer [this Wiki](https://github.com/Gokul595/api_guard/wiki/Using-API-Guard-with-Devise#routes) for configuring API Guard routes to work with Devise.
 
 ### Registration
 
