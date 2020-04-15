@@ -31,6 +31,16 @@ describe 'Registration - User', type: :request do
         expect(response.headers['Expire-At']).to be_present
         expect(response.headers['Refresh-Token']).to be_present
       end
+
+      it 'should return 422 - email has already been taken' do
+        user = create(:user)
+        expect do
+          post '/users/sign_up', params: attributes_for(:user)
+        end.not_to change(User, :count)
+
+        expect(response).to have_http_status(422)
+        expect(response_errors).to eq('Email has already been taken')
+      end
     end
   end
 
