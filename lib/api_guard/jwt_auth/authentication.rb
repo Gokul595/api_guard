@@ -49,10 +49,10 @@ module ApiGuard
 
       # Returns whether the JWT token is issued after the last password change
       # Returns true if password hasn't changed by the user
-      def valid_issued_at?
+      def valid_issued_at?(resource)
         return true unless ApiGuard.invalidate_old_tokens_on_password_change
 
-        !current_resource.token_issued_at || @decoded_token[:iat] >= current_resource.token_issued_at.to_i
+        !resource.token_issued_at || @decoded_token[:iat] >= resource.token_issued_at.to_i
       end
 
       # Defines "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
@@ -70,15 +70,22 @@ module ApiGuard
       # Also, set "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
       # for accessing the authenticated resource
       def authenticate_token
-        return unless decode_token && @decoded_token[:"#{@resource_name}_id"].present?
+        return unless decode_token
 
-        resource = @resource_name.classify.constantize.find_by(id: @decoded_token[:"#{@resource_name}_id"])
+        resource = find_resource_from_token(@resource_name.classify.constantize)
 
-        define_current_resource_accessors(resource)
+        if resource && valid_issued_at?(resource) && !blacklisted?(resource)
+          define_current_resource_accessors(resource)
+        else
+          render_error(401, message: I18n.t('api_guard.access_token.invalid'))
+        end
+      end
 
-        return if current_resource && valid_issued_at? && !blacklisted?
+      def find_resource_from_token(resource_class)
+        resource_id = @decoded_token[:"#{@resource_name}_id"]
+        return if resource_id.blank?
 
-        render_error(401, message: I18n.t('api_guard.access_token.invalid'))
+        resource_class.find_by(id: resource_id)
       end
 
       def current_resource
