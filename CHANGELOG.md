@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.4.0 - 2020-04-26
+
+* Features
+    * [Pull #24](https://github.com/Gokul595/api_guard/pull/24) - Add custom data in JWT token & customize resource 
+    finding logic.
+
 ### 0.3.0 - 2019-09-14
 
 * Features
