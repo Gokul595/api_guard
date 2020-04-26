@@ -577,7 +577,7 @@ To add custom data, you need to create an instance method `jwt_token_payload` in
 should return a Hash,
 
 ```ruby
-class User
+class User < ApplicationRecord
   def jwt_token_payload
     { custom_key: 'value' }
   end
@@ -598,7 +598,7 @@ By default, API Guard will try to find the resource by it's `id`. If you wish to
 do it by creating a method `find_resource_from_token` in the specific controller or in `ApplicationController` as you 
 need.
 
-**Adding custom logic using the user found from the token:**
+**Adding custom logic in addition to the default logic:**
 ```ruby
 def find_resource_from_token(resource_class)
   user = super # This will call the actual method defined in API Guard
