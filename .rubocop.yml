@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'lib/generators/api_guard/controllers/templates/*'
+    - 'spec/dummy/db/schema.rb'
 
 Rails:
   Enabled: true

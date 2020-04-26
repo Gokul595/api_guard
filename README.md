@@ -35,6 +35,8 @@ for cryptographic signing.
 * [Overriding defaults](#overriding-defaults)
     * [Controllers](#controllers)
     * [Routes](#routes)
+    * [Adding custom data in JWT token payload](#adding-custom-data-in-jwt-token-payload)
+    * [Override finding resource](#override-finding-resource)
     * [Customizing / translating response messages using I18n](#customizing--translating-response-messages-using-i18n)
 * [Testing](#testing)
 * [Wiki](https://github.com/Gokul595/api_guard/wiki)
@@ -565,6 +567,58 @@ end
 
 Above configuration will replace default registration routes `users/sign_up` & `users/delete` with `account/create` & 
 `account/delete`
+
+### Adding custom data in JWT token payload
+
+You can add custom data in the JWT token payload in the format of Hash and use the data after decoding the token on 
+every request.
+
+To add custom data, you need to create an instance method `jwt_token_payload` in the resource model as below which 
+should return a Hash,
+
+```ruby
+class User < ApplicationRecord
+  def jwt_token_payload
+    { custom_key: 'value' }
+  end
+end
+```
+
+API Guard will add the hash returned by this method to the JWT token payload in addition to the default payload values. 
+This data (including default payload values) will be available in the instance variable `@decoded_token` on each request 
+if the token has been successfully decoded. You can access the values as below,
+
+```ruby
+@decoded_token[:custom_key]
+```
+
+### Override finding resource
+
+By default, API Guard will try to find the resource by it's `id`. If you wish to override this default behavior, you can
+do it by creating a method `find_resource_from_token` in the specific controller or in `ApplicationController` as you 
+need.
+
+**Adding custom logic in addition to the default logic:**
+```ruby
+def find_resource_from_token(resource_class)
+  user = super # This will call the actual method defined in API Guard
+  user if user&.active?
+end
+```
+
+**Using custom query to find the user from the token:**
+```ruby
+def find_resource_from_token(resource_class)
+  resource_id = @decoded_token[:"#{@resource_name}_id"]
+  resource_class.find_by(id: resource_id, status: 'active') if resource_id
+end
+```
+
+This method has an argument `resource_class` which is the class (model) of the current resource (`User`).
+This method should return a resource object to successfully authenticate the request or `nil` to respond with 401.
+
+You can also use the [custom data](#adding-custom-data-in-jwt-token-payload) added in the JWT token payload using 
+`@decoded_token` instance variable and customize the logic as you need.
 
 ### Customizing / translating response messages using I18n
 

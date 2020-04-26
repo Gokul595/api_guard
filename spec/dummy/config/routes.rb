@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     authentication: 'admins/auth'
   }
 
+  namespace :admins do
+    resources :posts, only: [:update]
+  end
+
   api_guard_routes for: 'users', path: 'customers', as: 'customer', except: %i[registration], controller: {
     authentication: 'customers/authentication',
     tokens: 'customers/tokens',
