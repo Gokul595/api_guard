@@ -66,22 +66,22 @@ Below steps are provided assuming the model in `User`.
 
 ### Creating User model
 
-> If you already using Devise authentication in your app refer [this Wiki](https://github.com/Gokul595/api_guard/wiki/Using-API-Guard-with-Devise#authentication) for configuring API Guard Authentication to work with Devise.
-
-Create a model for User with below command
+Create a model for User with below command.
 
 ```bash
 $ rails generate model user name:string email:string:uniq password_digest:string
 ```
 
-Then, run migration to create the `users` table
+Then, run migration to create the `users` table.
 
 ```bash
 $ rails db:migrate
 ```
 
 Add [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password) 
-in `User` model for password authentication
+in `User` model for password authentication. 
+
+> Refer [this Wiki](https://github.com/Gokul595/api_guard/wiki/Using-API-Guard-with-Devise#authentication) for configuring API Guard authentication to work with Devise instead of using `has_secure_password`.
 
 ```ruby
 class User < ApplicationRecord
@@ -91,7 +91,7 @@ end
 
 Then, add `bcrypt` gem in your Gemfile which is used by 
 [has_secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password)
-for encrypting password and authentication
+for encrypting password and authentication.
 
 ```ruby
 gem 'bcrypt', '~> 3.1.7'
