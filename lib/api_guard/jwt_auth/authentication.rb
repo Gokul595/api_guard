@@ -10,10 +10,26 @@ module ApiGuard
 
         if method_name.start_with?('authenticate_and_set_')
           resource_name = method_name.split('authenticate_and_set_')[1]
-          authenticate_and_set_resource(resource_name)
+
+          multiple_resources?(resource_name)
         else
           super
         end
+      end
+
+      def multiple_resources?(resource_name)
+        if resource_name.include?('or')
+          authenticate_and_set_multiple_resources(resource_name)
+        else
+          authenticate_and_set_resource(resource_name)
+        end
+      end
+
+      def authenticate_and_set_multiple_resources(resource_name)
+        resources = resource_name.split('or')
+        resources.map { |resource| resource.tr!('_',"") }
+
+        authenticate_and_set_resource(resources, true)
       end
 
       def respond_to_missing?(method_name, include_private = false)
@@ -21,13 +37,21 @@ module ApiGuard
       end
 
       # Authenticate the JWT token and set resource
-      def authenticate_and_set_resource(resource_name)
-        @resource_name = resource_name
-
+      def authenticate_and_set_resource(resource_name, multiple = false)
         @token = request.headers['Authorization']&.split('Bearer ')&.last
         return render_error(401, message: I18n.t('api_guard.access_token.missing')) unless @token
 
-        authenticate_token
+        if multiple === true
+          resource_name.each do |resource|
+            break if @current_resource
+
+            @resource_name = resource
+            authenticate_token(true)
+          end
+        else
+          @resource_name = resource_name
+          authenticate_token
+        end
 
         # Render error response only if no resource found and no previous render happened
         render_error(401, message: I18n.t('api_guard.access_token.invalid')) if !current_resource && !performed?
@@ -69,15 +93,16 @@ module ApiGuard
       #
       # Also, set "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
       # for accessing the authenticated resource
-      def authenticate_token
+      def authenticate_token(multiple = false)
         return unless decode_token
 
         resource = find_resource_from_token(@resource_name.classify.constantize)
-
         if resource && valid_issued_at?(resource) && !blacklisted?(resource)
-          define_current_resource_accessors(resource)
+          @current_resource = define_current_resource_accessors(resource)
         else
-          render_error(401, message: I18n.t('api_guard.access_token.invalid'))
+          if multiple === false
+            render_error(401, message: I18n.t('api_guard.access_token.invalid'))
+          end
         end
       end
 
