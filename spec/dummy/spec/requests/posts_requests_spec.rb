@@ -55,19 +55,37 @@ describe 'Posts', type: :request do
     end
 
     context 'with valid params' do
-      it 'should return current user posts' do
-        user = create(:user)
-        user1 = create(:user_1)
+      context 'as user' do
+        let(:user) { create(:user) }
+        let(:user1) { create(:user_1) }
+        let(:access_token) { jwt_and_refresh_token(user, 'user')[0] }
 
-        user_posts = create_list(:post, 2, user_id: user.id)
-        create_list(:post, 2, user_id: user1.id)
+        it 'should return current user posts' do  
+          user_posts = create_list(:post, 2, user_id: user.id)
+          create_list(:post, 2, user_id: user1.id)
+  
+          get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
+  
+          expect(response).to have_http_status(200)
+          expect(parsed_response.map { |p| p['id'] }).to match_array(user_posts.map(&:id))
+        end
+      end
 
-        access_token = jwt_and_refresh_token(user, 'user')[0]
+      context 'as admin' do
+        let(:admin) { create(:admin) }
+        let(:user) { create(:user) }
+        let(:user1) { create(:user_1) }
+        let(:access_token) { jwt_and_refresh_token(admin, 'admin')[0] }
 
-        get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
-
-        expect(response).to have_http_status(200)
-        expect(parsed_response.map { |p| p['id'] }).to match_array(user_posts.map(&:id))
+        it 'should return all user posts' do
+          user_posts = create_list(:post, 2, user_id: user.id)
+          other_user_posts = create_list(:post, 2, user_id: user1.id)
+  
+          get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
+  
+          expect(response).to have_http_status(200)
+          expect(parsed_response.map { |p| p['id'] }).to match_array([user_posts.map(&:id), other_user_posts.map(&:id)].flatten)
+        end
       end
     end
   end
