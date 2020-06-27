@@ -1,0 +1,42 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Ruby ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Don't stop other jobs when any matrix job gets failed.
+      matrix:
+        ruby: [2.3, 2.4, 2.5, 2.6]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install SQLite dev library
+      run: sudo apt-get install libsqlite3-dev
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+
+    - name: Setup Code Climate test reporter
+      run: |
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        chmod +x ./cc-test-reporter
+        ./cc-test-reporter before-build
+
+    - name: Run RSepc tests
+      run: bundle exec rspec --format documentation
+
+    - name: Publish code coverage to Code Climate
+      run: |
+        export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
+        ./cc-test-reporter after-build -r ${{secrets.CC_TEST_REPORTER_ID}}
