@@ -1,0 +1,27 @@
+name: RSpec
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [2.3, 2.4, 2.5, 2.6]
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+
+    - name: Install gems
+      run: bundle install
+
+    - name: Run RSepc tests
+      run: bundle exec rspec --format documentation
