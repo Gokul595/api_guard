@@ -19,9 +19,9 @@ jobs:
 
     - name: Install SQLite dev library
       run: sudo apt-get install libsqlite3-dev
-    
+
     - name: Setup Ruby
-    - uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
