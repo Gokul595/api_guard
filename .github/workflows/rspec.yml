@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: Test on Ruby ${{ matrix.ruby }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false # Don't stop other jobs when any matrix job gets failed.
