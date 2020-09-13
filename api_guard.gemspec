@@ -27,6 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'listen', '~> 3.2'
   s.add_development_dependency 'rspec-rails', '~> 4.0'
   s.add_development_dependency 'rubocop', '~> 0.75.1'
-  s.add_development_dependency 'simplecov', '~> 0.16', '>= 0.16.1'
+  s.add_development_dependency 'simplecov', '~> 0.19'
   s.add_development_dependency 'sqlite3', '~> 1.3', '>= 1.3.13'
 end
