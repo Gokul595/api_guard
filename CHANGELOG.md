@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.5.0 - 2020-09-13
+
+* Dependency upgrade
+    * [Pull #29](https://github.com/Gokul595/api_guard/pull/29) - Upgraded all dependent gems and removed support for
+    ruby version less than 2.5.
+
 ### 0.4.0 - 2020-04-26
 
 * Features
