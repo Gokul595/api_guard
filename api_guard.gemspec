@@ -23,7 +23,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'bcrypt', '~> 3.1', '>= 3.1.11'
   s.add_development_dependency 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
-  s.add_development_dependency 'rails', '~> 5.1', '>= 5.1.5'
+  s.add_development_dependency 'rails', '~> 6.0'
+  s.add_development_dependency 'listen', '~> 3.2'
   s.add_development_dependency 'rspec-rails', '~> 3.7', '>= 3.7.2'
   s.add_development_dependency 'rubocop', '~> 0.75.1'
   s.add_development_dependency 'simplecov', '~> 0.16', '>= 0.16.1'
