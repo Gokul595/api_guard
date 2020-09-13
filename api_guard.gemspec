@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'jwt', '~> 2.1', '>= 2.1.0'
 
-  s.add_development_dependency 'bcrypt', '~> 3.1', '>= 3.1.11'
+  s.add_development_dependency 'bcrypt', '~> 3.1'
   s.add_development_dependency 'factory_bot_rails', '~> 6.1'
   s.add_development_dependency 'rails', '~> 6.0'
   s.add_development_dependency 'listen', '~> 3.2'
