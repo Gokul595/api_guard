@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :admin do
-    email 'admin@api_guard.com'
-    password 'api_pass'
-    password_confirmation 'api_pass'
+    email { 'admin@api_guard.com' }
+    password { 'api_pass' }
+    password_confirmation { 'api_pass' }
   end
 end
