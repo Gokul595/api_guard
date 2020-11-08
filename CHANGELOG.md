@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.5.1 - 2020-11-08
+
+* Bug fixes
+    * [Issue #30](https://github.com/Gokul595/api_guard/issues/30) - Prevent sharing authenticated resource across the
+    requests.
+
 ### 0.5.0 - 2020-09-13
 
 * Dependency upgrade
