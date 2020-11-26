@@ -451,11 +451,11 @@ api_guard_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blac
 
 ### Token blacklisting
 
-To include token blacklisting in your application you need to create a table to store the refresh tokens. This will be 
+To include token blacklisting in your application you need to create a table to store the blacklisted tokens. This will be 
 used to blacklist a JWT access token from future use. The access token will be blacklisted on successful sign out of the 
 resource.
 
-Use below command to create a model `RefeshToken` with columns to store the token and the user reference
+Use below command to create a model `BlacklistedToken` with columns to store the token and the user reference
 
 ```bash
 $ rails generate model blacklisted_token token:string user:references expire_at:datetime
