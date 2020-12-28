@@ -1,0 +1,29 @@
+name: build
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Ruby ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Don't stop other jobs when any matrix job gets failed.
+      matrix:
+        ruby: [2.5, 2.6, 2.7]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install SQLite dev library
+      run: sudo apt-get install libsqlite3-dev
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+
+    - name: Run RSepc tests
+      run: bundle exec rspec --format documentation
