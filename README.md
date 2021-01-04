@@ -202,6 +202,8 @@ To authenticate the API request just add this before_action in the controller:
 before_action :authenticate_and_set_user
 ```
 
+>**Note:** It is possible to authenticate with more than one resource, e.g. `authenticate_and_set_user_or_admin` will permit tokens issued for users or admins.
+
 Send the access token got in sign in API in the Authorization header in the API request as below. 
 Also, make sure you add "Bearer" before the access token in the header value.
 

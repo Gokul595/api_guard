@@ -9,8 +9,8 @@ module ApiGuard
         method_name = name.to_s
 
         if method_name.start_with?('authenticate_and_set_')
-          resource_name = method_name.split('authenticate_and_set_')[1]
-          authenticate_and_set_resource(resource_name)
+          resource_names = method_name.split('authenticate_and_set_')[1].split('_or_')
+          authenticate_and_set_resources(resource_names)
         else
           super
         end
@@ -20,9 +20,9 @@ module ApiGuard
         method_name.to_s.start_with?('authenticate_and_set_') || super
       end
 
-      # Authenticate the JWT token and set resource
-      def authenticate_and_set_resource(resource_name)
-        @resource_name = resource_name
+      # Authenticate the JWT token and set resources
+      def authenticate_and_set_resources(resource_names)
+        @resource_names = resource_names
 
         @token = request.headers['Authorization']&.split('Bearer ')&.last
         return render_error(401, message: I18n.t('api_guard.access_token.missing')) unless @token
@@ -72,13 +72,23 @@ module ApiGuard
       def authenticate_token
         return unless decode_token
 
+        @resource_name = set_resource_name_from_token(@resource_names)
+        return if @resource_name.nil?
+
         resource = find_resource_from_token(@resource_name.classify.constantize)
 
         if resource && valid_issued_at?(resource) && !blacklisted?(resource)
           define_current_resource_accessors(resource)
-        else
-          render_error(401, message: I18n.t('api_guard.access_token.invalid'))
         end
+      end
+
+      def set_resource_name_from_token(resource_names)
+        resource_names.each do |name|
+          resource_id = @decoded_token[:"#{name}_id"]
+          return name if resource_id.present?
+        end
+
+        return nil
       end
 
       def find_resource_from_token(resource_class)
