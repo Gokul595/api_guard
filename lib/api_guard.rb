@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_support/core_ext/integer/time"
 require 'api_guard/engine'
 require 'api_guard/route_mapper'
 require 'api_guard/modules'
