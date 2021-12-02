@@ -14,6 +14,9 @@ module ApiGuard
   mattr_accessor :token_validity
   self.token_validity = 1.day
 
+  mattr_accessor :refresh_token_validity
+  self.refresh_token_validity = 2.weeks
+
   mattr_accessor :token_signing_secret
   self.token_signing_secret = nil
 

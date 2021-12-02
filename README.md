@@ -424,7 +424,7 @@ To include token refreshing in your application you need to create a table to st
 Use below command to create a model `RefeshToken` with columns to store the token and the user reference
 
 ```bash
-$ rails generate model refresh_token token:string:uniq user:references
+$ rails generate model refresh_token token:string:uniq user:references expire_at:datetime
 ```
 
 Then, run migration to create the `refresh_tokens` table
