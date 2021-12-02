@@ -67,5 +67,17 @@ describe 'Refresh token - Customer', type: :request do
         expect(response.headers['Refresh-Token']).to be_present
       end
     end
+    
+    context 'with expired refresh token' do
+      it 'should return 401 - invalid refresh token' do
+        customer = create(:user)
+        access_token, refresh_token = jwt_and_refresh_token(customer, 'user', false, true)
+
+        post '/customers/tokens', headers: { 'Authorization': "Bearer #{access_token}", 'Refresh-Token': refresh_token }
+
+        expect(response).to have_http_status(401)
+        expect(response_errors).to eq('Invalid refresh token')
+      end
+    end
   end
 end

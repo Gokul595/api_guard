@@ -35,10 +35,11 @@ module ApiGuard
       end
 
       # Create a new refresh_token for the current resource
-      def new_refresh_token(resource)
+      # This creates expired refresh_token if the argument 'expired_refresh_token' is true which can be used for testing.
+      def new_refresh_token(resource, expired_refresh_token = false)
         return unless refresh_token_enabled?(resource)
         
-        refresh_tokens_for(resource).create(token: uniq_refresh_token(resource), expire_at: refresh_token_expire_at).token
+        refresh_tokens_for(resource).create(token: uniq_refresh_token(resource), expire_at: expired_refresh_token ? current_time.to_i : refresh_token_expire_at).token
       end
 
       def destroy_all_refresh_tokens(resource)

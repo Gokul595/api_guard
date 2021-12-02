@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_13_062128) do
+ActiveRecord::Schema.define(version: 2021_12_02_151903) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2020_09_13_062128) do
 
   create_table "refresh_tokens", force: :cascade do |t|
     t.string "token"
+    t.datetime "expire_at"
     t.integer "user_id"
     t.integer "admin_id"
     t.datetime "created_at", null: false
