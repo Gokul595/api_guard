@@ -34,7 +34,8 @@ module ApiGuard
       # Also, create refresh token if enabled for the resource.
       #
       # This creates expired JWT token if the argument 'expired_token' is true which can be used for testing.
-      def jwt_and_refresh_token(resource, resource_name, expired_token = false)
+      # This creates expired refresh token if the argument 'expired_refresh_token' is true which can be used for testing.
+      def jwt_and_refresh_token(resource, resource_name, expired_token = false, expired_refresh_token = false)
         payload = {
           "#{resource_name}_id": resource.id,
           exp: expired_token ? token_issued_at : token_expire_at,
@@ -44,7 +45,7 @@ module ApiGuard
         # Add custom data in the JWT token payload
         payload.merge!(resource.jwt_token_payload) if resource.respond_to?(:jwt_token_payload)
 
-        [encode(payload), new_refresh_token(resource)]
+        [encode(payload), new_refresh_token(resource, expired_refresh_token)]
       end
 
       # Create tokens and set response headers
