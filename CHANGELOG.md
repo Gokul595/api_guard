@@ -1,5 +1,10 @@
 ## Changelog
 
+### 0.6.0 - 2022-03-21
+
+* Features
+  * [Pull #55](https://github.com/Gokul595/api_guard/pull/55) - Adds expiry to refresh tokens.
+
 ### 0.5.1 - 2020-11-08
 
 * Bug fixes
