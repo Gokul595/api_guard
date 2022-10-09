@@ -19,12 +19,19 @@ module ApiGuard
     private
 
     def find_refresh_token
-      if ApiGuard.enable_response_headers
+      unless ApiGuard.enable_cookies_response
         refresh_token_from_header = request.headers['Refresh-Token']
-      elsif ApiGuard.enable_cookies_response
-        refresh_token_from_header = request.cookies.signed[:kebbah]
-      end
 
+        if refresh_token_from_header
+          @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_header)
+          return render_error(401, message: I18n.t('api_guard.refresh_token.invalid')) unless @refresh_token
+        else
+          render_error(401, message: I18n.t('api_guard.refresh_token.missing'))
+        end
+
+      end
+      
+      refresh_token_from_header = request.cookies.signed[:kebbah]
       if refresh_token_from_header
         @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_header)
         return render_error(401, message: I18n.t('api_guard.refresh_token.invalid')) unless @refresh_token
