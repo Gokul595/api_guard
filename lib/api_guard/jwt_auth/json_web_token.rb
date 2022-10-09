@@ -45,6 +45,7 @@ module ApiGuard
         # Add custom data in the JWT token payload
         payload.merge!(resource.jwt_token_payload) if resource.respond_to?(:jwt_token_payload)
 
+        # generate the access token and refresh token
         [encode(payload), new_refresh_token(resource, expired_refresh_token)]
       end
 
@@ -54,11 +55,46 @@ module ApiGuard
         set_token_headers(access_token, refresh_token)
       end
 
+      def create_token_and_set_in_strategy(resource, resource_name)
+        access_token, refresh_token = jwt_and_refresh_token(resource, resource_name)
+
+        if ApiGuard.enable_response_headers
+          set_token_headers(access_token, refresh_token)
+        elsif ApiGuard.enable_cookies_response
+          set_token_cookies(access_token, refresh_token)
+        end
+      end
+
       # Set token details in response headers
       def set_token_headers(token, refresh_token = nil)
         response.headers['Access-Token'] = token
         response.headers['Refresh-Token'] = refresh_token if refresh_token
         response.headers['Expire-At'] = token_expire_at.to_s
+      end
+
+      def set_token_cookies(token, refresh_token)
+        # the secure way is just storing the refresh token in the cookies
+        # and leave the access token in the headers, but in your frontend,
+        # you need to make a accessor to the a variable called access token
+        # you can do this approche, or just store access token and refresh
+        # token in the headers
+        cookies.signed[:access_token] = {
+          value: { access_token: access_token, expires_at: token_expire_at.to_s},
+          http_only: true,
+          expires: ApiGuard.token_validity,
+          domain: ApiGuard.add_domain_for_refresh_token,
+          secure: true,
+          same_site: 'strict'
+        }
+
+        cookies.signed[:kebbah] = {
+          value: refresh_token,
+          http_only: true,
+          expires: ApiGuard.refresh_token_validity,
+          domain: ApiGuard.add_domain_for_refresh_token,
+          secure: true,
+          same_site: 'strict'
+        } if refresh_token        
       end
 
       # Set token issued at to current timestamp

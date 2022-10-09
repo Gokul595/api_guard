@@ -47,6 +47,7 @@ module ApiGuard
 
         refresh_tokens_for(resource).destroy_all
       end
+
     end
   end
 end

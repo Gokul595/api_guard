@@ -5,8 +5,8 @@ module ApiGuard
     module Renderer
       def render_success(data: nil, message: nil)
         resp_data = { status: I18n.t('api_guard.response.success') }
-        resp_data[:message] = message if message
         resp_data[:data] = data if data
+        resp_data[:message] = message if message
 
         render json: resp_data, status: 200
       end
@@ -19,4 +19,8 @@ module ApiGuard
       end
     end
   end
+end
+
+class App
+  mattr_accessor :message 
 end
