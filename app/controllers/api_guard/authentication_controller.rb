@@ -9,8 +9,8 @@ module ApiGuard
 
     def create
       if resource.authenticate(params[:password])
-        create_token_and_set_header(resource, resource_name)
-        render_success(message: I18n.t('api_guard.authentication.signed_in'))
+        create_and_set_token_pair(resource, resource_name)
+        render_success(data: resource, message: I18n.t('api_guard.authentication.signed_in'))
       else
         render_error(422, message: I18n.t('api_guard.authentication.invalid_login_credentials'))
       end
@@ -18,6 +18,7 @@ module ApiGuard
 
     def destroy
       blacklist_token
+      remove_tokens_from_cookies
       render_success(message: I18n.t('api_guard.authentication.signed_out'))
     end
 

@@ -10,8 +10,12 @@ module ApiGuard
         @current_time ||= Time.now.utc
       end
 
-      def token_expire_at
-        @token_expire_at ||= (current_time + ApiGuard.token_validity).to_i
+      def access_token_expire_at
+        @token_expire_at ||= (current_time + ApiGuard.token_validity)
+      end
+
+      def refresh_token_expire_at
+        @refresh_token_expire_at_date ||= (Time.now.utc + ApiGuard.refresh_token_validity)
       end
 
       def token_issued_at
@@ -38,7 +42,7 @@ module ApiGuard
       def jwt_and_refresh_token(resource, resource_name, expired_token = false, expired_refresh_token = false)
         payload = {
           "#{resource_name}_id": resource.id,
-          exp: expired_token ? token_issued_at : token_expire_at,
+          exp: expired_token ? token_issued_at : access_token_expire_at.to_i,
           iat: token_issued_at
         }
 
@@ -48,17 +52,58 @@ module ApiGuard
         [encode(payload), new_refresh_token(resource, expired_refresh_token)]
       end
 
-      # Create tokens and set response headers
-      def create_token_and_set_header(resource, resource_name)
+      # Create tokens and set response headers and cookies
+      def create_and_set_token_pair(resource, resource_name)
         access_token, refresh_token = jwt_and_refresh_token(resource, resource_name)
-        set_token_headers(access_token, refresh_token)
+
+        if ApiGuard.enable_tokens_in_cookies
+          set_token_cookies(access_token, refresh_token)
+        else
+          set_token_headers(access_token, refresh_token)
+        end
       end
 
       # Set token details in response headers
       def set_token_headers(token, refresh_token = nil)
         response.headers['Access-Token'] = token
         response.headers['Refresh-Token'] = refresh_token if refresh_token
-        response.headers['Expire-At'] = token_expire_at.to_s
+        response.headers['Expire-At'] = access_token_expire_at.to_i.to_s
+      end
+
+      def set_token_cookies(access_token, refresh_token)
+        response.set_cookie(
+          'access_token',
+          {
+            value: access_token,
+            http_only: true,
+            expires: refresh_token_expire_at,
+            path: '/'
+          }
+        )
+        response.set_cookie(
+          'refresh_token',
+          {
+            value: refresh_token,
+            http_only: true,
+            expires: refresh_token_expire_at,
+            path: '/'
+          }
+        )
+      end
+
+      def remove_tokens_from_cookies
+        response.delete_cookie(
+          'access_token',
+          {
+            path: '/'
+          }
+        )
+        response.delete_cookie(
+          'refresh_token',
+          {
+            path: '/'
+          }
+        )
       end
 
       # Set token issued at to current timestamp

@@ -8,7 +8,7 @@ module ApiGuard
     before_action :find_refresh_token, only: [:create]
 
     def create
-      create_token_and_set_header(current_resource, resource_name)
+      create_and_set_token_pair(current_resource, resource_name)
 
       @refresh_token.destroy
       blacklist_token if ApiGuard.blacklist_token_after_refreshing
@@ -19,10 +19,14 @@ module ApiGuard
     private
 
     def find_refresh_token
-      refresh_token_from_header = request.headers['Refresh-Token']
+      refresh_token_from_request = if ApiGuard.enable_tokens_in_cookies
+                                     request.cookies['refresh_token']
+                                   else
+                                     request.headers['Refresh-Token']
+                                   end
 
-      if refresh_token_from_header
-        @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_header)
+      if refresh_token_from_request
+        @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_request)
         return render_error(401, message: I18n.t('api_guard.refresh_token.invalid')) unless @refresh_token
       else
         render_error(401, message: I18n.t('api_guard.refresh_token.missing'))

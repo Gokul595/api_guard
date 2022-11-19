@@ -33,6 +33,9 @@ module ApiGuard
     {}
   end
 
+  mattr_accessor :enable_tokens_in_cookies
+  self.enable_tokens_in_cookies = false
+
   def self.setup
     yield self
   end
