@@ -365,6 +365,10 @@ ApiGuard.setup do |config|
   # Default: 1 day
   # config.token_validity = 1.day
 
+  # Validity of the refresh token
+  # Default: 2 weeks
+  # config.refresh_token_validity = 2.weeks
+
   # Secret key for signing (encoding & decoding) the JWT access token
   # Default: 'secret_key_base' from Rails secrets 
   # config.token_signing_secret = 'my_signing_secret'
@@ -389,6 +393,18 @@ config.token_validity = 1.hour # Set one hour validity for access tokens
 
 On accessing the authenticated API with expired access token, API Guard will respond 401 (Unauthenticated) with message 
 "Access token expired".
+
+
+### Refresh token validity
+
+By default, the validity of the refresh token is 2 weeks from the creation. Override this by configuring `refresh_token_validity`
+
+```ruby
+config.refresh_token_validity = 6.hours # Set six hours validity for refresh tokens
+```
+
+On accessing the refresh token API with expired refresh token, API Guard will respond 401 (Unauthenticated) with message 
+"Invalid refresh token".
 
 ### Access token signing secret
 
