@@ -4,9 +4,8 @@ module <%= @controller_scope %>
     # before_action :find_refresh_token, only: [:create]
 
     # def create
-    #   create_token_and_set_header(current_resource, resource_name)
+    #   create_token_and_set_header(current_resource, resource_name, @refresh_token)
     #
-    #   @refresh_token.destroy
     #   blacklist_token if ApiGuard.blacklist_token_after_refreshing
     #
     #   render_success(message: I18n.t('api_guard.access_token.refreshed'))
