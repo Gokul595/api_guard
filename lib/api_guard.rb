@@ -11,6 +11,18 @@ module ApiGuard
     autoload :ControllerHelper, 'api_guard/test/controller_helper'
   end
 
+  mattr_accessor :enable_response_headers
+  self.enable_response_headers = true
+
+  mattr_accessor :add_domain_for_refresh_token
+  self.add_domain_for_refresh_token = nil
+
+  mattr_accessor :enable_response_body
+  self.enable_response_body = false
+
+  mattr_accessor :enable_cookies_response
+  self.enable_cookies_response = false
+
   mattr_accessor :token_validity
   self.token_validity = 1.day
 

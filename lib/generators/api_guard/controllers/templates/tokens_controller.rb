@@ -15,7 +15,11 @@ module <%= @controller_scope %>
     # private
 
     # def find_refresh_token
-    #   refresh_token_from_header = request.headers['Refresh-Token']
+    #   if ApiGuard.enable_response_headers
+    #      refresh_token_from_header = request.headers['Refresh-Token']
+    #   elsif ApiGuard.enable_cookies_response
+    #      refresh_token_from_header = request.cookies.signed[:kebbah]
+    #   end
     #
     #   if refresh_token_from_header
     #     @refresh_token = find_refresh_token_of(current_resource, refresh_token_from_header)
