@@ -13,7 +13,7 @@ module <%= @controller_scope %>
     # end
 
     # def destroy
-    #   blacklist_token
+    #   revoke_token
     #   render_success(message: I18n.t('api_guard.authentication.signed_out'))
     # end
 

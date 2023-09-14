@@ -39,11 +39,11 @@ describe 'Posts', type: :request do
         expect(response_errors).to eq('Access token expired')
       end
 
-      it 'should return 401 - blacklisted access token' do
+      it 'should return 401 - revoked access token' do
         user = create(:user)
         access_token = jwt_and_refresh_token(user, 'user')[0]
 
-        user.blacklisted_tokens.create(token: access_token, expire_at: Time.now.utc)
+        user.revoked_tokens.create(token: access_token, expire_at: Time.now.utc)
 
         get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
 
@@ -51,11 +51,11 @@ describe 'Posts', type: :request do
         expect(response_errors).to eq('Invalid access token')
       end
 
-      it 'should return 401 - blacklisted access token - admin' do
+      it 'should return 401 - revoked access token - admin' do
         admin = create(:admin)
         access_token = jwt_and_refresh_token(admin, 'admin')[0]
 
-        admin.blacklisted_tokens.create(token: access_token, expire_at: Time.now.utc)
+        admin.revoked_tokens.create(token: access_token, expire_at: Time.now.utc)
 
         get '/posts', headers: { 'Authorization': "Bearer #{access_token}" }
 

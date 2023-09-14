@@ -66,13 +66,13 @@ describe 'Authentication - Customer', type: :request do
         expect(response).to have_http_status(200)
       end
 
-      it 'should blacklist access token from future use' do
+      it 'should revoke access token from future use' do
         customer = create(:user)
         access_token = jwt_and_refresh_token(customer, 'user')[0]
 
         expect do
           delete '/customers/sign_out', headers: { 'Authorization': "Bearer #{access_token}" }
-        end.to change(customer.blacklisted_tokens, :count).by(1)
+        end.to change(customer.revoked_tokens, :count).by(1)
       end
     end
   end

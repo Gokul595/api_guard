@@ -5,7 +5,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ced3e74a26a66ed915cb/maintainability)](https://codeclimate.com/github/Gokul595/api_guard/maintainability)
 
 
-[JSON Web Token (JWT)](https://jwt.io/) based authentication solution with token refreshing & blacklisting for APIs 
+[JSON Web Token (JWT)](https://jwt.io/) based authentication solution with token refreshing & revocation for APIs 
 built on Rails.
 
 This is built using [Ruby JWT](https://github.com/jwt/ruby-jwt) gem. Currently API Guard supports only HS256 algorithm 
@@ -30,7 +30,7 @@ for cryptographic signing.
     * [Access token signing secret](#access-token-signing-secret)
     * [Invalidate tokens on password change](#invalidate-tokens-on-password-change)
     * [Token refreshing](#token-refreshing)
-    * [Token blacklisting](#token-blacklisting)
+    * [Token revocation](#token-revocation)
 * [Overriding defaults](#overriding-defaults)
     * [Controllers](#controllers)
     * [Routes](#routes)
@@ -299,8 +299,8 @@ The response headers for this request will be same as [registration API](#regist
 
 ### Sign out
 
-You can use this request to sign out an user. This will blacklist the current access token from future use if 
-[token blacklisting](#token-blacklisting) configured.
+You can use this request to sign out an user. This will revoke the current access token from future use if 
+[token revocation](#token-revocation) configured.
 
 Example request:
 
@@ -377,9 +377,9 @@ ApiGuard.setup do |config|
   # Default: false
   # config.invalidate_old_tokens_on_password_change = false
 
-  # Blacklist JWT access token after refreshing
+  # Revoke JWT access token after refreshing
   # Default: false
-  # config.blacklist_token_after_refreshing = false
+  # config.revoke_token_after_refreshing = false
 end
 ```
 
@@ -461,25 +461,25 @@ class User < ApplicationRecord
 end
 ```
 
-If you also have token blacklisting enabled you need to specify both associations as below
+If you also have token revocation enabled you need to specify both associations as below
 
 ```ruby
-api_guard_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blacklisted_tokens'
+api_guard_associations refresh_token: 'refresh_tokens', revoked_token: 'revoked_tokens'
 ```
 
-### Token blacklisting
+### Token revocation
 
-To include token blacklisting in your application you need to create a table to store the blacklisted tokens. This will be 
-used to blacklist a JWT access token from future use. The access token will be blacklisted on successful sign out of the 
+To include token revocation in your application you need to create a table to store the revoked tokens. This will be 
+used to revoke a JWT access token from future use. The access token will be revoked on successful sign out of the 
 resource.
 
-Use below command to create a model `BlacklistedToken` with columns to store the token and the user reference
+Use below command to create a model `RevokedToken` with columns to store the token and the user reference
 
 ```bash
-$ rails generate model blacklisted_token token:string user:references expire_at:datetime
+$ rails generate model revoked_token token:string user:references expire_at:datetime
 ```
 
-Then, run migration to create the `blacklisted_tokens` table
+Then, run migration to create the `revoked_tokens` table
 
 ```bash
 $ rails db:migrate
@@ -487,33 +487,33 @@ $ rails db:migrate
 
 >**Note:** Replace `user` in the above command with your model name if your model is not User.
 
-After creating model and table for blacklisted token configure the association in the resource model using 
+After creating model and table for revoked token configure the association in the resource model using 
 `api_guard_associations` method
 
 ```ruby
 class User < ApplicationRecord
-  api_guard_associations blacklisted_token: 'blacklisted_tokens'
-  has_many :blacklisted_tokens, dependent: :delete_all
+  api_guard_associations revoked_token: 'revoked_tokens'
+  has_many :revoked_tokens, dependent: :delete_all
 end
 ```
 
 If you also have token refreshing enabled you need to specify both associations as below
 
 ```ruby
-api_guard_associations refresh_token: 'refresh_tokens', blacklisted_token: 'blacklisted_tokens'
+api_guard_associations refresh_token: 'refresh_tokens', revoked_token: 'revoked_tokens'
 ```
 
-And, as this creates rows in `blacklisted_tokens` table you need to have a mechanism to delete the expired blacklisted 
+And, as this creates rows in `revoked_tokens` table you need to have a mechanism to delete the expired revoked 
 tokens to prevent this table from growing. One option is to have a CRON job to run a task daily that deletes the 
-blacklisted tokens that are expired i.e. `expire_at < DateTime.now`.
+revoked tokens that are expired i.e. `expire_at < DateTime.now`.
 
-**Blacklisting after refreshing token**
+**Revocation after refreshing token**
 
-By default, the JWT access token will not be blacklisted on refreshing the JWT access token. To enable this, you can 
+By default, the JWT access token will not be revoked on refreshing the JWT access token. To enable this, you can 
 configure it in API Guard initializer as below,
 
 ```ruby
-config.blacklist_token_after_refreshing = true
+config.revoke_token_after_refreshing = true
 ```
 
 ## Overriding defaults

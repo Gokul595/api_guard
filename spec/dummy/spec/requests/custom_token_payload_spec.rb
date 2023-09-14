@@ -34,11 +34,11 @@ describe 'Admins::Posts with custom token payload', type: :request do
         expect(response_errors).to eq('Access token expired')
       end
 
-      it 'should return 401 - blacklisted access token' do
+      it 'should return 401 - revoked access token' do
         admin = create(:admin)
         access_token = jwt_and_refresh_token(admin, 'admin')[0]
 
-        admin.blacklisted_tokens.create(token: access_token, expire_at: Time.now.utc)
+        admin.revoked_tokens.create(token: access_token, expire_at: Time.now.utc)
 
         patch '/admins/posts/1', headers: { 'Authorization': "Bearer #{access_token}" }
 

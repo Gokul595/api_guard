@@ -7,7 +7,7 @@ module <%= @controller_scope %>
     #   create_token_and_set_header(current_resource, resource_name)
     #
     #   @refresh_token.destroy
-    #   blacklist_token if ApiGuard.blacklist_token_after_refreshing
+    #   revoke_token if ApiGuard.revoke_token_after_refreshing
     #
     #   render_success(message: I18n.t('api_guard.access_token.refreshed'))
     # end

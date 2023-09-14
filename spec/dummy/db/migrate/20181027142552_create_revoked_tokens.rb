@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class CreateBlacklistedTokens < ActiveRecord::Migration[5.1]
+class CreateRevokedTokens < ActiveRecord::Migration[5.1]
   def change
-    create_table :blacklisted_tokens do |t|
+    create_table :revoked_tokens do |t|
       t.string :token
       t.datetime :expire_at
       t.references :user, foreign_key: true

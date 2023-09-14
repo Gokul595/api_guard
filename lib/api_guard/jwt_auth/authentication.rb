@@ -65,7 +65,7 @@ module ApiGuard
       end
 
       # Authenticate the resource with the '{{resource_name}}_id' in the decoded JWT token
-      # and also, check for valid issued at time and not blacklisted
+      # and also, check for valid issued at time and not revoked
       #
       # Also, set "current_{{resource_name}}" method and "@current_{{resource_name}}" instance variable
       # for accessing the authenticated resource
@@ -77,7 +77,7 @@ module ApiGuard
 
         resource = find_resource_from_token(@resource_name.classify.constantize)
 
-        if resource && valid_issued_at?(resource) && !blacklisted?(resource)
+        if resource && valid_issued_at?(resource) && !revoked?(resource)
           define_current_resource_accessors(resource)
         end
       end
