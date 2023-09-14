@@ -17,7 +17,7 @@ ApiGuard.setup do |config|
   # Default: false
   # config.invalidate_old_tokens_on_password_change = false
 
-  # Blacklist JWT access token after refreshing
+  # Revoke JWT access token after refreshing
   # Default: false
-  # config.blacklist_token_after_refreshing = false
+  # config.revoke_token_after_refreshing = false
 end

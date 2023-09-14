@@ -23,8 +23,8 @@ module ApiGuard
   mattr_accessor :invalidate_old_tokens_on_password_change
   self.invalidate_old_tokens_on_password_change = false
 
-  mattr_accessor :blacklist_token_after_refreshing
-  self.blacklist_token_after_refreshing = false
+  mattr_accessor :revoke_token_after_refreshing
+  self.revoke_token_after_refreshing = false
 
   mattr_accessor :api_guard_associations
   self.api_guard_associations = {}

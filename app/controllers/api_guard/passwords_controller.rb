@@ -10,7 +10,7 @@ module ApiGuard
       invalidate_old_jwt_tokens(current_resource)
 
       if current_resource.update(password_params)
-        blacklist_token unless ApiGuard.invalidate_old_tokens_on_password_change
+        revoke_token unless ApiGuard.invalidate_old_tokens_on_password_change
         destroy_all_refresh_tokens(current_resource)
 
         create_token_and_set_header(current_resource, resource_name)

@@ -44,7 +44,7 @@
 ### 0.2.0 - 2019-04-27
 
 * Features
-    * Added configurable option to blacklist JWT access token on refreshing as requested in this 
+    * Added configurable option to revoke JWT access token on refreshing as requested in this 
     [issue comment](https://github.com/Gokul595/api_guard/issues/8#issuecomment-477436164).
 
 ### 0.1.3 - 2019-03-26

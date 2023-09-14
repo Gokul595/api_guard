@@ -21,15 +21,15 @@ ActiveRecord::Schema.define(version: 2021_12_02_151903) do
     t.boolean "edit_all_posts", default: false
   end
 
-  create_table "blacklisted_tokens", force: :cascade do |t|
+  create_table "revoked_tokens", force: :cascade do |t|
     t.string "token"
     t.datetime "expire_at"
     t.integer "user_id"
     t.integer "admin_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_blacklisted_tokens_on_admin_id"
-    t.index ["user_id"], name: "index_blacklisted_tokens_on_user_id"
+    t.index ["admin_id"], name: "index_revoked_tokens_on_admin_id"
+    t.index ["user_id"], name: "index_revoked_tokens_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(version: 2021_12_02_151903) do
     t.datetime "token_issued_at"
   end
 
-  add_foreign_key "blacklisted_tokens", "admins"
-  add_foreign_key "blacklisted_tokens", "users"
+  add_foreign_key "revoked_tokens", "admins"
+  add_foreign_key "revoked_tokens", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "refresh_tokens", "admins"
   add_foreign_key "refresh_tokens", "users"
